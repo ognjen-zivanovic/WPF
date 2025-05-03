@@ -1,0 +1,10 @@
+# WPF APP
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.sln.ide
+*.sln.ide.*
+
+obj/
+bin/
