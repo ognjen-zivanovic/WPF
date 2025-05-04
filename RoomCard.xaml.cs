@@ -28,16 +28,16 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource, float price, DateTime checkIn, DateTime checkOut)
+        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource, float price)
         {
             RoomId = room.Id;
-            CheckIn = checkIn;
-            CheckOut = checkOut;
             Price = price;
 
             RoomImage.Source = imageSource;
             CapacityText.Text = $"Capacity: {room.Capacity}";
             PriceText.Text = $"{price}";
+            RoomNameText.Text = room.Name;
+            DescriptionText.Text = room.Description;
 
             AmenityPanel.Children.Clear();
             foreach (var amenity in amenities)

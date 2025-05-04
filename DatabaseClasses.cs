@@ -14,6 +14,7 @@ namespace WpfApp1
         public string Name { get; set; }
         public int Capacity { get; set; }
         public float PricePerNight { get; set; }
+        public string Description { get; set; }
     }
 
     public class User

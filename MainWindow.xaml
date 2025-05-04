@@ -1,41 +1,41 @@
-﻿<Window x:Class="WpfApp1.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+﻿<Window x:Class="WpfApp1.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:WpfApp1" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="MainWindow" Width="1280" Height="720" mc:Ignorable="d">
     <Grid>
-        <DatePicker Name="CheckInDatePicker" Width="250" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedDateFormat="Long" Margin="10,10,0,0" FontSize="16" FontFamily="Arial" Padding="5" BorderBrush="#888" BorderThickness="1" Background="#add8e6" />
-        <DatePicker Name="CheckOutDatePicker" Width="250" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,70,0,0" SelectedDateFormat="Long" FontSize="16" FontFamily="Arial" Padding="5" BorderBrush="#888" BorderThickness="1" Background="#add8e6" />
-        <TextBlock Text="Number of Adults:" FontSize="16" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,130,0,0" />
-        <ComboBox Name="Adults_ComboBox" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,160,0,0" FontSize="16" FontFamily="Arial" Padding="5" BorderBrush="#888" BorderThickness="1" Background="#add8e6">
-            <ComboBoxItem Content="1" />
-            <ComboBoxItem Content="2" />
-            <ComboBoxItem Content="3" />
-            <ComboBoxItem Content="4" />
-            <ComboBoxItem Content="5" />
-        </ComboBox>
-        <TextBlock Text="Number of Children:" FontSize="16" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,200,0,0" />
-        <ComboBox Name="Children_ComboBox" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,230,0,0" FontSize="16" FontFamily="Arial" Padding="5" BorderBrush="#888" BorderThickness="1" Background="#add8e6" SelectionChanged="Children_ComboBox_SelectionChanged" >
-            <ComboBoxItem Content="0" />
-            <ComboBoxItem Content="1" />
-            <ComboBoxItem Content="2" />
-            <ComboBoxItem Content="3" />
-        </ComboBox>
-        <StackPanel Name="ChildrenAgesStackPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,270,0,0">
-            <!-- Child age ComboBoxes will be added here dynamically -->
+        <StackPanel Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
+            <DatePicker Name="CheckInDatePicker" Width="250" Height="50" Margin="0,0,0,10" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontFamily="Arial" FontSize="16" SelectedDateFormat="Long" />
+            <DatePicker Name="CheckOutDatePicker" Width="250" Height="50" Margin="0,0,0,10" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontFamily="Arial" FontSize="16" SelectedDateFormat="Long" />
+            <TextBlock Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="16" Text="Number of Adults:" />
+            <ComboBox Name="Adults_ComboBox" Width="100" Height="30" Margin="0,0,0,10" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontFamily="Arial" FontSize="16">
+                <ComboBoxItem Content="1" />
+                <ComboBoxItem Content="2" />
+                <ComboBoxItem Content="3" />
+                <ComboBoxItem Content="4" />
+                <ComboBoxItem Content="5" />
+            </ComboBox>
+            <TextBlock Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="16" Text="Number of Children:" />
+            <ComboBox Name="Children_ComboBox" Width="100" Height="30" Margin="0,0,0,10" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontFamily="Arial" FontSize="16" SelectionChanged="Children_ComboBox_SelectionChanged">
+                <ComboBoxItem Content="0" />
+                <ComboBoxItem Content="1" />
+                <ComboBoxItem Content="2" />
+                <ComboBoxItem Content="3" />
+            </ComboBox>
+            <StackPanel Name="ChildrenAgesStackPanel" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <!--  Child age ComboBoxes will be added here dynamically  -->
+            </StackPanel>
+            <TextBlock Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="16" Text="Select Amenities:" />
+            <StackPanel Name="AmenitiesStackPanel" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
+                <!--  CheckBoxes will be added here dynamically  -->
+            </StackPanel>
+            <TextBlock Name="ErrorText" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="16" Foreground="Red" Text="" Visibility="Collapsed" />
+            <Button Name="ShowRooms_Button" Width="200" Height="50" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" Click="ShowRooms_Button_Click" Content="Show Available Rooms" FontFamily="Arial" FontSize="16" />
         </StackPanel>
-        <!-- Erorr text -->
-        <TextBlock Name="ErrorText" Text="" FontSize="16" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,320,0,0" Foreground="Red" Visibility="Collapsed"/>
-        <!-- Button to show all rooms  -->
-        <Button Name="ShowRooms_Button" Content="Show Available Rooms" Width="200" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,350,0,0" FontSize="16" FontFamily="Arial" Padding="5" Background="#add8e6" Click="ShowRooms_Button_Click"/>
-        <!-- Item with image and text and stuff for a room -->
-        <ScrollViewer Name="RoomsScrollViewer" Width="800" Height="720" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
+
+        <!--  Item with image and text and stuff for a room  -->
+        <ScrollViewer Name="RoomsScrollViewer" Width="800" Height="680" Margin="0,10,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
             <StackPanel Name="RoomsStackPanel">
-                <!-- Room items will be added here dynamically -->
+                <!--  Room items will be added here dynamically  -->
             </StackPanel>
         </ScrollViewer>
+
+        <Button Name="ShowAdminWindowButton" Width="200" Height="50" Margin="10,0,0,10" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#add8e6" Click="ShowAdminWindowButton_Click" Content="Show Admin Window" FontFamily="Arial" FontSize="16" />
     </Grid>
 </Window>
