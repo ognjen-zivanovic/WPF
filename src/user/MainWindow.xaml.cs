@@ -207,8 +207,8 @@ namespace WpfApp1
 
         private void ShowAdminWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminWindow adminWindow = new AdminWindow();
-            adminWindow.Show();
+            AdminMainWindow adminMainWindow = new AdminMainWindow();
+            adminMainWindow.Show();
             this.Close();
         }
     }
