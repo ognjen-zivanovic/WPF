@@ -20,9 +20,24 @@ namespace WpfApp1
     public class User
     {
         public int Id { get; set; }
-        public string FullName { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+    }
+
+    public class Guest
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+    }
+
+    public class GuestReservations
+    {
+        public int Id { get; set; }
+        public int ReservationId { get; set; }
+        public int GuestId { get; set; }
     }
     public class Reservation
     {

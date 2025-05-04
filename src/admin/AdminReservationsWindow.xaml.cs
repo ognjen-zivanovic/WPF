@@ -14,9 +14,9 @@ using System.IO;
 
 namespace WpfApp1
 {
-    public partial class AAAAAAAAAAAAAAAAA : Window
+    public partial class AdminReservationsWindow : Window
     {
-        public AAAAAAAAAAAAAAAAA()
+        public AdminReservationsWindow()
         {
             InitializeComponent();
         }

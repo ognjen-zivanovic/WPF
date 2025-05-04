@@ -46,10 +46,40 @@ namespace WpfApp1
         static string GetCreateTableQueries()
         {
             return @"
-                CREATE TABLE rooms (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, capacity INTEGER NOT NULL, price_per_night DECIMAL(10, 2), description TEXT);
-                CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, full_name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, phone TEXT);
-                CREATE TABLE reservations (id INTEGER PRIMARY KEY AUTOINCREMENT, room_id INTEGER NOT NULL, user_id INTEGER NOT NULL, check_in DATE NOT NULL, check_out DATE NOT NULL, adults INTEGER NOT NULL, children INTEGER NOT NULL, FOREIGN KEY (room_id) REFERENCES rooms(id), FOREIGN KEY (user_id) REFERENCES users(id));
-                CREATE TABLE images (id INTEGER PRIMARY KEY AUTOINCREMENT, room_id INTEGER, image_data BLOB, FOREIGN KEY (room_id) REFERENCES rooms(id)); 
+CREATE TABLE rooms (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    capacity INTEGER NOT NULL,
+    price_per_night DECIMAL(10, 2),
+    description TEXT
+);
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    surname TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    phone TEXT
+);
+
+CREATE TABLE reservations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    room_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    check_in DATE NOT NULL,
+    check_out DATE NOT NULL,
+    adults INTEGER NOT NULL,
+    children INTEGER NOT NULL,
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE images (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    room_id INTEGER,
+    image_data BLOB,
+    FOREIGN KEY (room_id) REFERENCES rooms(id)
+);
 
 CREATE TABLE amenities (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,6 +93,20 @@ CREATE TABLE room_amenities (
     PRIMARY KEY (room_id, amenity_id),
     FOREIGN KEY (room_id) REFERENCES rooms(id),
     FOREIGN KEY (amenity_id) REFERENCES amenities(id)
+);
+
+CREATE TABLE guests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    surname TEXT NOT NULL
+);
+
+CREATE TABLE guest_reservations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reservation_id INTEGER NOT NULL,
+    guest_id INTEGER NOT NULL,
+    FOREIGN KEY (reservation_id) REFERENCES reservations(id),
+    FOREIGN KEY (guest_id) REFERENCES guests(id)
 );
 
 INSERT INTO amenities (name) VALUES
@@ -101,10 +145,10 @@ INSERT INTO amenities (name) VALUES
 
 
             string insertUsers = @"
-                INSERT INTO users(full_name, email, phone) VALUES
-                ('John Doe', 'john.doe@example.com', '123-456-7890'), 
-                ('Jane Smith', 'jane.smith@example.com', '987-654-3210'),
-                ('Bob Johnson', 'bob.johnson@example.com', '555-555-5555'); ";
+                INSERT INTO users(name, surname, email, phone) VALUES
+                ('John', 'Doe', 'john.doe@example.com', '123-456-7890'), 
+                ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210'),
+                ('Bob', 'Johnson', 'bob.johnson@example.com', '555-555-5555'); ";
 
             string insertReservations = @"
                 INSERT INTO reservations (room_id, user_id, check_in, check_out, adults, children) VALUES
