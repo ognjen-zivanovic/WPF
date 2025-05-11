@@ -18,31 +18,75 @@ namespace WpfApp1
     public partial class CheckoutWindow : Window
     {
 
-        private int _roomId;
-        private DateTime _checkInDate;
-        private DateTime _checkOutDate;
-        private float _totalPrice;
+        public Room Room { get; set; }
+        public float TotalPrice { get; set; }
+        public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
+        public int NumberOfGuests { get; set; }
+        public int NumberOfBabies { get; set; }
+        public string AmenitiesText { get; set; }
+        public string NumberOfGuestsText { get; set; }
+
+
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
+        public string UserEmail { get; set; }
+        public string UserPhoneNumber { get; set; }
 
         public CheckoutWindow()
         {
             InitializeComponent();
         }
 
-        public CheckoutWindow(int roomId, DateTime checkInDate, DateTime checkOutDate, float totalPrice)
+        public CheckoutWindow(int roomId, DateTime checkInDate, DateTime checkOutDate, float totalPrice, int numberOfGuests, int numberOfBabies, string amenitiesText)
         {
             InitializeComponent();
 
-            _roomId = roomId;
-            _checkInDate = checkInDate;
-            _checkOutDate = checkOutDate;
-            _totalPrice = totalPrice;
+            Room = DatabaseManager.GetRoomWithId(roomId);
+            CheckInDate = checkInDate;
+            CheckOutDate = checkOutDate;
+            TotalPrice = totalPrice;
+            NumberOfGuests = numberOfGuests;
+            NumberOfBabies = numberOfBabies;
+            AmenitiesText = amenitiesText;
 
-            RoomIdTextBlock.Text = $"Room ID: {roomId}";
-            CheckInDateTextBlock.Text = $"Check-In Date: {checkInDate:yyyy-MM-dd}";
-            CheckOutDateTextBlock.Text = $"Check-Out Date: {checkOutDate:yyyy-MM-dd}";
-            TotalPriceTextBlock.Text = $"Total Price: {totalPrice:C2}";
+            if (NumberOfBabies > 0)
+            {
+                NumberOfGuestsText = $"{NumberOfGuests} + {NumberOfBabies} babies";
+            }
+            else
+            {
+                NumberOfGuestsText = $"{NumberOfGuests}";
+            }
 
-            RoomImage.Source = DatabaseManager.LoadImageFromDatabase(roomId);
+            for (int i = 0; i < NumberOfGuests; i++)
+            {
+                GuestNameCard guestNameCard = new GuestNameCard();
+                GuestNamesStackPanel.Children.Add(guestNameCard);
+            }
+
+            this.DataContext = this;
+
+        }
+
+        public void CheckoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // show all info 
+            MessageBox.Show($"Room: {Room.Name}\n" +
+                $"Check-in: {CheckInDate.ToShortDateString()}\n" +
+                $"Check-out: {CheckOutDate.ToShortDateString()}\n" +
+                $"Total Price: {TotalPrice} €\n" +
+                $"Number of guests: {NumberOfGuestsText}\n" +
+                $"Amenities: {AmenitiesText}");
+            MessageBox.Show($"User Name: {UserName}\n" +
+                $"User Surname: {UserSurname}\n" +
+                $"User Email: {UserEmail}\n" +
+                $"User Phone: {UserPhoneNumber}");
+            foreach (GuestNameCard guestNameCard in GuestNamesStackPanel.Children)
+            {
+                MessageBox.Show($"Guest Name: {guestNameCard.GuestName}\n" +
+                    $"Guest Surname: {guestNameCard.GuestSurname}");
+            }
         }
     }
 }

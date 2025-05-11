@@ -21,21 +21,29 @@ namespace WpfApp1
         public int RoomId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
-        public float Price { get; set; }
+        public float TotalPrice { get; set; }
+        public Amenity[] Amenities { get; set; }
+        public int NumberOfGuests { get; set; }
+        public int NumberOfBabies { get; set; }
 
         public RoomCard()
         {
             InitializeComponent();
         }
 
-        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource, float price)
+        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource, float price, string checkIn, string checkOut, int numGuests, int numBabies)
         {
             RoomId = room.Id;
-            Price = price;
+            TotalPrice = price;
+            Amenities = amenities;
+            CheckIn = DateTime.Parse(checkIn);
+            CheckOut = DateTime.Parse(checkOut);
+            NumberOfGuests = numGuests;
+            NumberOfBabies = numBabies;
 
             RoomImage.Source = imageSource;
             CapacityText.Text = $"Capacity: {room.Capacity}";
-            PriceText.Text = $"{price}";
+            PriceText.Text = $"{TotalPrice}";
             RoomNameText.Text = room.Name;
             DescriptionText.Text = room.Description;
 
@@ -55,7 +63,7 @@ namespace WpfApp1
 
         private void BookRoom_Click(object sender, RoutedEventArgs e)
         {
-            var checkoutWindow = new CheckoutWindow(RoomId, CheckIn, CheckOut, Price);
+            var checkoutWindow = new CheckoutWindow(RoomId, CheckIn, CheckOut, TotalPrice, NumberOfGuests, NumberOfBabies, string.Join(", ", Amenities.Select(a => a.Name)));
             checkoutWindow.Show();
         }
     }

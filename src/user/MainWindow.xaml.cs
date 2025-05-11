@@ -100,11 +100,14 @@ namespace WpfApp1
 
         private void ShowRooms()
         {
-            string checkInDate = CheckInDatePicker.SelectedDate.Value.ToString("yyyy-MM-dd");
-            string checkOutDate = CheckOutDatePicker.SelectedDate.Value.ToString("yyyy-MM-dd");
+            string checkInDate = CheckInDatePicker.SelectedDate.Value.AddHours(14).ToString("yyyy-MM-dd HH:mm");
+            string checkOutDate = CheckOutDatePicker.SelectedDate.Value.AddHours(12).ToString("yyyy-MM-dd HH:mm");
 
             int selectedAdults = int.TryParse((string)((ComboBoxItem)Adults_ComboBox.SelectedItem)?.Content, out selectedAdults) ? selectedAdults : 0;
             int selectedChildren = int.TryParse((string)((ComboBoxItem)Children_ComboBox.SelectedItem)?.Content, out selectedChildren) ? selectedChildren : 0;
+            int numBabies = CountBabies();
+            int totalGuests = selectedAdults + selectedChildren - numBabies;
+            int totalBabies = numBabies;
 
             List<string> selectedAmenities = new List<string>();
             foreach (var child in AmenitiesStackPanel.Children)
@@ -121,7 +124,7 @@ namespace WpfApp1
             foreach (var room in rooms)
             {
                 Amenity[] amenities = DatabaseManager.GetAmenitiesForRoom(room.Id);
-                AddRoomToUI(room, amenities);
+                AddRoomToUI(room, amenities, checkInDate, checkOutDate, totalGuests, totalBabies);
             }
         }
         private void ClearRoomsUI()
@@ -129,13 +132,13 @@ namespace WpfApp1
             RoomsStackPanel.Children.Clear();
         }
 
-        private void AddRoomToUI(Room room, Amenity[] amenities)
+        private void AddRoomToUI(Room room, Amenity[] amenities, string checkInDate, string checkOutDate, int totalGuests, int totalBabies)
         {
             var image = DatabaseManager.LoadImageFromDatabase(room.Id);
             var price = CalculatePrice(room.PricePerNight);
 
             var roomCard = new RoomCard();
-            roomCard.SetRoomData(room, amenities, image, price);
+            roomCard.SetRoomData(room, amenities, image, price, checkInDate, checkOutDate, totalGuests, totalBabies);
 
             RoomsStackPanel.Children.Add(roomCard);
         }
@@ -158,6 +161,23 @@ namespace WpfApp1
                     }
                 }
             }
+        }
+
+        private int CountBabies()
+        {
+            int count = 0;
+            foreach (var childAgeComboBox in ChildrenAgesStackPanel.Children)
+            {
+                if (childAgeComboBox is ComboBox comboBox && comboBox.SelectedItem != null)
+                {
+                    string ageGroup = comboBox.SelectedItem.ToString();
+                    if (ageGroup == "<2")
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
         }
 
         private float CalculatePrice(float pricePerNight)

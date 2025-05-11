@@ -70,6 +70,7 @@ CREATE TABLE reservations (
     check_out DATE NOT NULL,
     adults INTEGER NOT NULL,
     children INTEGER NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (room_id) REFERENCES rooms(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -145,14 +146,78 @@ INSERT INTO amenities (name) VALUES
 
 
             string insertUsers = @"
-                INSERT INTO users(name, surname, email, phone) VALUES
-                ('John', 'Doe', 'john.doe@example.com', '123-456-7890'), 
-                ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210'),
-                ('Bob', 'Johnson', 'bob.johnson@example.com', '555-555-5555'); ";
+    INSERT INTO users(name, surname, email, phone) VALUES
+    ('John', 'Doe', 'john.doe@example.com', '123-456-7890'), 
+    ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210'),
+    ('Bob', 'Johnson', 'bob.johnson@example.com', '555-555-5555'),
+    ('Alice', 'Brown', 'alice.brown@example.com', '234-567-8901'),
+    ('Charlie', 'Davis', 'charlie.davis@example.com', '345-678-9012'),
+    ('Emily', 'Evans', 'emily.evans@example.com', '456-789-0123'),
+    ('Daniel', 'Wilson', 'daniel.wilson@example.com', '567-890-1234'),
+    ('Fiona', 'Taylor', 'fiona.taylor@example.com', '678-901-2345'),
+    ('George', 'Anderson', 'george.anderson@example.com', '789-012-3456'),
+    ('Hannah', 'Thomas', 'hannah.thomas@example.com', '890-123-4567'),
+    ('Ian', 'Martinez', 'ian.martinez@example.com', '901-234-5678'),
+    ('Julia', 'Garcia', 'julia.garcia@example.com', '012-345-6789'),
+    ('Kevin', 'Robinson', 'kevin.robinson@example.com', '111-222-3333'),
+    ('Laura', 'Clark', 'laura.clark@example.com', '222-333-4444'),
+    ('Mark', 'Rodriguez', 'mark.rodriguez@example.com', '333-444-5555'),
+    ('Nina', 'Lewis', 'nina.lewis@example.com', '444-555-6666'),
+    ('Oscar', 'Lee', 'oscar.lee@example.com', '555-666-7777'),
+    ('Paula', 'Walker', 'paula.walker@example.com', '666-777-8888'),
+    ('Quentin', 'Hall', 'quentin.hall@example.com', '777-888-9999'),
+    ('Rachel', 'Allen', 'rachel.allen@example.com', '888-999-0000'),
+    ('Steve', 'Young', 'steve.young@example.com', '999-000-1111'),
+    ('Tina', 'Hernandez', 'tina.hernandez@example.com', '000-111-2222'),
+    ('Umar', 'King', 'umar.king@example.com', '101-202-3030'),
+    ('Vera', 'Wright', 'vera.wright@example.com', '202-303-4040'),
+    ('Will', 'Lopez', 'will.lopez@example.com', '303-404-5050'),
+    ('Xena', 'Hill', 'xena.hill@example.com', '404-505-6060'),
+    ('Yuri', 'Scott', 'yuri.scott@example.com', '505-606-7070'),
+    ('Zara', 'Green', 'zara.green@example.com', '606-707-8080'),
+    ('Adam', 'Baker', 'adam.baker@example.com', '707-808-9090'),
+    ('Bella', 'Nelson', 'bella.nelson@example.com', '808-909-0101'),
+    ('Carl', 'Carter', 'carl.carter@example.com', '909-010-1112'),
+    ('Diana', 'Mitchell', 'diana.mitchell@example.com', '010-111-2122'),
+    ('Ethan', 'Perez', 'ethan.perez@example.com', '111-212-3132'),
+    ('Grace', 'Roberts', 'grace.roberts@example.com', '212-313-4142');";
+
 
             string insertReservations = @"
-                INSERT INTO reservations (room_id, user_id, check_in, check_out, adults, children) VALUES
-                (1, 1, '2025-05-10', '2025-05-12', 1, 0), (2, 2, '2025-05-15', '2025-05-18', 2, 1);";
+    INSERT INTO reservations (room_id, user_id, check_in, check_out, adults, children, total_price) VALUES
+    (1, 1, '2025-05-10', '2025-05-12', 1, 0, 599.99),
+    (2, 2, '2025-05-15', '2025-05-18', 2, 1, 576.28),
+    (3, 5, '2025-06-01', '2025-06-05', 2, 0, 820.00),
+    (4, 3, '2025-05-20', '2025-05-22', 1, 1, 460.50),
+    (5, 6, '2025-06-10', '2025-06-12', 3, 2, 1015.75),
+    (2, 7, '2025-07-01', '2025-07-04', 2, 0, 712.00),
+    (1, 8, '2025-08-15', '2025-08-18', 1, 0, 580.20),
+    (3, 9, '2025-09-05', '2025-09-08', 2, 1, 775.90),
+    (4, 10, '2025-05-22', '2025-05-25', 1, 2, 689.99),
+    (5, 11, '2025-06-15', '2025-06-17', 2, 0, 640.00),
+    (1, 12, '2025-07-10', '2025-07-13', 2, 1, 845.60),
+    (2, 13, '2025-07-20', '2025-07-22', 1, 0, 399.99),
+    (3, 14, '2025-08-01', '2025-08-03', 2, 2, 920.10),
+    (4, 15, '2025-08-10', '2025-08-12', 3, 1, 999.99),
+    (5, 16, '2025-09-01', '2025-09-03', 2, 0, 570.75),
+    (2, 17, '2025-05-25', '2025-05-27', 1, 1, 455.35),
+    (1, 18, '2025-06-20', '2025-06-22', 2, 0, 600.00),
+    (3, 19, '2025-06-25', '2025-06-27', 2, 2, 890.90),
+    (4, 20, '2025-07-15', '2025-07-18', 1, 0, 705.00),
+    (5, 21, '2025-07-25', '2025-07-28', 2, 1, 820.50),
+    (1, 22, '2025-08-05', '2025-08-07', 1, 0, 500.00),
+    (2, 23, '2025-09-10', '2025-09-13', 2, 1, 845.30),
+    (3, 24, '2025-05-05', '2025-05-07', 1, 1, 430.40),
+    (4, 25, '2025-06-01', '2025-06-03', 3, 0, 980.25),
+    (5, 26, '2025-06-05', '2025-06-08', 2, 2, 1020.60),
+    (1, 27, '2025-07-03', '2025-07-05', 2, 1, 765.00),
+    (2, 28, '2025-08-08', '2025-08-10', 1, 0, 495.20),
+    (3, 29, '2025-08-20', '2025-08-23', 2, 0, 740.99),
+    (4, 30, '2025-09-15', '2025-09-18', 2, 1, 860.80),
+    (5, 31, '2025-05-18', '2025-05-20', 1, 0, 555.50),
+    (1, 32, '2025-06-18', '2025-06-21', 3, 2, 1120.00),
+    (2, 33, '2025-07-28', '2025-07-30', 2, 1, 675.75),
+    (3, 34, '2025-08-25', '2025-08-28', 1, 1, 599.95);";
 
             string insertRoomAmenities = @"
             INSERT INTO room_amenities (room_id, amenity_id) VALUES
@@ -409,6 +474,22 @@ INSERT INTO amenities (name) VALUES
             return null;
         }
 
+        public static ImageSource SourceFromFileName(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = fs;
+                    bitmapImage.EndInit();
+                    return bitmapImage;
+                }
+            }
+            return null;
+        }
+
         public static void UpdateRoom(int roomId, string name, int capacity, float pricePerNight, string description)
         {
             string query = "UPDATE rooms SET name = @name, capacity = @capacity, price_per_night = @price, description = @description WHERE id = @id";
@@ -474,5 +555,167 @@ INSERT INTO amenities (name) VALUES
             }
         }
 
+        public static Room GetRoomWithId(int roomId)
+        {
+            string query = "SELECT id, name, capacity, price_per_night, description FROM rooms WHERE id = @roomId";
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", roomId);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Room
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Capacity = reader.GetInt32(2),
+                                PricePerNight = reader.GetFloat(3),
+                                Description = reader.IsDBNull(4) ? "" : reader.GetString(4)
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static ReservationCard[] GetFilteredReservations(string searchText)
+        {
+            List<ReservationCard> reservationCards = new List<ReservationCard>();
+
+            string query = @"
+            SELECT *
+            FROM reservations r
+            JOIN users u ON r.user_id = u.id
+            JOIN rooms ro ON r.room_id = ro.id
+            ";
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query += " WHERE ";
+
+                searchText.Split(' ').ToList().ForEach(s =>
+                {
+                    s.Trim();
+                    query += $"(u.name LIKE '%{s}%' OR u.surname LIKE '%{s}%' OR ro.name LIKE '%{s}%' OR u.email LIKE '%{s}%' OR u.phone LIKE '%{s}%') OR";
+                });
+                query = query.Substring(0, query.Length - 3); // Remove the last OR
+            }
+            query += " ORDER BY r.check_in DESC";
+
+            // MessageBox.Show($"Searching for: {query}");
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            //show full response
+
+
+                            var reservation = new Reservation
+                            {
+                                Id = reader.GetInt32(0),
+                                RoomId = reader.GetInt32(1),
+                                UserId = reader.GetInt32(2),
+                                CheckIn = reader.GetDateTime(3),
+                                CheckOut = reader.GetDateTime(4),
+                                Adults = reader.GetInt32(5),
+                                Children = reader.GetInt32(6),
+                                TotalPrice = reader.GetFloat(7)
+                            };
+                            var user = new User
+                            {
+                                Id = reader.GetInt32(8),
+                                Name = reader.GetString(9),
+                                Surname = reader.GetString(10),
+                                Email = reader.GetString(11),
+                                Phone = reader.IsDBNull(12) ? "" : reader.GetString(12)
+                            };
+                            var room = new Room
+                            {
+                                Id = reader.GetInt32(13),
+                                Name = reader.GetString(14),
+                                Capacity = reader.GetInt32(15),
+                                PricePerNight = reader.GetFloat(16),
+                                Description = reader.IsDBNull(17) ? "" : reader.GetString(17)
+                            };
+                            ReservationCard reservationCard = new ReservationCard
+                            {
+                                Reservation = reservation,
+                                Room = room,
+                                User = user
+                            };
+
+                            reservationCards.Add(reservationCard);
+
+                            // Add reservation to the UI or process it as needed
+                        }
+                    }
+                }
+            }
+
+            return reservationCards.ToArray();
+        }
+
+        public static Guest[] GetGuestsByReservationId(int reservationId)
+        {
+            List<Guest> guests = new List<Guest>();
+
+            string query = @"
+            SELECT g.id, g.name, g.surname
+            FROM guests g
+            JOIN guest_reservations gr ON g.id = gr.guest_id
+            WHERE gr.reservation_id = @reservationId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@reservationId", reservationId);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var guest = new Guest
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Surname = reader.GetString(2)
+                            };
+                            guests.Add(guest);
+                        }
+                    }
+                }
+            }
+            return guests.ToArray();
+        }
+
+        public static void InsertRoom(Room room)
+        {
+            string query = "INSERT INTO rooms (name, capacity, price_per_night, description) VALUES (@name, @capacity, @price_per_night, @description)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", room.Name);
+                    command.Parameters.AddWithValue("@capacity", room.Capacity);
+                    command.Parameters.AddWithValue("@price_per_night", room.PricePerNight);
+                    command.Parameters.AddWithValue("@description", room.Description);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

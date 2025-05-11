@@ -48,6 +48,7 @@ namespace WpfApp1
         public DateTime CheckOut { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }
+        public float TotalPrice { get; set; }
     }
     public class DatabaseImage
     {
@@ -62,4 +63,5 @@ namespace WpfApp1
         public string Name { get; set; }
         public byte[] Icon { get; set; }
     }
+
 }

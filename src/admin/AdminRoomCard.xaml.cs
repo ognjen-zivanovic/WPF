@@ -31,7 +31,14 @@ namespace WpfApp1
         {
             RoomId = room.Id;
 
-            RoomImage.Source = imageSource;
+            if (imageSource != null)
+            {
+                RoomImage.Source = imageSource;
+            }
+            else
+            {
+                RoomImage.Source = DatabaseManager.SourceFromFileName("icons/no-image.png");
+            }
             RoomImage.MouseEnter += (s, e) =>
             {
                 SwapImage.Visibility = Visibility.Visible;
@@ -46,8 +53,8 @@ namespace WpfApp1
                 SwapImage.Visibility = Visibility.Visible;
             };
 
-            byte[] imageBytes = File.ReadAllBytes("icons/change-icon.png");
-            SwapImage.Source = DatabaseManager.SourceFromByteArray(imageBytes);
+
+            SwapImage.Source = DatabaseManager.SourceFromFileName("icons/change-icon.png");
 
             CapacityText.Text = $"{room.Capacity}";
             PriceText.Text = $"{room.PricePerNight}";
@@ -241,4 +248,6 @@ namespace WpfApp1
         }
 
     }
+
+
 }

@@ -24,6 +24,7 @@ namespace WpfApp1
 
         private void ShowRooms()
         {
+            AdminRoomsStackPanel.Children.Clear();
             // Assuming you have a method to get rooms from the database
             Room[] rooms = DatabaseManager.GetAllRooms();
             foreach (var room in rooms)
@@ -36,6 +37,20 @@ namespace WpfApp1
                 roomCard.SetRoomData(room, amenities, image);
                 AdminRoomsStackPanel.Children.Add(roomCard);
             }
+        }
+
+        private void AddRoomButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the AddRoomWindow when the button is clicked
+            Room defaultRoom = new Room
+            {
+                Name = "New Room",
+                Capacity = 2,
+                PricePerNight = 100.00f,
+                Description = "Description of the new room."
+            };
+            DatabaseManager.InsertRoom(defaultRoom);
+            ShowRooms();
         }
     }
 }
