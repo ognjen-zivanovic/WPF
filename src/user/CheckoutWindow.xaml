@@ -22,7 +22,6 @@
                     <StackPanel Margin="18" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <TextBlock FontSize="20" FontWeight="Bold" Text="User Info:" />
 
-                        <!--  Name and Surname side by side  -->
                         <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                             <StackPanel>
                                 <TextBlock FontSize="16" Text="Name:" />
@@ -34,7 +33,6 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <!--  Email and Phone side by side  -->
                         <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                             <StackPanel>
                                 <TextBlock FontSize="16" Text="Email:" />

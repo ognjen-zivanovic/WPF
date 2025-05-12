@@ -150,6 +150,14 @@ namespace WpfApp1
             {
                 if (comboBox.SelectedItem is ComboBoxItem selectedItem && int.TryParse((string)selectedItem.Content, out int selectedValue))
                 {
+                    if (selectedValue == 0)
+                    {
+                        ChildrenAgesText.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        ChildrenAgesText.Visibility = Visibility.Visible;
+                    }
                     for (int i = 0; i < selectedValue; i++)
                     {
                         ComboBox childAgeComboBox = new ComboBox();

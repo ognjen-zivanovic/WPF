@@ -1,0 +1,41 @@
+<ItemsControl x:Class="WpfApp1.Panel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:WpfApp1" Width="750" Height="Auto" Margin="10">
+    <!-- <Grid>
+        <StackPanel>
+            <ItemsControl x:Name="DynamicChildren">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
+                        <StackPanel Margin="10,4,10,10" />
+                         </Border>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>-->
+
+    <Grid>
+        <!--  StackPanel to hold the ItemsControl  -->
+        <StackPanel>
+            <ItemsControl x:Name="DynamicChildren">
+                <ItemsControl.ItemsPanel>
+                    <!--  Use StackPanel to arrange items vertically  -->
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <!--  Define the ItemTemplate to specify the layout of each item  -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
+                            <StackPanel Margin="10,4,10,10">
+                                <!--  Content for each item goes here  -->
+                                <ContentControl Content="{Binding}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</ItemsControl>
