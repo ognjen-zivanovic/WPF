@@ -15,13 +15,6 @@ using System.IO;
 
 namespace WpfApp1
 {
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding Room.Id, StringFormat='{0}{} RoomId:'}" />
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding Room.Description}" TextWrapping="Wrap" />
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding Room.Capacity, StringFormat='{}{0} bed(s)'}" />
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding AmenitiesText}" TextWrapping="Wrap" />
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding CheckInDate}" />
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding CheckOutDate}" />
-    // <TextBlock Margin="0,5,0,0" FontSize="16" Text="{Binding TotalPrice}" />
     public partial class AdminReservationCard : UserControl
     {
         public Room Room { get; set; }

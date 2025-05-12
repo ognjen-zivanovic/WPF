@@ -84,8 +84,8 @@ CREATE TABLE images (
 
 CREATE TABLE amenities (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE,
-    icon BLOB
+    name TEXT NOT NULL,
+    icon TEXT
 );
 
 CREATE TABLE room_amenities (
@@ -109,18 +109,18 @@ CREATE TABLE guest_reservations (
     FOREIGN KEY (reservation_id) REFERENCES reservations(id),
     FOREIGN KEY (guest_id) REFERENCES guests(id)
 );
+INSERT INTO amenities (name, icon) VALUES
+('WiFi',              CHAR(0xf1eb)),  -- fa-wifi
+('Private Bathroom',  CHAR(0xf2cd)),  -- fa-bath
+('Air Conditioning',  CHAR(0xf2c9)),  -- fa-snowflake
+('Heating',           CHAR(0xf06d)),  -- fa-fire
+('TV',                CHAR(0xf26c)),  -- fa-tv
+('Toiletries',        CHAR(0xf62e)),  -- fa-pump-medical
+('Hair Dryer',        CHAR(0xf72e)),  -- fa-wind (alternative for hair dryer)
+('Refrigerator',      CHAR(0xf2c9)),  -- fa-snowflake (symbolic substitute)
+('Coffee Maker',      CHAR(0xf0f4));  -- fa-coffee
 
-INSERT INTO amenities (name) VALUES
-('WiFi'),
-('Private Bathroom'),
-('Air Conditioning'),
-('Heating'),
-('TV'),
-('Towels'),
-('Toiletries'),
-('Hair Dryer'),
-('Refrigerator'),
-('Coffee Maker');
+
 ";
             // ('Closet'),
             // ('Desk'),
@@ -223,14 +223,14 @@ INSERT INTO amenities (name) VALUES
             INSERT INTO room_amenities (room_id, amenity_id) VALUES
                 (1, 1), (1, 2), (1, 3),
                 (2, 1), (2, 3), (2, 5), (2, 6),
-                (3, 1), (3, 2), (3, 4), (3, 7), (3, 10),
-                (4, 1), (4, 3), (4, 5), (4, 9), (4, 13),
+                (3, 1), (3, 2), (3, 4), (3, 7),
+                (4, 1), (4, 3), (4, 5), (4, 9),
                 (5, 1), (5, 2), (5, 6), (5, 7),
-                (6, 1), (6, 4), (6, 5), (6, 11),
-                (7, 1), (7, 3), (7, 12),
+                (6, 1), (6, 4), (6, 5),
+                (7, 1), (7, 3),
                 (8, 1), (8, 2), (8, 6),
-                (9, 1), (9, 4), (9, 5), (9, 10),
-                (10, 1), (10, 3), (10, 8), (10, 13), (10, 14);
+                (9, 1), (9, 4), (9, 5),
+                (10, 1), (10, 3), (10, 8);
                 ";
 
             ExecuteNonQuery(connection, insertRooms);
@@ -238,7 +238,7 @@ INSERT INTO amenities (name) VALUES
             ExecuteNonQuery(connection, insertReservations);
             ExecuteNonQuery(connection, insertRoomAmenities);
             InsertSampleImages(connection);
-            InsertAmenitiesImages(connection);
+            // InsertAmenitiesImages(connection);
         }
 
         static void ExecuteNonQuery(SQLiteConnection connection, string query)
@@ -340,7 +340,7 @@ INSERT INTO amenities (name) VALUES
 
         public static Room[] GetMatchingRooms(DateTime checkInDate, DateTime checkOutDate, int selectedAdults, int selectedChildren, string[] amenities)
         {
-            var roomList = new System.Collections.Generic.List<Room>();
+            List<Room> roomList = new List<Room>();
             //all amenities need to be available
             string query = @"
                     SELECT * 
@@ -397,7 +397,7 @@ INSERT INTO amenities (name) VALUES
 
         public static Amenity[] GetAllAmenities()
         {
-            var amenitiesList = new System.Collections.Generic.List<Amenity>();
+            List<Amenity> amenitiesList = new List<Amenity>();
 
             string query = "SELECT id, name, icon FROM amenities";
 
@@ -414,7 +414,7 @@ INSERT INTO amenities (name) VALUES
                             {
                                 Id = reader.GetInt32(0),
                                 Name = reader.GetString(1),
-                                Icon = reader.IsDBNull(2) ? null : (byte[])reader[2]
+                                Icon = reader.GetString(2)
                             };
                             amenitiesList.Add(amenity);
                         }
@@ -426,7 +426,7 @@ INSERT INTO amenities (name) VALUES
 
         public static Amenity[] GetAmenitiesForRoom(int roomId)
         {
-            var amenitiesList = new System.Collections.Generic.List<Amenity>();
+            List<Amenity> amenitiesList = new List<Amenity>();
 
             string query = @"
             SELECT a.id, a.name, a.icon FROM amenities a
@@ -448,7 +448,7 @@ INSERT INTO amenities (name) VALUES
                             {
                                 Id = reader.GetInt32(0),
                                 Name = reader.GetString(1),
-                                Icon = reader.IsDBNull(2) ? null : (byte[])reader[2]
+                                Icon = reader.GetString(2)
                             };
                             amenitiesList.Add(amenity);
                         }
@@ -700,7 +700,7 @@ INSERT INTO amenities (name) VALUES
             return guests.ToArray();
         }
 
-        public static void InsertRoom(Room room)
+        public static int InsertRoom(Room room)
         {
             string query = "INSERT INTO rooms (name, capacity, price_per_night, description) VALUES (@name, @capacity, @price_per_night, @description)";
 
@@ -715,7 +715,204 @@ INSERT INTO amenities (name) VALUES
                     command.Parameters.AddWithValue("@description", room.Description);
                     command.ExecuteNonQuery();
                 }
+
+                return GetLastInsertedId(connection);
             }
+        }
+
+        public static void InsertImage(int roomId, byte[] imageBytes)
+        {
+            string query = "INSERT INTO images (room_id, image_data) VALUES (@roomId, @imageData)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", roomId);
+                    command.Parameters.AddWithValue("@imageData", imageBytes);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static int GetLastInsertedId(SQLiteConnection connection)
+        {
+            string query = "SELECT last_insert_rowid()";
+
+            using (var command = new SQLiteCommand(query, connection))
+            {
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        //         Reservation reservations = DatabaseManager.GetReservationsForRoom(RoomId);
+
+        // DatabaseManager.DeleteRoom(RoomId);
+        // DatabaseManager.DeleteImageWithRoomId(RoomId);
+        // DatabaseManager.DeleteAllAmenitiesFromRoom(RoomId);
+
+        public static void DeleteRoom(int roomId)
+        {
+            string query = "DELETE FROM rooms WHERE id = @roomId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", roomId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteImageWithRoomId(int roomId)
+        {
+            string query = "DELETE FROM images WHERE room_id = @roomId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", roomId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        public static void DeleteAllAmenitiesFromRoom(int roomId)
+        {
+            string query = "DELETE FROM room_amenities WHERE room_id = @roomId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", roomId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static Reservation[] GetReservationsForRoom(int roomId)
+        {
+            string query = "SELECT * FROM reservations WHERE room_id = @roomId";
+
+            List<Reservation> reservationList = new List<Reservation>();
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", roomId);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var reservation = new Reservation
+                            {
+                                Id = reader.GetInt32(0),
+                                RoomId = reader.GetInt32(1),
+                                UserId = reader.GetInt32(2),
+                                CheckIn = reader.GetDateTime(3),
+                                CheckOut = reader.GetDateTime(4),
+                                Adults = reader.GetInt32(5),
+                                Children = reader.GetInt32(6),
+                                TotalPrice = reader.GetFloat(7)
+                            };
+                            reservationList.Add(reservation);
+                        }
+                    }
+                }
+            }
+
+            return reservationList.ToArray();
+        }
+
+        public static void InsertAmenity(Amenity amenity)
+        {
+            string query = "INSERT INTO amenities (name, icon) VALUES (@name, @icon)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", amenity.Name);
+                    command.Parameters.AddWithValue("@icon", amenity.Icon);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        public static void DeleteAmenity(int amenityId)
+        {
+            string query = "DELETE FROM amenities WHERE id = @amenityId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@amenityId", amenityId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void UpdateAmenity(int amenityId, string name, string icon)
+        {
+            string query = "UPDATE amenities SET name = @name, icon = @icon WHERE id = @amenityId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@amenityId", amenityId);
+                    command.Parameters.AddWithValue("@name", name);
+                    command.Parameters.AddWithValue("@icon", icon);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static Room[] GetRoomsByAmenityId(int amenityId)
+        {
+            List<Room> roomList = new List<Room>();
+
+            string query = @"
+            SELECT r.id, r.name, r.capacity, r.price_per_night, r.description
+            FROM rooms r
+            JOIN room_amenities ra ON r.id = ra.room_id
+            WHERE ra.amenity_id = @amenityId";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@amenityId", amenityId);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var room = new Room
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Capacity = reader.GetInt32(2),
+                                PricePerNight = reader.GetFloat(3),
+                                Description = reader.IsDBNull(4) ? "" : reader.GetString(4)
+                            };
+                            roomList.Add(room);
+                        }
+                    }
+                }
+            }
+            return roomList.ToArray();
         }
     }
 }

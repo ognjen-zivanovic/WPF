@@ -10,19 +10,17 @@ namespace WpfApp1
     {
         public event RoutedEventHandler Deleted;
 
-        public AdminAmenityItem()
+        public int AmenityId { get; set; }
+
+        public AdminAmenityItem(int id, string name, string icon)
         {
             InitializeComponent();
             RootGrid.MouseEnter += (s, e) => DeleteButton.Visibility = Visibility.Visible;
             RootGrid.MouseLeave += (s, e) => DeleteButton.Visibility = Visibility.Hidden;
-        }
 
-        public int AmenityId { get; set; }
-        public string AmenityName { get; set; }
-
-        public void SetImageSource(ImageSource imageSource)
-        {
-            IconImage.Source = imageSource;
+            AmenityName.Text = name;
+            AmenityIcon.Text = icon;
+            AmenityId = id;
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

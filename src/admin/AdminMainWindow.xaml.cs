@@ -34,5 +34,12 @@ namespace WpfApp1
             adminReservations.Show();
             this.Close();
         }
+
+        private void EditAmenities_Click(object sender, RoutedEventArgs e)
+        {
+            AdminAmenitiesWindow adminAmenities = new AdminAmenitiesWindow();
+            adminAmenities.Show();
+            this.Close();
+        }
     }
 }

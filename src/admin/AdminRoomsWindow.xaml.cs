@@ -35,6 +35,13 @@ namespace WpfApp1
                 AdminRoomCard roomCard = new AdminRoomCard();
                 Amenity[] amenities = DatabaseManager.GetAmenitiesForRoom(room.Id);
                 roomCard.SetRoomData(room, amenities, image);
+                roomCard.DeleteButton.Click += (s, e) =>
+                {
+                    if (DeleteRoom(room.Id))
+                    {
+                        AdminRoomsStackPanel.Children.Remove(roomCard);
+                    }
+                };
                 AdminRoomsStackPanel.Children.Add(roomCard);
             }
         }
@@ -49,8 +56,25 @@ namespace WpfApp1
                 PricePerNight = 100.00f,
                 Description = "Description of the new room."
             };
-            DatabaseManager.InsertRoom(defaultRoom);
+            int insertedRoomId = DatabaseManager.InsertRoom(defaultRoom);
+            DatabaseManager.InsertImage(insertedRoomId, null);
             ShowRooms();
+        }
+
+
+        private bool DeleteRoom(int RoomId)
+        {
+            Reservation[] reservations = DatabaseManager.GetReservationsForRoom(RoomId);
+            if (reservations.Length > 0)
+            {
+                MessageBox.Show("Cannot delete room with existing reservations.");
+                return false;
+            }
+
+            DatabaseManager.DeleteRoom(RoomId);
+            DatabaseManager.DeleteImageWithRoomId(RoomId);
+            DatabaseManager.DeleteAllAmenitiesFromRoom(RoomId);
+            return true;
         }
     }
 }

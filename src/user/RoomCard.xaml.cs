@@ -43,20 +43,37 @@ namespace WpfApp1
 
             RoomImage.Source = imageSource;
             CapacityText.Text = $"Capacity: {room.Capacity}";
-            PriceText.Text = $"{TotalPrice}";
+            PriceText.Text = $"{TotalPrice}€";
             RoomNameText.Text = room.Name;
             DescriptionText.Text = room.Description;
+
+            FontFamily unicodeFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
 
             AmenityPanel.Children.Clear();
             foreach (var amenity in amenities)
             {
-                AmenityPanel.Children.Add(new Image
+                AmenityPanel.Children.Add(new StackPanel
                 {
-                    Source = DatabaseManager.SourceFromByteArray(amenity.Icon),
-                    Width = 50,
-                    Height = 50,
-                    Margin = new Thickness(5),
-                    ToolTip = amenity.Name
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            FontFamily = unicodeFont,
+                            FontSize = 18,
+                            Text = amenity.Icon,
+                            VerticalAlignment = VerticalAlignment.Center,
+                        },
+                        new TextBlock
+                        {
+                            FontSize = 18,
+                            Text = amenity.Name,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(5, 0, 10, 5),
+                        }
+                    }
                 });
             }
         }

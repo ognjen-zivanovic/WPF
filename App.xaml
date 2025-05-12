@@ -1,5 +1,18 @@
 ﻿<Application x:Class="WpfApp1.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:WpfApp1" StartupUri="AppMainWindow.xaml">
     <Application.Resources>
+
+        <FontFamily x:Key="UnicodeFont">./fonts/#Font Awesome 6 Free Solid</FontFamily>
+
+        <Style x:Key="DefaultTextStyle">
+            <Setter Property="Control.FontFamily" Value="./fonts/#Inter" />
+            <Setter Property="Control.FontSize" Value="16" />
+            <Setter Property="Control.FontWeight" Value="Normal" />
+            <Setter Property="Control.Foreground" Value="#333333" />
+        </Style>
+
+        <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="{x:Type Control}" />
+        <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="TextBlock" />
+
         <Style TargetType="Button">
             <Setter Property="Background" Value="#4FB8E6" />
             <Setter Property="Width" Value="200" />
@@ -45,6 +58,7 @@
 
             <Setter Property="TextElement.Foreground" Value="Black" />
             <Setter Property="TextElement.FontSize" Value="16" />
+            <Setter Property="TextElement.FontFamily" Value="fonts/#Inter" />
 
             <Setter Property="TextBlock.TextAlignment" Value="Center" />
             <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
@@ -57,15 +71,7 @@
             </Style.Resources>
         </Style>
 
-        <Style x:Key="DefaultTextStyle">
-            <Setter Property="TextElement.FontFamily" Value="fonts/#Inter" />
-            <Setter Property="Control.FontSize" Value="16" />
-            <Setter Property="Control.FontWeight" Value="Normal" />
-            <Setter Property="Control.Foreground" Value="#333333" />
-        </Style>
 
-        <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="{x:Type Control}" />
-        <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="TextBlock" />
 
         <Style TargetType="ComboBox">
             <Setter Property="FontSize" Value="14" />

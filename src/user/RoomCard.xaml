@@ -1,22 +1,20 @@
 <UserControl x:Class="WpfApp1.RoomCard" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:WpfApp1" Width="750" Height="Auto" Margin="10">
     <Border Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
         <StackPanel Margin="10">
-            <Grid Margin="0,0,0,10">
-                <Image x:Name="RoomImage" Stretch="UniformToFill" />
-                <StackPanel x:Name="AmenityPanel" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#00000000" Orientation="Horizontal" />
-            </Grid>
+            <Image x:Name="RoomImage" Margin="0,0,0,10" Stretch="UniformToFill" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock x:Name="RoomNameText" Margin="0,0,0,5" FontSize="20" FontWeight="Bold" />
+                    <TextBlock x:Name="RoomNameText" FontSize="20" FontWeight="Bold" />
                     <TextBlock x:Name="PriceText" FontSize="24" FontWeight="Bold" Foreground="DarkGreen" />
-                    <TextBlock x:Name="CapacityText" Margin="0,0,0,5" FontSize="16" />
-                    <TextBlock x:Name="DescriptionText" Margin="0,0,0,5" TextWrapping="Wrap" />
+                    <TextBlock x:Name="CapacityText" FontSize="16" />
+                    <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" />
+                    <WrapPanel x:Name="AmenityPanel" Margin="0,5" Orientation="Horizontal" />
                 </StackPanel>
-                <Button Grid.Column="1" Width="200" Height="80" Margin="20,10,0,0" Padding="5" HorizontalAlignment="Right" Background="#ADD8E6" Click="BookRoom_Click" Content="Book Room" FontSize="30" FontWeight="Bold" />
+                <Button Grid.Column="1" Margin="20,10,0,0" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="BookRoom_Click" Content="Book Room" FontSize="30" FontWeight="Bold" />
             </Grid>
         </StackPanel>
     </Border>

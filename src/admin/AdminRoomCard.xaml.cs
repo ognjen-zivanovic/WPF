@@ -97,12 +97,8 @@ namespace WpfApp1
             AmenityPanel.Children.Clear();
             foreach (var amenity in amenities)
             {
-                var item = new AdminAmenityItem
-                {
-                    AmenityId = amenity.Id,
-                    AmenityName = amenity.Name
-                };
-                item.SetImageSource(DatabaseManager.SourceFromByteArray(amenity.Icon));
+                var item = new AdminAmenityItem(amenity.Id, amenity.Name, amenity.Icon);
+                // item.SetImageSource(DatabaseManager.SourceFromByteArray(amenity.Icon));
                 item.Deleted += (s, e) =>
                 {
                     DatabaseManager.DeleteAmenityFromRoom(room.Id, amenity.Id);
@@ -110,20 +106,6 @@ namespace WpfApp1
                 };
                 AmenityPanel.Children.Add(item);
             }
-
-            var addButton = new Button
-            {
-                Content = "+",
-                Background = Brushes.Transparent,
-                BorderBrush = Brushes.Transparent,
-                Foreground = Brushes.Green,
-                FontSize = 32,
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(5)
-            };
-            addButton.Click += AddAmenityButton_Click;
-            AmenityPanel.Children.Add(addButton);
-
         }
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
@@ -229,24 +211,19 @@ namespace WpfApp1
             {
                 DatabaseManager.AddAmenityToRoom(RoomId, selected.Id);
 
-                var newItem = new AdminAmenityItem
-                {
-                    AmenityId = selected.Id,
-                    AmenityName = selected.Name
-                };
-                newItem.SetImageSource(DatabaseManager.SourceFromByteArray(selected.Icon));
+                var newItem = new AdminAmenityItem(selected.Id, selected.Name, selected.Icon);
+                newItem.DataContext = newItem;
+                // newItem.SetImageSource(DatabaseManager.SourceFromByteArray(selected.Icon));
                 newItem.Deleted += (s2, e2) =>
                 {
                     DatabaseManager.DeleteAmenityFromRoom(RoomId, selected.Id);
                     AmenityPanel.Children.Remove(newItem);
                 };
 
-                // Insert before the "+" button
-                AmenityPanel.Children.Insert(AmenityPanel.Children.Count - 1, newItem);
+                AmenityPanel.Children.Add(newItem);
                 AmenityPopup.IsOpen = false;
             }
         }
-
     }
 
 
