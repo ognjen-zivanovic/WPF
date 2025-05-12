@@ -16,4 +16,10 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.119.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="fonts\Inter.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

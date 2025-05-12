@@ -4,11 +4,11 @@
             <StackPanel Margin="10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Margin="0,6,0,2" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Check In Date" />
+                        <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Check In Date" />
                         <Border Padding="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#4FB8E6" CornerRadius="6" SnapsToDevicePixels="True">
                             <DatePicker Name="CheckInDatePicker" />
                         </Border>
-                        <TextBlock Margin="0,6,0,2" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Check Out Date" />
+                        <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Check Out Date" />
                         <Border Padding="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#4FB8E6" CornerRadius="6" SnapsToDevicePixels="True">
                             <DatePicker Name="CheckOutDatePicker" />
                         </Border>
@@ -17,7 +17,7 @@
 
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Margin="0,6,0,2" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Number of Adults:" />
+                        <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Number of Adults:" />
                         <ComboBox Name="Adults_ComboBox">
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
@@ -25,14 +25,14 @@
                             <ComboBoxItem Content="4" />
                             <ComboBoxItem Content="5" />
                         </ComboBox>
-                        <TextBlock Margin="0,6,0,2" FontFamily="Arial" FontWeight="Bold" Foreground="#333333" Text="Number of Children:" />
+                        <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Number of Children:" />
                         <ComboBox Name="Children_ComboBox" SelectionChanged="Children_ComboBox_SelectionChanged">
                             <ComboBoxItem Content="0" />
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />
                         </ComboBox>
-                        <TextBlock Name="ChildrenAgesText" Margin="0,6,0,2" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Select ages of children: " Visibility="Collapsed" />
+                        <TextBlock Name="ChildrenAgesText" Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Select ages of children: " Visibility="Collapsed" />
                         <StackPanel Name="ChildrenAgesStackPanel" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <!--  Child age ComboBoxes will be added here dynamically  -->
                         </StackPanel>
@@ -41,7 +41,7 @@
                 </Border>
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Margin="0,6,0,2" FontFamily="Arial" FontWeight="Bold" Foreground="#333333" Text="Select Amenities:" />
+                        <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Select Amenities:" />
                         <StackPanel Name="AmenitiesStackPanel" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
                             <!--  CheckBoxes will be added here dynamically  -->
                         </StackPanel>
@@ -49,7 +49,7 @@
                 </Border>
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Name="ErrorText" Margin="0,0,0,10" FontFamily="Arial" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
+                        <TextBlock Name="ErrorText" Margin="0,0,0,10" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
                         <Button Name="ShowRooms_Button" Click="ShowRooms_Button_Click" Content="Show Available Rooms" />
                     </StackPanel>
                 </Border>

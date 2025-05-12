@@ -20,7 +20,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             DatabaseManager.Init();
-            // set default dates for check-in and check-out
+
             CheckInDatePicker.SelectedDate = DateTime.Now;
             CheckOutDatePicker.SelectedDate = DateTime.Now.AddDays(1);
             PopulateAmenities();
@@ -28,7 +28,6 @@ namespace WpfApp1
 
         private void PopulateAmenities()
         {
-            // Assuming you have a method to get amenities from the database
             Amenity[] amenities = DatabaseManager.GetAllAmenities();
             foreach (var amenity in amenities)
             {
@@ -36,7 +35,6 @@ namespace WpfApp1
                 {
                     Content = amenity.Name,
                     FontSize = 16,
-                    FontFamily = new FontFamily("Arial"),
                     Margin = new Thickness(0, 2, 0, 2)
                 };
                 AmenitiesStackPanel.Children.Add(checkBox);
