@@ -72,8 +72,6 @@
             </Style.Resources>
         </Style>
 
-
-
         <Style TargetType="ComboBox">
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="Normal" />
@@ -121,6 +119,11 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Hidden" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
         </Style>
     </Application.Resources>
 </Application>

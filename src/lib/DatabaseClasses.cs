@@ -46,8 +46,7 @@ namespace HotelRezervacije
         public int UserId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
-        public int Adults { get; set; }
-        public int Children { get; set; }
+        public int NumberOfGuests { get; set; }
         public float TotalPrice { get; set; }
     }
     public class DatabaseImage

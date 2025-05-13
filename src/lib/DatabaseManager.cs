@@ -68,8 +68,7 @@ CREATE TABLE reservations (
     user_id INTEGER NOT NULL,
     check_in DATE NOT NULL,
     check_out DATE NOT NULL,
-    adults INTEGER NOT NULL,
-    children INTEGER NOT NULL,
+    number_of_guests INTEGER NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (room_id) REFERENCES rooms(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -184,40 +183,40 @@ INSERT INTO amenities (name, icon) VALUES
 
 
             string insertReservations = @"
-    INSERT INTO reservations (room_id, user_id, check_in, check_out, adults, children, total_price) VALUES
-    (1, 1, '2025-05-10', '2025-05-12', 1, 0, 599.99),
-    (2, 2, '2025-05-15', '2025-05-18', 2, 1, 576.28),
-    (3, 5, '2025-06-01', '2025-06-05', 2, 0, 820.00),
-    (4, 3, '2025-05-20', '2025-05-22', 1, 1, 460.50),
-    (5, 6, '2025-06-10', '2025-06-12', 3, 2, 1015.75),
-    (2, 7, '2025-07-01', '2025-07-04', 2, 0, 712.00),
-    (1, 8, '2025-08-15', '2025-08-18', 1, 0, 580.20),
-    (3, 9, '2025-09-05', '2025-09-08', 2, 1, 775.90),
-    (4, 10, '2025-05-22', '2025-05-25', 1, 2, 689.99),
-    (5, 11, '2025-06-15', '2025-06-17', 2, 0, 640.00),
-    (1, 12, '2025-07-10', '2025-07-13', 2, 1, 845.60),
-    (2, 13, '2025-07-20', '2025-07-22', 1, 0, 399.99),
-    (3, 14, '2025-08-01', '2025-08-03', 2, 2, 920.10),
-    (4, 15, '2025-08-10', '2025-08-12', 3, 1, 999.99),
-    (5, 16, '2025-09-01', '2025-09-03', 2, 0, 570.75),
-    (2, 17, '2025-05-25', '2025-05-27', 1, 1, 455.35),
-    (1, 18, '2025-06-20', '2025-06-22', 2, 0, 600.00),
-    (3, 19, '2025-06-25', '2025-06-27', 2, 2, 890.90),
-    (4, 20, '2025-07-15', '2025-07-18', 1, 0, 705.00),
-    (5, 21, '2025-07-25', '2025-07-28', 2, 1, 820.50),
-    (1, 22, '2025-08-05', '2025-08-07', 1, 0, 500.00),
-    (2, 23, '2025-09-10', '2025-09-13', 2, 1, 845.30),
-    (3, 24, '2025-05-05', '2025-05-07', 1, 1, 430.40),
-    (4, 25, '2025-06-01', '2025-06-03', 3, 0, 980.25),
-    (5, 26, '2025-06-05', '2025-06-08', 2, 2, 1020.60),
-    (1, 27, '2025-07-03', '2025-07-05', 2, 1, 765.00),
-    (2, 28, '2025-08-08', '2025-08-10', 1, 0, 495.20),
-    (3, 29, '2025-08-20', '2025-08-23', 2, 0, 740.99),
-    (4, 30, '2025-09-15', '2025-09-18', 2, 1, 860.80),
-    (5, 31, '2025-05-18', '2025-05-20', 1, 0, 555.50),
-    (1, 32, '2025-06-18', '2025-06-21', 3, 2, 1120.00),
-    (2, 33, '2025-07-28', '2025-07-30', 2, 1, 675.75),
-    (3, 34, '2025-08-25', '2025-08-28', 1, 1, 599.95);";
+    INSERT INTO reservations (room_id, user_id, check_in, check_out, number_of_guests, total_price) VALUES
+    (1, 1, '2025-05-10', '2025-05-12', 1, 599.99),
+    (2, 2, '2025-05-15', '2025-05-18', 2, 576.28),
+    (3, 5, '2025-06-01', '2025-06-05', 2, 820.00),
+    (4, 3, '2025-05-20', '2025-05-22', 1, 460.50),
+    (5, 6, '2025-06-10', '2025-06-12', 3, 1015.75),
+    (2, 7, '2025-07-01', '2025-07-04', 2, 712.00),
+    (1, 8, '2025-08-15', '2025-08-18', 1, 580.20),
+    (3, 9, '2025-09-05', '2025-09-08', 2, 775.90),
+    (4, 10, '2025-05-22', '2025-05-25', 1, 689.99),
+    (5, 11, '2025-06-15', '2025-06-17', 2, 640.00),
+    (1, 12, '2025-07-10', '2025-07-13', 2, 845.60),
+    (2, 13, '2025-07-20', '2025-07-22', 1, 399.99),
+    (3, 14, '2025-08-01', '2025-08-03', 2, 920.10),
+    (4, 15, '2025-08-10', '2025-08-12', 3, 999.99),
+    (5, 16, '2025-09-01', '2025-09-03', 2, 570.75),
+    (2, 17, '2025-05-25', '2025-05-27', 1, 455.35),
+    (1, 18, '2025-06-20', '2025-06-22', 2, 600.00),
+    (3, 19, '2025-06-25', '2025-06-27', 2, 890.90),
+    (4, 20, '2025-07-15', '2025-07-18', 1, 705.00),
+    (5, 21, '2025-07-25', '2025-07-28', 2, 820.50),
+    (1, 22, '2025-08-05', '2025-08-07', 1, 500.00),
+    (2, 23, '2025-09-10', '2025-09-13', 2, 845.30),
+    (3, 24, '2025-05-05', '2025-05-07', 1, 430.40),
+    (4, 25, '2025-06-01', '2025-06-03', 3, 980.25),
+    (5, 26, '2025-06-05', '2025-06-08', 2, 1020.60),
+    (1, 27, '2025-07-03', '2025-07-05', 2, 765.00),
+    (2, 28, '2025-08-08', '2025-08-10', 1, 495.20),
+    (3, 29, '2025-08-20', '2025-08-23', 2, 740.99),
+    (4, 30, '2025-09-15', '2025-09-18', 2, 860.80),
+    (5, 31, '2025-05-18', '2025-05-20', 1, 555.50),
+    (1, 32, '2025-06-18', '2025-06-21', 3, 1120.00),
+    (2, 33, '2025-07-28', '2025-07-30', 2, 675.75),
+    (3, 34, '2025-08-25', '2025-08-28', 1, 599.95);";
 
             string insertRoomAmenities = @"
             INSERT INTO room_amenities (room_id, amenity_id) VALUES
@@ -603,11 +602,10 @@ INSERT INTO amenities (name, icon) VALUES
                     s.Trim();
                     query += $"(u.name LIKE '%{s}%' OR u.surname LIKE '%{s}%' OR ro.name LIKE '%{s}%' OR u.email LIKE '%{s}%' OR u.phone LIKE '%{s}%') OR";
                 });
-                query = query.Substring(0, query.Length - 3); // Remove the last OR
+                query = query.Substring(0, query.Length - 3);
             }
-            query += " ORDER BY r.check_in DESC";
+            query += " ORDER BY r.check_in ASC";
 
-            // MessageBox.Show($"Searching for: {query}");
 
             using (var connection = new SQLiteConnection(ConnectionString))
             {
@@ -618,9 +616,6 @@ INSERT INTO amenities (name, icon) VALUES
                     {
                         while (reader.Read())
                         {
-                            //show full response
-
-
                             var reservation = new Reservation
                             {
                                 Id = reader.GetInt32(0),
@@ -628,25 +623,24 @@ INSERT INTO amenities (name, icon) VALUES
                                 UserId = reader.GetInt32(2),
                                 CheckIn = reader.GetDateTime(3),
                                 CheckOut = reader.GetDateTime(4),
-                                Adults = reader.GetInt32(5),
-                                Children = reader.GetInt32(6),
-                                TotalPrice = reader.GetFloat(7)
+                                NumberOfGuests = reader.GetInt32(5),
+                                TotalPrice = reader.GetFloat(6)
                             };
                             var user = new User
                             {
-                                Id = reader.GetInt32(8),
-                                Name = reader.GetString(9),
-                                Surname = reader.GetString(10),
-                                Email = reader.GetString(11),
-                                Phone = reader.IsDBNull(12) ? "" : reader.GetString(12)
+                                Id = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Surname = reader.GetString(9),
+                                Email = reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? "" : reader.GetString(11)
                             };
                             var room = new Room
                             {
-                                Id = reader.GetInt32(13),
-                                Name = reader.GetString(14),
-                                Capacity = reader.GetInt32(15),
-                                PricePerNight = reader.GetFloat(16),
-                                Description = reader.IsDBNull(17) ? "" : reader.GetString(17)
+                                Id = reader.GetInt32(12),
+                                Name = reader.GetString(13),
+                                Capacity = reader.GetInt32(14),
+                                PricePerNight = reader.GetFloat(15),
+                                Description = reader.IsDBNull(16) ? "" : reader.GetString(16)
                             };
                             ReservationCard reservationCard = new ReservationCard
                             {
@@ -819,9 +813,8 @@ INSERT INTO amenities (name, icon) VALUES
                                 UserId = reader.GetInt32(2),
                                 CheckIn = reader.GetDateTime(3),
                                 CheckOut = reader.GetDateTime(4),
-                                Adults = reader.GetInt32(5),
-                                Children = reader.GetInt32(6),
-                                TotalPrice = reader.GetFloat(7)
+                                NumberOfGuests = reader.GetInt32(5),
+                                TotalPrice = reader.GetFloat(6)
                             };
                             reservationList.Add(reservation);
                         }
@@ -913,6 +906,79 @@ INSERT INTO amenities (name, icon) VALUES
                 }
             }
             return roomList.ToArray();
+        }
+
+        public static int InsertReservation(Reservation reservation)
+        {
+            string query = "INSERT INTO reservations (room_id, user_id, check_in, check_out, number_of_guests, total_price) VALUES (@roomId, @userId, @checkIn, @checkOut, @numberOfGuests, @totalPrice)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@roomId", reservation.RoomId);
+                    command.Parameters.AddWithValue("@userId", reservation.UserId);
+                    command.Parameters.AddWithValue("@checkIn", reservation.CheckIn);
+                    command.Parameters.AddWithValue("@checkOut", reservation.CheckOut);
+                    command.Parameters.AddWithValue("@numberOfGuests", reservation.NumberOfGuests);
+                    command.Parameters.AddWithValue("@totalPrice", reservation.TotalPrice);
+                    command.ExecuteNonQuery();
+                }
+                return GetLastInsertedId(connection);
+            }
+        }
+
+        public static int InsertUser(User user)
+        {
+            string query = "INSERT INTO users (name, surname, email, phone) VALUES (@name, @surname, @email, @phone)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", user.Name);
+                    command.Parameters.AddWithValue("@surname", user.Surname);
+                    command.Parameters.AddWithValue("@email", user.Email);
+                    command.Parameters.AddWithValue("@phone", user.Phone);
+                    command.ExecuteNonQuery();
+                }
+                return GetLastInsertedId(connection);
+            }
+        }
+
+        public static int InsertGuest(Guest guest)
+        {
+            string query = "INSERT INTO guests (name, surname) VALUES (@name, @surname)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", guest.Name);
+                    command.Parameters.AddWithValue("@surname", guest.Surname);
+                    command.ExecuteNonQuery();
+                }
+                return GetLastInsertedId(connection);
+            }
+        }
+
+        public static void InsertGuestReservation(int reservationId, int guestId)
+        {
+            string query = "INSERT INTO guest_reservations (reservation_id, guest_id) VALUES (@reservationId, @guestId)";
+
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@reservationId", reservationId);
+                    command.Parameters.AddWithValue("@guestId", guestId);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

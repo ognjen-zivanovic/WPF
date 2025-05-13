@@ -46,7 +46,7 @@ namespace HotelRezervacije
             PriceText.Text = "Total Price: " + reservation.TotalPrice.ToString("C");
             UserNameText.Text = "User: " + user.Name + " " + user.Surname;
             UserContactText.Text = "Contact: " + user.Email + " | " + user.Phone;
-            GuestNumberText.Text = "Adults: " + reservation.Adults + " | Children: " + reservation.Children;
+            GuestNumberText.Text = "Guests: " + reservation.NumberOfGuests;
 
             this.DataContext = this;
         }
