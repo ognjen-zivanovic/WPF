@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.IO;
 
-namespace WpfApp1
+namespace HotelRezervacije
 {
     public partial class AdminAmenitiesWindow : Window
     {
@@ -35,8 +35,6 @@ namespace WpfApp1
                     Orientation = Orientation.Horizontal,
                     Margin = new Thickness(10),
                     Background = new SolidColorBrush(Color.FromRgb(240, 240, 240)),
-                    Width = 300,
-                    Height = 100,
                 };
 
                 var iconTextBox = new TextBox

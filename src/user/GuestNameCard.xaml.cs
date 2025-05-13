@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.IO;
 
-namespace WpfApp1
+namespace HotelRezervacije
 {
 
     public partial class GuestNameCard : UserControl

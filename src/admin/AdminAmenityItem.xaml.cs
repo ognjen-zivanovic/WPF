@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 
-namespace WpfApp1
+namespace HotelRezervacije
 {
     public partial class AdminAmenityItem : UserControl
     {
