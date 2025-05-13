@@ -30,69 +30,15 @@ namespace HotelRezervacije
             Amenity[] amenities = DatabaseManager.GetAllAmenities();
             foreach (var amenity in amenities)
             {
-                var amenityCard = new StackPanel
+                AdminChangeableAmenityItem amenityCard = new AdminChangeableAmenityItem(amenity.Id, amenity.Name, amenity.Icon);
+
+                amenityCard.DeleteButton.Click += (s, e) =>
                 {
-                    Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(10),
-                    Background = new SolidColorBrush(Color.FromRgb(240, 240, 240)),
-                };
-
-                var iconTextBox = new TextBox
-                {
-                    Text = amenity.Icon,
-                    FontSize = 20,
-                    FontFamily = unicodeFont,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(10)
-                };
-
-                var nameTextBox = new TextBox
-                {
-                    Text = amenity.Name,
-                    FontSize = 20,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(10)
-                };
-
-                iconTextBox.TextChanged += (s, e) =>
-                {
-                    amenity.Icon = ((TextBox)s).Text;
-                    DatabaseManager.UpdateAmenity(amenity.Id, amenity.Name, amenity.Icon);
-                };
-
-                nameTextBox.TextChanged += (s, e) =>
-                {
-                    amenity.Name = ((TextBox)s).Text;
-                    DatabaseManager.UpdateAmenity(amenity.Id, amenity.Name, amenity.Icon);
-                };
-
-                amenityCard.Children.Add(iconTextBox);
-                amenityCard.Children.Add(nameTextBox);
-
-
-                var deleteButton = new Button
-                {
-                    Content = "Delete",
-                    Margin = new Thickness(10),
-                    Width = 75,
-                    Height = 30,
-                    Background = new SolidColorBrush(Color.FromRgb(255, 0, 0)),
-                    Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
-                };
-
-                deleteButton.Click += (s, e) =>
-                {
-                    Room[] rooms = DatabaseManager.GetRoomsByAmenityId(amenity.Id);
-                    if (rooms.Length > 0)
+                    if (DeleteAmenityItem(amenity.Id))
                     {
-                        MessageBox.Show("Cannot delete this amenity as it is associated with existing rooms.");
-                        return;
+                        AmenitiesStackPanel.Children.Remove(amenityCard);
                     }
-                    DatabaseManager.DeleteAmenity(amenity.Id);
-                    ShowAmenities();
                 };
-
-                amenityCard.Children.Add(deleteButton);
 
                 AmenitiesStackPanel.Children.Add(amenityCard);
             }
@@ -109,6 +55,18 @@ namespace HotelRezervacije
             };
             DatabaseManager.InsertAmenity(defaultAmenity);
             ShowAmenities();
+        }
+
+        private bool DeleteAmenityItem(int amenityId)
+        {
+            Room[] rooms = DatabaseManager.GetRoomsByAmenityId(amenityId);
+            if (rooms.Length > 0)
+            {
+                MessageBox.Show("Cannot delete this amenity as it is associated with existing rooms.");
+                return false;
+            }
+            DatabaseManager.DeleteAmenity(amenityId);
+            return true;
         }
     }
 }
