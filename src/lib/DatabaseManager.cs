@@ -252,7 +252,7 @@ INSERT INTO amenities (name, icon) VALUES
         {
             for (int i = 1; i <= 10; i++)
             {
-                SaveImageToDatabase(i, "hotel_room.jpg", connection);
+                SaveImageToDatabase(i, "hotel images/hotel_room.jpg", connection);
             }
         }
 

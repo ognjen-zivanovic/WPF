@@ -43,7 +43,7 @@
                                         <TextBox Name="UserEmail" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
                                     </StackPanel>
                                     <StackPanel Margin="20,0,0,0">
-                                        <TextBlock FontSize="16" Text="Phone Number (06xxxxxxxx):" />
+                                        <TextBlock FontSize="16" Text="Phone Number" />
                                         <TextBox Name="UserPhoneNumber" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
                                     </StackPanel>
                                 </StackPanel>
