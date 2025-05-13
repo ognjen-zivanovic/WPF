@@ -19,7 +19,6 @@ namespace HotelRezervacije
         public MainWindow()
         {
             InitializeComponent();
-            DatabaseManager.Init();
 
             CheckInDatePicker.SelectedDate = DateTime.Now;
             CheckOutDatePicker.SelectedDate = DateTime.Now.AddDays(1);
@@ -186,7 +185,7 @@ namespace HotelRezervacije
             return count;
         }
 
-        private float CalculatePrice(float pricePerNight)
+        private decimal CalculatePrice(decimal pricePerNight)
         {
             // Parse number of adults
             int numAdults = int.TryParse(
@@ -199,7 +198,7 @@ namespace HotelRezervacije
                 out var children) ? children : 0;
 
 
-            float totalPrice = 0;
+            decimal totalPrice = 0;
 
             if (CheckInDatePicker.SelectedDate is DateTime checkIn &&
                 CheckOutDatePicker.SelectedDate is DateTime checkOut)
@@ -216,19 +215,19 @@ namespace HotelRezervacije
                         childAgeCombo.SelectedItem != null)
                     {
                         string ageGroup = childAgeCombo.SelectedItem.ToString();
-                        float multiplier = ageGroup switch
+                        decimal multiplier = ageGroup switch
                         {
-                            "<2" => 0.0f,
-                            "3-11" => 0.5f,
-                            ">12" => 1.0f,
-                            _ => 0.0f
+                            "<2" => 0.0m,
+                            "3-11" => 0.5m,
+                            ">12" => 1.0m,
+                            _ => 0.0m
                         };
 
                         totalPrice += pricePerNight * totalDays * multiplier;
                     }
                 }
             }
-            return (float)Math.Round(totalPrice, 2);
+            return (decimal)Math.Round(totalPrice, 2);
         }
 
         private void ShowAdminWindowButton_Click(object sender, RoutedEventArgs e)

@@ -123,7 +123,7 @@ namespace HotelRezervacije
                     ErrorTextBlock.Text = "Capacity must be a positive integer.";
                     return;
                 }
-                if (!float.TryParse(PriceText.Text, out float price) || price <= 0)
+                if (!decimal.TryParse(PriceText.Text, out decimal price) || price <= 0)
                 {
                     ErrorTextBlock.Text = "Price must be a positive number.";
                     return;
@@ -132,7 +132,7 @@ namespace HotelRezervacije
 
                 int roomId = int.Parse(CapacityText.DataContext.ToString());
                 int newCapacity = int.Parse(CapacityText.Text);
-                float newPrice = float.Parse(PriceText.Text);
+                decimal newPrice = decimal.Parse(PriceText.Text);
                 string newName = RoomNameText.Text;
                 string newDescription = DescriptionText.Text;
 

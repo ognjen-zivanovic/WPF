@@ -53,7 +53,7 @@ namespace HotelRezervacije
             {
                 Name = "New Room",
                 Capacity = 2,
-                PricePerNight = 100.00f,
+                PricePerNight = 100.00m,
                 Description = "Description of the new room."
             };
             int insertedRoomId = DatabaseManager.InsertRoom(defaultRoom);

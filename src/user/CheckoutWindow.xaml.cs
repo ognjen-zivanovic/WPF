@@ -20,7 +20,7 @@ namespace HotelRezervacije
     public partial class CheckoutWindow : Window
     {
         public Room Room { get; set; }
-        public float TotalPriceNumber { get; set; }
+        public decimal TotalPriceNumber { get; set; }
         public int NumberOfPeople { get; set; }
 
         public CheckoutWindow()
@@ -28,7 +28,7 @@ namespace HotelRezervacije
             InitializeComponent();
         }
 
-        public CheckoutWindow(int roomId, DateTime checkInDate, DateTime checkOutDate, float totalPrice, int numberOfGuests, int numberOfBabies, string amenitiesText)
+        public CheckoutWindow(int roomId, DateTime checkInDate, DateTime checkOutDate, decimal totalPrice, int numberOfGuests, int numberOfBabies, string amenitiesText)
         {
             InitializeComponent();
 

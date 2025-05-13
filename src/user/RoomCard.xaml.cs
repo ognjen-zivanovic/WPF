@@ -21,7 +21,7 @@ namespace HotelRezervacije
         public int RoomId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
-        public float TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public Amenity[] Amenities { get; set; }
         public int NumberOfGuests { get; set; }
         public int NumberOfBabies { get; set; }
@@ -31,7 +31,7 @@ namespace HotelRezervacije
             InitializeComponent();
         }
 
-        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource, float price, string checkIn, string checkOut, int numGuests, int numBabies)
+        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource, decimal price, string checkIn, string checkOut, int numGuests, int numBabies)
         {
             RoomId = room.Id;
             TotalPrice = price;
