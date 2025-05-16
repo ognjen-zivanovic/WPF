@@ -1,8 +1,7 @@
-﻿<Window x:Class="HotelRezervacije.GlavniProzorAdmin" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:HotelRezervacije" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="GlavniProzorAdmin" SizeToContent="WidthAndHeight" mc:Ignorable="d">
+﻿<Window x:Class="HotelRezervacije.GlavniProzorAdmin" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:HotelRezervacije" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="Glavni prozor - Admin" SizeToContent="WidthAndHeight" mc:Ignorable="d">
     <StackPanel Margin="20">
-        <Button Click="ViewReservations_Click" Content="View Reservations" />
-
-        <Button Margin="6,15,6,6" Click="EditRooms_Click" Content="Edit Rooms" />
-        <Button Click="EditAmenities_Click" Content="Edit Amenities" />
+        <Button Click="PregledRezervacija_Click" Content="Pregled rezervacija" />
+        <Button Margin="6,15,6,6" Click="IzmenaSoba_Click" Content="Izmena soba" />
+        <Button Click="IzmenaPogodnosti_Click" Content="Izmena pogodnosti" />
     </StackPanel>
 </Window>

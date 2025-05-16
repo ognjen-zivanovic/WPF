@@ -1,10 +1,10 @@
 <UserControl x:Class="HotelRezervacije.StavkaMenjivePogodnostiAdmin" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
-            <StackPanel x:Name="AmenityCard" Margin="10" HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBox x:Name="IconTextBox" Margin="10" VerticalAlignment="Center" FontFamily="{StaticResource UnicodeFont}" FontSize="20" TextChanged="IconTextBox_TextChanged" />
-                <TextBox x:Name="NameTextBox" Margin="10" VerticalAlignment="Center" FontSize="20" TextChanged="NameTextBox_TextChanged" />
-                <Button x:Name="DeleteButton" Width="75" Height="30" Margin="10" Background="#FF0000" Content="Delete" FontWeight="Bold" Foreground="#FFFFFF" Style="{x:Null}" />
+            <StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBox Name="IkonicaTextBox" Margin="10" VerticalAlignment="Center" FontFamily="{StaticResource UnicodeFont}" FontSize="20" TextChanged="IkonicaTextBox_TextChanged" />
+                <TextBox Name="ImeTextBox" Margin="10" VerticalAlignment="Center" FontSize="20" TextChanged="ImeTextBox_TextChanged" />
+                <Button Name="ObrisiDugme" Width="75" Height="30" Margin="10" Background="#FF0000" Content="Delete" FontWeight="Bold" Foreground="#FFFFFF" Style="{x:Null}" />
             </StackPanel>
         </Border>
     </Grid>

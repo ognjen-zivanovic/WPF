@@ -7,90 +7,90 @@ namespace HotelRezervacije
 {
     public static class DatabaseMapping
     {
-        public static void ConfigureMappings()
+        public static void PodesiMapiranja()
         {
-            // Room
-            SqlMapper.SetTypeMap(typeof(Room), new CustomPropertyTypeMap(
-                typeof(Room),
+            // Room (Soba)
+            SqlMapper.SetTypeMap(typeof(Soba), new CustomPropertyTypeMap(
+                typeof(Soba),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "name" => type.GetProperty("Name"),
-                    "capacity" => type.GetProperty("Capacity"),
-                    "price_per_night" => type.GetProperty("PricePerNight"),
-                    "description" => type.GetProperty("Description"),
+                    "ime" => type.GetProperty("Ime"),
+                    "kapacitet" => type.GetProperty("Kapacitet"),
+                    "cena_po_noci" => type.GetProperty("CenaPoNoci"),
+                    "opis" => type.GetProperty("Opis"),
                     _ => null
                 }));
 
-            // User
-            SqlMapper.SetTypeMap(typeof(User), new CustomPropertyTypeMap(
-                typeof(User),
+            // User (Korisnik)
+            SqlMapper.SetTypeMap(typeof(Korisnik), new CustomPropertyTypeMap(
+                typeof(Korisnik),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "name" => type.GetProperty("Name"),
-                    "surname" => type.GetProperty("Surname"),
+                    "ime" => type.GetProperty("Ime"),
+                    "prezime" => type.GetProperty("Prezime"),
                     "email" => type.GetProperty("Email"),
-                    "phone" => type.GetProperty("Phone"),
+                    "telefon" => type.GetProperty("Telefon"),
                     _ => null
                 }));
 
-            // Reservation
-            SqlMapper.SetTypeMap(typeof(Reservation), new CustomPropertyTypeMap(
-                typeof(Reservation),
+            // Reservation (Rezervacija)
+            SqlMapper.SetTypeMap(typeof(Rezervacija), new CustomPropertyTypeMap(
+                typeof(Rezervacija),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "room_id" => type.GetProperty("RoomId"),
-                    "user_id" => type.GetProperty("UserId"),
+                    "soba_id" => type.GetProperty("SobaId"),
+                    "korisnik_id" => type.GetProperty("KorisnikId"),
                     "check_in" => type.GetProperty("CheckIn"),
                     "check_out" => type.GetProperty("CheckOut"),
-                    "number_of_guests" => type.GetProperty("NumberOfGuests"),
-                    "total_price" => type.GetProperty("TotalPrice"),
+                    "broj_gostiju" => type.GetProperty("BrojGostiju"),
+                    "ukupna_cena" => type.GetProperty("UkupnaCena"),
                     _ => null
                 }));
 
-            // DatabaseImage
-            SqlMapper.SetTypeMap(typeof(DatabaseImage), new CustomPropertyTypeMap(
-                typeof(DatabaseImage),
+            // Image (Slika)
+            SqlMapper.SetTypeMap(typeof(Slika), new CustomPropertyTypeMap(
+                typeof(Slika),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "room_id" => type.GetProperty("RoomId"),
-                    "image_data" => type.GetProperty("ImageData"),
+                    "soba_id" => type.GetProperty("SobaId"),
+                    "slika_podaci" => type.GetProperty("slikaPodaci"),
                     _ => null
                 }));
 
-            // Amenity
-            SqlMapper.SetTypeMap(typeof(Amenity), new CustomPropertyTypeMap(
-                typeof(Amenity),
+            // Amenity (Pogodnost)
+            SqlMapper.SetTypeMap(typeof(Pogodnost), new CustomPropertyTypeMap(
+                typeof(Pogodnost),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "name" => type.GetProperty("Name"),
-                    "icon" => type.GetProperty("Icon"),
+                    "ime" => type.GetProperty("Ime"),
+                    "ikonica" => type.GetProperty("Ikonica"),
                     _ => null
                 }));
 
-            // Guest
-            SqlMapper.SetTypeMap(typeof(Guest), new CustomPropertyTypeMap(
-                typeof(Guest),
+            // Guest (Gost)
+            SqlMapper.SetTypeMap(typeof(Gost), new CustomPropertyTypeMap(
+                typeof(Gost),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "name" => type.GetProperty("Name"),
-                    "surname" => type.GetProperty("Surname"),
+                    "ime" => type.GetProperty("Ime"),
+                    "prezime" => type.GetProperty("Prezime"),
                     _ => null
                 }));
 
-            // GuestReservations
-            SqlMapper.SetTypeMap(typeof(GuestReservations), new CustomPropertyTypeMap(
-                typeof(GuestReservations),
+            // GuestReservation (GostRezervacije)
+            SqlMapper.SetTypeMap(typeof(GostRezervacije), new CustomPropertyTypeMap(
+                typeof(GostRezervacije),
                 (type, column) => column switch
                 {
                     "id" => type.GetProperty("Id"),
-                    "reservation_id" => type.GetProperty("ReservationId"),
-                    "guest_id" => type.GetProperty("GuestId"),
+                    "rezervacija_id" => type.GetProperty("RezervacijaId"),
+                    "gost_id" => type.GetProperty("GostId"),
                     _ => null
                 }));
         }

@@ -21,21 +21,21 @@ namespace HotelRezervacije
             InitializeComponent();
         }
 
-        private void EditRooms_Click(object sender, RoutedEventArgs e)
-        {
-            ProzorSobaAdmin adminRooms = new ProzorSobaAdmin();
-            adminRooms.Show();
-            this.Close();
-        }
-
-        private void ViewReservations_Click(object sender, RoutedEventArgs e)
+        private void PregledRezervacija_Click(object sender, RoutedEventArgs e)
         {
             ProzorRezervacijaAdmin adminReservations = new ProzorRezervacijaAdmin();
             adminReservations.Show();
             this.Close();
         }
 
-        private void EditAmenities_Click(object sender, RoutedEventArgs e)
+        private void IzmenaSoba_Click(object sender, RoutedEventArgs e)
+        {
+            ProzorSobaAdmin adminRooms = new ProzorSobaAdmin();
+            adminRooms.Show();
+            this.Close();
+        }
+
+        private void IzmenaPogodnosti_Click(object sender, RoutedEventArgs e)
         {
             ProzorPogodnostiAdmin adminAmenities = new ProzorPogodnostiAdmin();
             adminAmenities.Show();

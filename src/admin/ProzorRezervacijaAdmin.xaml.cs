@@ -21,31 +21,28 @@ namespace HotelRezervacije
             InitializeComponent();
         }
 
-        public void SearchButton_Click(object sender, RoutedEventArgs e)
+        public void PretragaDugme_Click(object sender, RoutedEventArgs e)
         {
-            string searchText = SearchTextBox.Text;
+            string pretragaTekst = PretragaTextbox.Text;
 
+            KarticaRezervacije[] karticeRezervacije = DatabaseManager.UcitajPretrazeneRezervacije(pretragaTekst);
 
-            // MessageBox.Show($"Searching for: {searchText}");
-            ReservationCard[] reservationCards = DatabaseManager.GetFilteredReservations(searchText);
+            PanelRezervacija.Children.Clear();
 
-
-            ReservationsStackPanel.Children.Clear();
-
-            foreach (var reservationCard in reservationCards)
+            foreach (var karticaRezervacije in karticeRezervacije)
             {
-                Guest[] guests = DatabaseManager.GetGuestsByReservationId(reservationCard.Reservation.Id);
-                // Create a new instance of KarticaRezervacijeAdmin for each reservation
-                KarticaRezervacijeAdmin card = new KarticaRezervacijeAdmin(reservationCard.Room, reservationCard.Reservation, reservationCard.User, guests);
-                // Add the card to the UI (assuming you have a container like a StackPanel or Grid)
-                ReservationsStackPanel.Children.Add(card);
+                Gost[] gosti = DatabaseManager.UcitajGostePoIdRezervacije(karticaRezervacije.Rezervacija.Id);
+
+                KarticaRezervacijeAdmin kartica = new KarticaRezervacijeAdmin(karticaRezervacije.Soba, karticaRezervacije.Rezervacija, karticaRezervacije.Korisnik, gosti);
+
+                PanelRezervacija.Children.Add(kartica);
             }
         }
     }
-    public class ReservationCard
+    public class KarticaRezervacije
     {
-        public Reservation Reservation { get; set; }
-        public Room Room { get; set; }
-        public User User { get; set; }
+        public Rezervacija Rezervacija { get; set; }
+        public Soba Soba { get; set; }
+        public Korisnik Korisnik { get; set; }
     }
 }

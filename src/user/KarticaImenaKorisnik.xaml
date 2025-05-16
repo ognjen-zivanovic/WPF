@@ -2,11 +2,11 @@
     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
         <StackPanel>
             <TextBlock FontSize="16" Text="Name:" />
-            <TextBox Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" Text="{Binding GuestName}" />
+            <TextBox Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" Text="{Binding ImeGosta}" />
         </StackPanel>
         <StackPanel Margin="20,0,0,0">
             <TextBlock FontSize="16" Text="Surname:" />
-            <TextBox Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" Text="{Binding GuestSurname}" />
+            <TextBox Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" Text="{Binding PrezimeGosta}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

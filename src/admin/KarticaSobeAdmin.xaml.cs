@@ -12,217 +12,186 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Win32;
 
 namespace HotelRezervacije
 {
 
     public partial class KarticaSobeAdmin : UserControl
     {
-        public int RoomId { get; set; }
-
-        private bool changed = false;
+        public int SobaId { get; set; }
 
         public KarticaSobeAdmin()
         {
             InitializeComponent();
         }
 
-        public void SetRoomData(Room room, Amenity[] amenities, ImageSource imageSource)
+        public void PostaviPodatkeSobe(Soba soba, Pogodnost[] pogodnosti, ImageSource izvorSlike)
         {
-            RoomId = room.Id;
+            SobaId = soba.Id;
 
-            if (imageSource != null)
+            if (izvorSlike != null)
             {
-                RoomImage.Source = imageSource;
+                SlikaSobe.Source = izvorSlike;
             }
             else
             {
-                RoomImage.Source = DatabaseManager.SourceFromFileName("icons/no-image.png");
+                SlikaSobe.Source = DatabaseManager.IzvorOdImenaFajla("ikonicas/no-image.png");
             }
-            RoomImage.MouseEnter += (s, e) =>
-            {
-                SwapImage.Visibility = Visibility.Visible;
-            };
-            RoomImage.MouseLeave += (s, e) =>
-            {
-                SwapImage.Visibility = Visibility.Hidden;
-            };
 
-            SwapImage.MouseEnter += (s, e) =>
+            SlikaSobe.MouseEnter += (s, e) =>
             {
-                SwapImage.Visibility = Visibility.Visible;
+                ZameniSliku.Visibility = Visibility.Visible;
+            };
+            SlikaSobe.MouseLeave += (s, e) =>
+            {
+                ZameniSliku.Visibility = Visibility.Hidden;
             };
 
-
-            SwapImage.Source = DatabaseManager.SourceFromFileName("icons/change-icon.png");
-
-            CapacityText.Text = $"{room.Capacity}";
-            PriceText.Text = $"{room.PricePerNight}";
-            RoomNameText.Text = room.Name;
-            DescriptionText.Text = room.Description;
-
-            CapacityText.DataContext = room.Id;
-            PriceText.DataContext = room.Id;
-            RoomNameText.DataContext = room.Id;
-            DescriptionText.DataContext = room.Id;
-
-            CapacityText.BorderBrush = Brushes.Gray;
-            PriceText.BorderBrush = Brushes.Gray;
-            RoomNameText.BorderBrush = Brushes.Gray;
-            DescriptionText.BorderBrush = Brushes.Gray;
-
-            CapacityText.TextChanged += (s, e) =>
+            ZameniSliku.MouseEnter += (s, e) =>
             {
-                CapacityText.BorderBrush = Brushes.Black;
-                changed = true;
-            };
-
-            PriceText.TextChanged += (s, e) =>
-            {
-                PriceText.BorderBrush = Brushes.Black;
-                changed = true;
-            };
-            RoomNameText.TextChanged += (s, e) =>
-            {
-                RoomNameText.BorderBrush = Brushes.Black;
-                changed = true;
-            };
-            DescriptionText.TextChanged += (s, e) =>
-            {
-                DescriptionText.BorderBrush = Brushes.Black;
-                changed = true;
+                ZameniSliku.Visibility = Visibility.Visible;
             };
 
 
-            AmenityPanel.Children.Clear();
-            foreach (var amenity in amenities)
+            ZameniSliku.Source = DatabaseManager.IzvorOdImenaFajla("ikonicas/change-ikonica.png");
+
+            KapacitetTekst.Text = $"{soba.Kapacitet}";
+            CenaTekst.Text = $"{soba.CenaPoNoci}";
+            NazivSobeTekst.Text = soba.Ime;
+            OpisTekst.Text = soba.Opis;
+
+            KapacitetTekst.BorderBrush = Brushes.Gray;
+            CenaTekst.BorderBrush = Brushes.Gray;
+            NazivSobeTekst.BorderBrush = Brushes.Gray;
+            OpisTekst.BorderBrush = Brushes.Gray;
+
+            KapacitetTekst.TextChanged += (s, e) => KapacitetTekst.BorderBrush = Brushes.Black;
+            CenaTekst.TextChanged += (s, e) => CenaTekst.BorderBrush = Brushes.Black;
+            NazivSobeTekst.TextChanged += (s, e) => NazivSobeTekst.BorderBrush = Brushes.Black;
+            OpisTekst.TextChanged += (s, e) => OpisTekst.BorderBrush = Brushes.Black;
+
+
+            PanelPogodnosti.Children.Clear();
+            foreach (var amenity in pogodnosti)
             {
-                var item = new StavkaPogodnostiAdmin(amenity.Id, amenity.Name, amenity.Icon);
-                // item.SetImageSource(DatabaseManager.SourceFromByteArray(amenity.Icon));
-                item.Deleted += (s, e) =>
+                var stavka = new StavkaPogodnostiAdmin(amenity.Id, amenity.Ime, amenity.Ikonica);
+                stavka.Obrisano += (s, e) =>
                 {
-                    DatabaseManager.DeleteAmenityFromRoom(room.Id, amenity.Id);
-                    AmenityPanel.Children.Remove(item);
+                    DatabaseManager.ObrisiPogodnostIzSobe(soba.Id, amenity.Id);
+                    PanelPogodnosti.Children.Remove(stavka);
                 };
-                AmenityPanel.Children.Add(item);
+                PanelPogodnosti.Children.Add(stavka);
             }
         }
 
-        private void ApplyButton_Click(object sender, RoutedEventArgs e)
+        private void PrimeniDugme_Click(object sender, RoutedEventArgs e)
         {
-            if (changed)
+            if (string.IsNullOrWhiteSpace(KapacitetTekst.Text) || string.IsNullOrWhiteSpace(CenaTekst.Text) ||
+                string.IsNullOrWhiteSpace(NazivSobeTekst.Text) || string.IsNullOrWhiteSpace(OpisTekst.Text))
             {
-                if (string.IsNullOrWhiteSpace(CapacityText.Text) || string.IsNullOrWhiteSpace(PriceText.Text) ||
-                    string.IsNullOrWhiteSpace(RoomNameText.Text) || string.IsNullOrWhiteSpace(DescriptionText.Text))
-                {
-                    ErrorTekstBlock.Text = "All fields must be filled.";
-                    return;
-                }
-                if (!int.TryParse(CapacityText.Text, out int capacity) || capacity <= 0)
-                {
-                    ErrorTekstBlock.Text = "Capacity must be a positive integer.";
-                    return;
-                }
-                if (!decimal.TryParse(PriceText.Text, out decimal price) || price <= 0)
-                {
-                    ErrorTekstBlock.Text = "Price must be a positive number.";
-                    return;
-                }
-                ErrorTekstBlock.Text = string.Empty;
-
-                int roomId = int.Parse(CapacityText.DataContext.ToString());
-                int newCapacity = int.Parse(CapacityText.Text);
-                decimal newPrice = decimal.Parse(PriceText.Text);
-                string newName = RoomNameText.Text;
-                string newDescription = DescriptionText.Text;
-
-                DatabaseManager.UpdateRoom(roomId, newName, newCapacity, newPrice, newDescription);
-                changed = false;
-
-                CapacityText.BorderBrush = Brushes.Gray;
-                PriceText.BorderBrush = Brushes.Gray;
-                RoomNameText.BorderBrush = Brushes.Gray;
-                DescriptionText.BorderBrush = Brushes.Gray;
+                ErrorTekstBlok.Text = "Sva polja moraju biti popunjena.";
+                return;
             }
+            if (!int.TryParse(KapacitetTekst.Text, out int capacity) || capacity <= 0)
+            {
+                ErrorTekstBlok.Text = "Kapacitet mora biti pozitivan broj.";
+                return;
+            }
+            if (!decimal.TryParse(CenaTekst.Text, out decimal price) || price <= 0)
+            {
+                ErrorTekstBlok.Text = "Cena mora biti pozitivan broj.";
+                return;
+            }
+            ErrorTekstBlok.Text = string.Empty;
+
+            string novoIme = NazivSobeTekst.Text;
+            string noviOpis = OpisTekst.Text;
+            int noviKapacitet = int.Parse(KapacitetTekst.Text);
+            decimal novaCena = decimal.Parse(CenaTekst.Text);
+
+            DatabaseManager.IzmeniSobu(SobaId, novoIme, noviKapacitet, novaCena, noviOpis);
+
+            KapacitetTekst.BorderBrush = Brushes.Gray;
+            CenaTekst.BorderBrush = Brushes.Gray;
+            NazivSobeTekst.BorderBrush = Brushes.Gray;
+            OpisTekst.BorderBrush = Brushes.Gray;
         }
 
-        private void SwapImage_Click(object sender, RoutedEventArgs e)
+        private void ZameniSliku_Click(object sender, RoutedEventArgs e)
         {
-            var fileDialog = new Microsoft.Win32.OpenFileDialog
+            var dijalogFajla = new OpenFileDialog
             {
                 Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
             };
-            if (fileDialog.ShowDialog() == true)
+            if (dijalogFajla.ShowDialog() == true)
             {
-                byte[] imageBytes = File.ReadAllBytes(fileDialog.FileName);
-                RoomImage.Source = DatabaseManager.SourceFromByteArray(imageBytes);
-                DatabaseManager.UpdateRoomImage(RoomId, imageBytes);
+                byte[] bajtoviSlike = File.ReadAllBytes(dijalogFajla.FileName);
+                SlikaSobe.Source = DatabaseManager.IzvorOdNizaBajtova(bajtoviSlike);
+                DatabaseManager.PromeniSlikuSobe(SobaId, bajtoviSlike);
             }
             else
             {
-                ErrorTekstBlock.Text = "Failed to load image.";
+                ErrorTekstBlok.Text = "Neuspesno ucitavanje slike.";
             }
         }
 
-        private void AddAmenityButton_Click(object sender, RoutedEventArgs e)
+        private void DodajPogodnostDugme_Click(object sender, RoutedEventArgs e)
         {
-            var allAmenities = DatabaseManager.GetAllAmenities();
-            var existingIds = new HashSet<int>();
+            var svePogodnosti = DatabaseManager.UcitajSvePogodnosti();
+            var postojeciId = new HashSet<int>();
 
-            foreach (StavkaPogodnostiAdmin item in AmenityPanel.Children.OfType<StavkaPogodnostiAdmin>())
+            foreach (StavkaPogodnostiAdmin item in PanelPogodnosti.Children)
             {
-                existingIds.Add(item.AmenityId);
+                postojeciId.Add(item.PogodnostId);
             }
 
-            var available = allAmenities.Where(a => !existingIds.Contains(a.Id)).ToList();
+            var dostupne = svePogodnosti.Where(a => !postojeciId.Contains(a.Id)).ToList();
 
-            AmenityPopupList.Children.Clear();
+            IskacuciProzorPogodnostiLista.Children.Clear();
 
-            if (!available.Any())
+            if (!dostupne.Any())
             {
-                AmenityPopupList.Children.Add(new TextBlock
+                IskacuciProzorPogodnostiLista.Children.Add(new TextBlock
                 {
-                    Text = "No amenities left to add.",
+                    Text = "Nema pogodnosti za dodavanje.",
                     Foreground = Brushes.Gray,
                     Margin = new Thickness(5)
                 });
             }
             else
             {
-                foreach (var amenity in available)
+                foreach (var pogodnost in dostupne)
                 {
-                    var btn = new Button
+                    var dugme = new Button
                     {
-                        Content = amenity.Name,
-                        Tag = amenity,
+                        Content = pogodnost.Ime,
+                        Tag = pogodnost,
                         Margin = new Thickness(2),
                         Padding = new Thickness(5)
                     };
-                    btn.Click += AmenityOption_Click;
-                    AmenityPopupList.Children.Add(btn);
+                    dugme.Click += (s, e) => DodajPogodnost(pogodnost);
+                    IskacuciProzorPogodnostiLista.Children.Add(dugme);
                 }
             }
 
-            AmenityPopup.IsOpen = true;
+            IskacuciProzorPogodnosti.IsOpen = true;
         }
-        private void AmenityOption_Click(object sender, RoutedEventArgs e)
+        private void DodajPogodnost(Pogodnost izabranaPogodnost)
         {
-            if (sender is Button btn && btn.Tag is Amenity selected)
+            DatabaseManager.DodajPogodnostSobi(SobaId, izabranaPogodnost.Id);
+
+            var novaStavka = new StavkaPogodnostiAdmin(izabranaPogodnost.Id, izabranaPogodnost.Ime, izabranaPogodnost.Ikonica);
+
+            novaStavka.DataContext = novaStavka;
+            novaStavka.Obrisano += (s, e) =>
             {
-                DatabaseManager.AddAmenityToRoom(RoomId, selected.Id);
+                DatabaseManager.ObrisiPogodnostIzSobe(SobaId, izabranaPogodnost.Id);
+                PanelPogodnosti.Children.Remove(novaStavka);
+            };
 
-                var newItem = new StavkaPogodnostiAdmin(selected.Id, selected.Name, selected.Icon);
-                newItem.DataContext = newItem;
-                // newItem.SetImageSource(DatabaseManager.SourceFromByteArray(selected.Icon));
-                newItem.Deleted += (s2, e2) =>
-                {
-                    DatabaseManager.DeleteAmenityFromRoom(RoomId, selected.Id);
-                    AmenityPanel.Children.Remove(newItem);
-                };
-
-                AmenityPanel.Children.Add(newItem);
-                AmenityPopup.IsOpen = false;
-            }
+            PanelPogodnosti.Children.Add(novaStavka);
+            IskacuciProzorPogodnosti.IsOpen = false;
         }
     }
 

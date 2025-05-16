@@ -19,61 +19,60 @@ namespace HotelRezervacije
         public ProzorSobaAdmin()
         {
             InitializeComponent();
-            ShowRooms();
+            PrikaziSobe();
         }
 
-        private void ShowRooms()
+        private void PrikaziSobe()
         {
             AdminPanelZaSobe.Children.Clear();
-            // Assuming you have a method to get rooms from the database
-            Room[] rooms = DatabaseManager.GetAllRooms();
-            foreach (var room in rooms)
-            {
-                var image = DatabaseManager.LoadImageFromDatabase(room.Id);
-                var price = room.PricePerNight;
 
-                KarticaSobeAdmin roomCard = new KarticaSobeAdmin();
-                Amenity[] amenities = DatabaseManager.GetAmenitiesForRoom(room.Id);
-                roomCard.SetRoomData(room, amenities, image);
-                roomCard.DeleteButton.Click += (s, e) =>
+            Soba[] sobe = DatabaseManager.UcitajSveSobe();
+            foreach (var soba in sobe)
+            {
+                var slika = DatabaseManager.UcitajSlikuIzBazePodataka(soba.Id);
+                var cena = soba.CenaPoNoci;
+
+                KarticaSobeAdmin karticaSobe = new KarticaSobeAdmin();
+                Pogodnost[] pogodnosti = DatabaseManager.UcitajPogodnostiZaSobu(soba.Id);
+                karticaSobe.PostaviPodatkeSobe(soba, pogodnosti, slika);
+                karticaSobe.ObrisiDugme.Click += (s, e) =>
                 {
-                    if (DeleteRoom(room.Id))
+                    if (ObrisiSobu(soba.Id))
                     {
-                        AdminPanelZaSobe.Children.Remove(roomCard);
+                        AdminPanelZaSobe.Children.Remove(karticaSobe);
                     }
                 };
-                AdminPanelZaSobe.Children.Add(roomCard);
+                AdminPanelZaSobe.Children.Add(karticaSobe);
             }
         }
 
-        private void AddRoomButton_Click(object sender, RoutedEventArgs e)
+        private void DodajSobuDugme_Click(object sender, RoutedEventArgs e)
         {
-            // Open the AddRoomWindow when the button is clicked
-            Room defaultRoom = new Room
+            Soba novaSoba = new Soba
             {
-                Name = "New Room",
-                Capacity = 2,
-                PricePerNight = 100.00m,
-                Description = "Description of the new room."
+                Ime = "Nova Soba",
+                Kapacitet = 2,
+                CenaPoNoci = 100.00m,
+                Opis = "Opis nove sobe."
             };
-            int insertedRoomId = DatabaseManager.InsertRoom(defaultRoom);
-            DatabaseManager.InsertImage(insertedRoomId, null);
-            ShowRooms();
+            int dodataSobaId = DatabaseManager.DodajSobu(novaSoba);
+            DatabaseManager.DodajSliku(dodataSobaId, (byte[])null);
+            PrikaziSobe();
         }
 
 
-        private bool DeleteRoom(int RoomId)
+        private bool ObrisiSobu(int sobaId)
         {
-            Reservation[] reservations = DatabaseManager.GetReservationsForRoom(RoomId);
-            if (reservations.Length > 0)
+            Rezervacija[] rezervacije = DatabaseManager.UcitajRezervacijeZaSobu(sobaId);
+            if (rezervacije.Length > 0)
             {
-                MessageBox.Show("Cannot delete room with existing reservations.");
+                MessageBox.Show("Nije moguce obrisati sobu jer je povezana sa nekom rezervacijom.");
                 return false;
             }
 
-            DatabaseManager.DeleteRoom(RoomId);
-            DatabaseManager.DeleteImageWithRoomId(RoomId);
-            DatabaseManager.DeleteAllAmenitiesFromRoom(RoomId);
+            DatabaseManager.ObrisiSobu(sobaId);
+            DatabaseManager.ObrisiSveSobeSaIdSobe(sobaId);
+            DatabaseManager.ObrisiSvePogodnostiIzSobe(sobaId);
             return true;
         }
     }

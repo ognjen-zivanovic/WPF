@@ -15,112 +15,114 @@ using System.IO;
 using Dapper;
 using System.Linq;
 using System.Collections.Generic;
+using HotelRezervacije;
 
 namespace HotelRezervacije
 {
     public static class DatabaseManager
     {
         const string DbPath = "hotel.db";
-        static string ConnectionString => $"Data Source={DbPath};Version=3;";
-        private static SQLiteConnection _connection;
+        static string KonekcijaTekst => $"Data Source={DbPath};Version=3;";
+        private static SQLiteConnection konekcija;
 
-        public static void Init()
+        public static void Pokreni()
         {
+            DatabaseMapping.PodesiMapiranja();
+
             if (!File.Exists(DbPath))
             {
-                CreateDatabase();
+                SQLiteConnection.CreateFile(DbPath);
+                konekcija = new SQLiteConnection(KonekcijaTekst);
+                konekcija.Open();
+                KreirajBazuPodataka();
             }
-            DatabaseMapping.ConfigureMappings();
-            _connection = new SQLiteConnection(ConnectionString);
-            _connection.Open();
-        }
-
-        static void CreateDatabase()
-        {
-            SQLiteConnection.CreateFile(DbPath);
-            using (var tempConnection = new SQLiteConnection(ConnectionString))
+            else
             {
-                tempConnection.Open();
-                tempConnection.Execute(GetCreateTableQueries());
-                InsertSampleData(tempConnection);
+                konekcija = new SQLiteConnection(KonekcijaTekst);
+                konekcija.Open();
             }
         }
 
-        static string GetCreateTableQueries()
+        static void KreirajBazuPodataka()
         {
-            return @"
-CREATE TABLE rooms (
+
+            KreirajTabele();
+            DodajPrimerPodatke();
+            DodajPrimerSlike();
+        }
+
+        static void KreirajTabele()
+        {
+            string krirajTabele = @"
+CREATE TABLE sobe (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    capacity INTEGER NOT NULL,
-    price_per_night DECIMAL(10, 2),
-    description TEXT
+    ime TEXT,
+    kapacitet INTEGER NOT NULL,
+    cena_po_noci DECIMAL(10, 2),
+    opis TEXT
 );
 
-CREATE TABLE users (
+CREATE TABLE korisnici (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    surname TEXT NOT NULL,
+    ime TEXT NOT NULL,
+    prezime TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    phone TEXT
+    telefon TEXT
 );
 
-CREATE TABLE reservations (
+CREATE TABLE rezervacije (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
+    soba_id INTEGER NOT NULL,
+    korisnik_id INTEGER NOT NULL,
     check_in DATE NOT NULL,
     check_out DATE NOT NULL,
-    number_of_guests INTEGER NOT NULL,
-    total_price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (room_id) REFERENCES rooms(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    broj_gostiju INTEGER NOT NULL,
+    ukupna_cena DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (soba_id) REFERENCES sobe(id),
+    FOREIGN KEY (korisnik_id) REFERENCES korisnici(id)
 );
 
-CREATE TABLE images (
+CREATE TABLE slike (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_id INTEGER,
-    image_data BLOB,
-    FOREIGN KEY (room_id) REFERENCES rooms(id)
+    soba_id INTEGER,
+    slika_podaci BLOB,
+    FOREIGN KEY (soba_id) REFERENCES sobe(id)
 );
 
-CREATE TABLE amenities (
+CREATE TABLE pogodnosti (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    icon TEXT
+    ime TEXT NOT NULL,
+    ikonica TEXT
 );
 
-CREATE TABLE room_amenities (
-    room_id INTEGER NOT NULL,
-    amenity_id INTEGER NOT NULL,
-    PRIMARY KEY (room_id, amenity_id),
-    FOREIGN KEY (room_id) REFERENCES rooms(id),
-    FOREIGN KEY (amenity_id) REFERENCES amenities(id)
+CREATE TABLE soba_pogodnosti (
+    soba_id INTEGER NOT NULL,
+    pogodnost_id INTEGER NOT NULL,
+    PRIMARY KEY (soba_id, pogodnost_id),
+    FOREIGN KEY (soba_id) REFERENCES sobe(id),
+    FOREIGN KEY (pogodnost_id) REFERENCES pogodnosti(id)
 );
 
-CREATE TABLE guests (
+CREATE TABLE gosti (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    surname TEXT NOT NULL
+    ime TEXT NOT NULL,
+    prezime TEXT NOT NULL
 );
 
-CREATE TABLE guest_reservations (
+CREATE TABLE gost_rezervacije (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    reservation_id INTEGER NOT NULL,
-    guest_id INTEGER NOT NULL,
-    FOREIGN KEY (reservation_id) REFERENCES reservations(id),
-    FOREIGN KEY (guest_id) REFERENCES guests(id)
-);
-
-
-";
-
+    rezervacija_id INTEGER NOT NULL,
+    gost_id INTEGER NOT NULL,
+    FOREIGN KEY (rezervacija_id) REFERENCES rezervacije(id),
+    FOREIGN KEY (gost_id) REFERENCES gosti(id)
+);";
+            konekcija.Execute(krirajTabele);
         }
 
-        static void InsertSampleData(SQLiteConnection connection)
+        static void DodajPrimerPodatke()
         {
-            string insertRooms = @"
-            INSERT INTO rooms (name, capacity, price_per_night, description) VALUES
+            string dodajSobe = @"
+            INSERT INTO sobe (ime, kapacitet, cena_po_noci, opis) VALUES
             ('Cozy Single Retreat', 1, 99.99, '1 queen-sized bed, TV, private bathroom, 20 square meters'),
             ('Deluxe Double Comfort', 2, 149.99, '2 single beds, TV, mini fridge, 25 square meters'),
             ('Family Suite', 4, 299.99, '2 queen-sized beds, TV, kitchenette, 40 square meters'),
@@ -132,8 +134,8 @@ CREATE TABLE guest_reservations (
             ('Triple Comfort Room', 3, 399.99, '1 queen-sized bed + 1 single bed, TV, lounge chair, 32 square meters'),
             ('Presidential Suite', 6, 699.99, '3 queen-sized beds, large living area, 2 TVs, kitchen, 70 square meters');";
 
-            string insertUsers = @"
-            INSERT INTO users(name, surname, email, phone) VALUES
+            string dodajKorisnike = @"
+            INSERT INTO korisnici(ime, prezime, email, telefon) VALUES
             ('John', 'Doe', 'john.doe@example.com', '123-456-7890'),
             ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210'),
             ('Bob', 'Johnson', 'bob.johnson@example.com', '555-555-5555'),
@@ -169,8 +171,8 @@ CREATE TABLE guest_reservations (
             ('Ethan', 'Perez', 'ethan.perez@example.com', '111-212-3132'),
             ('Grace', 'Roberts', 'grace.roberts@example.com', '212-313-4142');";
 
-            string insertReservations = @"
-            INSERT INTO reservations (room_id, user_id, check_in, check_out, number_of_guests, total_price) VALUES
+            string dodajRezervacije = @"
+            INSERT INTO rezervacije (soba_id, korisnik_id, check_in, check_out, broj_gostiju, ukupna_cena) VALUES
             (1, 1, '2025-05-10', '2025-05-12', 1, 599.99),
             (2, 2, '2025-05-15', '2025-05-18', 2, 576.28),
             (3, 5, '2025-06-01', '2025-06-05', 2, 820.00),
@@ -205,8 +207,8 @@ CREATE TABLE guest_reservations (
             (2, 33, '2025-07-28', '2025-07-30', 2, 675.75),
             (3, 34, '2025-08-25', '2025-08-28', 1, 599.95);";
 
-            string insertAmenities = @"
-            INSERT INTO amenities (name, icon) VALUES
+            string dodajPogodnosti = @"
+            INSERT INTO pogodnosti (ime, ikonica) VALUES
             ('WiFi',              CHAR(0xf1eb)),  -- fa-wifi
             ('Private Bathroom',  CHAR(0xf2cd)),  -- fa-bath
             ('Air Conditioning',  CHAR(0xf2c9)),  -- fa-snowflake
@@ -217,8 +219,8 @@ CREATE TABLE guest_reservations (
             ('Refrigerator',      CHAR(0xf2c9)),  -- fa-snowflake (symbolic substitute)
             ('Coffee Maker',      CHAR(0xf0f4));  -- fa-coffee";
 
-            string insertRoomAmenities = @"
-            INSERT INTO room_amenities (room_id, amenity_id) VALUES
+            string dodajPogodnostiSobe = @"
+            INSERT INTO soba_pogodnosti (soba_id, pogodnost_id) VALUES
             (1, 1), (1, 2), (1, 3),
             (2, 1), (2, 3), (2, 5), (2, 6),
             (3, 1), (3, 2), (3, 4), (3, 7),
@@ -231,347 +233,325 @@ CREATE TABLE guest_reservations (
             (10, 1), (10, 3), (10, 8);
             ";
 
-            ExecuteNonQuery(connection, insertRooms);
-            ExecuteNonQuery(connection, insertUsers);
-            ExecuteNonQuery(connection, insertReservations);
-            ExecuteNonQuery(connection, insertRoomAmenities);
-            ExecuteNonQuery(connection, insertAmenities);
-            InsertSampleImages(connection);
+
+            konekcija.Execute(dodajSobe);
+            konekcija.Execute(dodajKorisnike);
+            konekcija.Execute(dodajRezervacije);
+            konekcija.Execute(dodajPogodnostiSobe);
+            konekcija.Execute(dodajPogodnosti);
         }
 
-        static void ExecuteNonQuery(SQLiteConnection connection, string query)
-        {
-            _connection.Execute(query);
-        }
-
-        static void InsertSampleImages(SQLiteConnection connection)
+        static void DodajPrimerSlike()
         {
             for (int i = 1; i <= 10; i++)
             {
-                SaveImageToDatabase(i, "hotel images/hotel_room.jpg");
+                DodajSliku(i, "hotel images/hotel_room.jpg");
             }
         }
 
-        static void InsertAmenitiesImages(SQLiteConnection connection)
+        public static void DodajSliku(int sobaId, string imeFajlaSlike)
         {
-            for (int i = 1; i <= 10; i++)
+            if (File.Exists(imeFajlaSlike))
             {
-                string imagePath = $"icons/{i}.png";
-                if (File.Exists(imagePath))
-                {
-                    byte[] imageBytes = File.ReadAllBytes(imagePath);
-                    _connection.Execute(
-                        "UPDATE amenities SET icon = @Icon WHERE id = @Id",
-                        new { Id = i, Icon = imageBytes }
-                    );
-                }
-            }
-        }
-
-        public static void SaveImageToDatabase(int roomId, string imagePath)
-        {
-            if (File.Exists(imagePath))
-            {
-                byte[] imageBytes = File.ReadAllBytes(imagePath);
-                _connection.Execute(
-                    "INSERT INTO images (room_id, image_data) VALUES (@RoomId, @ImageData)",
-                    new { RoomId = roomId, ImageData = imageBytes }
+                byte[] bajtoviSlike = File.ReadAllBytes(imeFajlaSlike);
+                konekcija.Execute(
+                    "INSERT INTO slike (soba_id, slika_podaci) VALUES (@sobaId, @slikaPodaci)",
+                    new { sobaId, slikaPodaci = bajtoviSlike }
                 );
             }
         }
 
-        public static ImageSource LoadImageFromDatabase(int roomId)
+        public static ImageSource UcitajSlikuIzBazePodataka(int sobaId)
         {
-            var imageBytes = _connection.QueryFirstOrDefault<byte[]>(
-                "SELECT image_data FROM images WHERE room_id = @RoomId",
-                new { RoomId = roomId }
+            var imageBytes = konekcija.QueryFirstOrDefault<byte[]>(
+                "SELECT slika_podaci FROM slike WHERE soba_id = @sobaId",
+                new { sobaId }
             );
-            return SourceFromByteArray(imageBytes);
+            return IzvorOdNizaBajtova(imageBytes);
         }
 
-        public static Room[] GetAllRooms()
+        public static Soba[] UcitajSveSobe()
         {
-            return _connection.Query<Room>("SELECT * FROM rooms").ToArray();
+            return konekcija.Query<Soba>("SELECT * FROM sobe").ToArray();
         }
 
-        public static Room[] GetMatchingRooms(DateTime checkInDate, DateTime checkOutDate, int ukupnoGostiju, string[] amenities)
+        public static Soba[] UcitajOdgovarajuceSobe(DateTime checkInDatum, DateTime checkOutDatum, int ukupnoGostiju, string[] pogodnosti)
         {
             var query = @"
                 SELECT * 
-                FROM rooms 
+                FROM sobe 
                 WHERE id NOT IN (
-                    SELECT room_id FROM reservations WHERE 
-                    (check_in >= @CheckInDate AND check_in <= @CheckOutDate) AND
-                    (check_out >= @CheckInDate AND check_out <= @CheckOutDate)
+                    SELECT soba_id FROM rezervacije WHERE 
+                    (check_in >= @checkInDatum AND check_in <= @checkOutDatum) AND
+                    (check_out >= @checkInDatum AND check_out <= @checkOutDatum)
                 ) 
-                AND capacity >= @ukupnoGostiju";
+                AND kapacitet >= @ukupnoGostiju";
 
-            if (amenities.Length > 0)
+            if (pogodnosti.Length > 0)
             {
                 query += @"
                     AND id IN (
-                        SELECT room_id
-                        FROM room_amenities ra JOIN amenities a ON ra.amenity_id = a.id
-                        WHERE a.name IN @Amenities
-                        GROUP BY room_id
-                        HAVING COUNT(DISTINCT a.name) = @AmenitiesCount
+                        SELECT soba_id
+                        FROM soba_pogodnosti sp JOIN pogodnosti p ON sp.pogodnost_id = p.id
+                        WHERE p.ime IN @pogodnosti
+                        GROUP BY soba_id
+                        HAVING COUNT(DISTINCT a.ime) = @brojPogodnosti
                     )";
             }
 
-            return _connection.Query<Room>(query, new { 
-                CheckInDate = checkInDate,
-                CheckOutDate = checkOutDate,
-                ukupnoGostiju = ukupnoGostiju,
-                Amenities = amenities,
-                AmenitiesCount = amenities.Length
+            return konekcija.Query<Soba>(query, new
+            {
+                checkInDatum,
+                checkOutDatum,
+                ukupnoGostiju,
+                pogodnosti,
+                brojPogodnosti = pogodnosti.Length
             }).ToArray();
         }
 
-        public static Room GetRoomWithId(int roomId)
+        public static Soba UcitajSobuSaId(int sobaId)
         {
-            return _connection.QueryFirstOrDefault<Room>(
-                "SELECT id, name, capacity, price_per_night as PricePerNight, description FROM rooms WHERE id = @RoomId",
-                new { RoomId = roomId }
+            return konekcija.QueryFirstOrDefault<Soba>(
+                "SELECT * FROM sobe WHERE id = @sobaId",
+                new { sobaId = sobaId }
             );
         }
 
-        public static int InsertRoom(Room room)
+        public static int DodajSobu(Soba room)
         {
-            return _connection.QuerySingle<int>(@"
-                INSERT INTO rooms (name, capacity, price_per_night, description) 
-                VALUES (@Name, @Capacity, @PricePerNight, @Description);
+            return konekcija.QuerySingle<int>(@"
+                INSERT INTO sobe (ime, kapacitet, cena_po_noci, opis) 
+                VALUES (@Ime, @Kapacitet, @CenaPoNoci, @Opis);
                 SELECT last_insert_rowid();",
                 room);
         }
 
-        public static void UpdateRoom(int roomId, string name, int capacity, decimal pricePerNight, string description)
+        public static void IzmeniSobu(int sobaId, string ime, int kapacitet, decimal cenaPoNoci, string opis)
         {
-            _connection.Execute(@"
-                UPDATE rooms 
-                SET name = @Name, capacity = @Capacity, price_per_night = @Price, description = @Description 
+            konekcija.Execute(@"
+                UPDATE sobe 
+                SET ime = @Ime, kapacitet = @Kapacitet, cena_po_noci = @Cena, opis = @Opis 
                 WHERE id = @Id",
-                new { Id = roomId, Name = name, Capacity = capacity, Price = pricePerNight, Description = description });
+                new { Id = sobaId, Ime = ime, Kapacitet = kapacitet, Cena = cenaPoNoci, Opis = opis });
         }
 
-        public static void DeleteRoom(int roomId)
+        public static void ObrisiSobu(int sobaId)
         {
-            _connection.Execute("DELETE FROM rooms WHERE id = @RoomId", new { RoomId = roomId });
+            konekcija.Execute("DELETE FROM sobe WHERE id = @sobaId", new { sobaId = sobaId });
         }
 
-        public static Amenity[] GetAllAmenities()
+        public static Pogodnost[] UcitajSvePogodnosti()
         {
-            return _connection.Query<Amenity>("SELECT * FROM amenities").ToArray();
+            return konekcija.Query<Pogodnost>("SELECT * FROM pogodnosti").ToArray();
         }
 
-        public static Amenity[] GetAmenitiesForRoom(int roomId)
+        public static Pogodnost[] UcitajPogodnostiZaSobu(int sobaId)
         {
-            return _connection.Query<Amenity>(@"
-                SELECT a.* 
-                FROM amenities a
-                JOIN room_amenities ra ON a.id = ra.amenity_id
-                WHERE ra.room_id = @RoomId",
-                new { RoomId = roomId }
+            return konekcija.Query<Pogodnost>(@"
+                SELECT p.* 
+                FROM pogodnosti p
+                JOIN soba_pogodnosti sp ON p.id = sp.pogodnost_id
+                WHERE sp.soba_id = @sobaId",
+                new { sobaId = sobaId }
             ).ToArray();
         }
 
-        public static ImageSource SourceFromByteArray(byte[] byteArray)
+        public static ImageSource IzvorOdNizaBajtova(byte[] nizBajtova)
         {
-            if (byteArray != null)
+            if (nizBajtova != null)
             {
-                using (var ms = new MemoryStream(byteArray))
+                using (var ms = new MemoryStream(nizBajtova))
                 {
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = ms;
-                    bitmapImage.EndInit();
-                    return bitmapImage;
+                    BitmapImage bitmapSlika = new BitmapImage();
+                    bitmapSlika.BeginInit();
+                    bitmapSlika.StreamSource = ms;
+                    bitmapSlika.EndInit();
+                    return bitmapSlika;
                 }
             }
             return null;
         }
 
-        public static ImageSource SourceFromFileName(string fileName)
+        public static ImageSource IzvorOdImenaFajla(string imeFajla)
         {
-            if (File.Exists(fileName))
+            if (File.Exists(imeFajla))
             {
-                using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (var fs = new FileStream(imeFajla, FileMode.Open, FileAccess.Read))
                 {
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = fs;
-                    bitmapImage.EndInit();
-                    return bitmapImage;
+                    BitmapImage bitmapSlika = new BitmapImage();
+                    bitmapSlika.BeginInit();
+                    bitmapSlika.StreamSource = fs;
+                    bitmapSlika.EndInit();
+                    return bitmapSlika;
                 }
             }
             return null;
         }
 
-        public static void DeleteAmenityFromRoom(int roomId, int amenityId)
+        public static void ObrisiPogodnostIzSobe(int sobaId, int pogodnostId)
         {
-            _connection.Execute(
-                "DELETE FROM room_amenities WHERE room_id = @RoomId AND amenity_id = @AmenityId",
-                new { RoomId = roomId, AmenityId = amenityId }
+            konekcija.Execute(
+                "DELETE FROM soba_pogodnosti WHERE soba_id = @sobaId AND pogodnost_id = @PogodnostId",
+                new { sobaId = sobaId, PogodnostId = pogodnostId }
             );
         }
 
-        public static void DeleteAllAmenitiesFromRoom(int roomId)
+        public static void ObrisiSvePogodnostiIzSobe(int sobaId)
         {
-            _connection.Execute(
-                "DELETE FROM room_amenities WHERE room_id = @RoomId",
-                new { RoomId = roomId }
+            konekcija.Execute(
+                "DELETE FROM soba_pogodnosti WHERE soba_id = @sobaId",
+                new { sobaId = sobaId }
             );
         }
 
-        public static void AddAmenityToRoom(int roomId, int amenityId)
+        public static void DodajPogodnostSobi(int sobaId, int pogodnostId)
         {
-            _connection.Execute(
-                "INSERT INTO room_amenities (room_id, amenity_id) VALUES (@RoomId, @AmenityId)",
-                new { RoomId = roomId, AmenityId = amenityId }
+            konekcija.Execute(
+                "INSERT INTO soba_pogodnosti (soba_id, pogodnost_id) VALUES (@sobaId, @PogodnostId)",
+                new { sobaId = sobaId, PogodnostId = pogodnostId }
             );
         }
 
-        public static void InsertAmenity(Amenity amenity)
+        public static void DodajPogodnost(Pogodnost amenity)
         {
-            _connection.Execute(
-                "INSERT INTO amenities (name, icon) VALUES (@Name, @Icon)",
+            konekcija.Execute(
+                "INSERT INTO pogodnosti (ime, ikonica) VALUES (@Ime, @Ikonica)",
                 amenity
             );
         }
 
-        public static void DeleteAmenity(int amenityId)
+        public static void ObrisiPogodnost(int pogodnostId)
         {
-            _connection.Execute(
-                "DELETE FROM amenities WHERE id = @AmenityId",
-                new { AmenityId = amenityId }
+            konekcija.Execute(
+                "DELETE FROM pogodnosti WHERE id = @PogodnostId",
+                new { PogodnostId = pogodnostId }
             );
         }
 
-        public static void UpdateAmenity(int amenityId, string name, string icon)
+        public static void IzmeniPogodnost(int pogodnostId, string ime, string ikonica)
         {
-            _connection.Execute(
-                "UPDATE amenities SET name = @Name, icon = @Icon WHERE id = @AmenityId",
-                new { AmenityId = amenityId, Name = name, Icon = icon }
+            konekcija.Execute(
+                "UPDATE pogodnosti SET ime = @Ime, ikonica = @Ikonica WHERE id = @PogodnostId",
+                new { PogodnostId = pogodnostId, Ime = ime, Ikonica = ikonica }
             );
         }
 
-        public static Room[] GetRoomsByAmenityId(int amenityId)
+        public static Soba[] UcitajSobePoIdPogodnosti(int pogodnostId)
         {
-            return _connection.Query<Room>(@"
-                SELECT r.* 
-                FROM rooms r
-                JOIN room_amenities ra ON r.id = ra.room_id
-                WHERE ra.amenity_id = @AmenityId",
-                new { AmenityId = amenityId }
+            return konekcija.Query<Soba>(@"
+                SELECT s.* 
+                FROM sobe s
+                JOIN soba_pogodnosti sp ON s.id = sp.soba_id
+                WHERE sp.pogodnost_id = @PogodnostId",
+                new { PogodnostId = pogodnostId }
             ).ToArray();
         }
 
-        public static int InsertReservation(Reservation reservation)
+        public static int DodajRezervaciju(Rezervacija rezervacija)
         {
-            return _connection.QuerySingle<int>(@"
-                INSERT INTO reservations (room_id, user_id, check_in, check_out, number_of_guests, total_price)
-                VALUES (@RoomId, @UserId, @CheckIn, @CheckOut, @NumberOfGuests, @TotalPrice);
+            return konekcija.QuerySingle<int>(@"
+                INSERT INTO rezervacije (soba_id, korisnik_id, check_in, check_out, broj_gostiju, ukupna_cena)
+                VALUES (@sobaId, @UserId, @CheckIn, @CheckOut, @NumberOfGuests, @TotalCena);
                 SELECT last_insert_rowid();",
-                reservation);
+                rezervacija);
         }
 
-        public static int InsertUser(User user)
+        public static int DodajKorisnika(Korisnik korisnik)
         {
-            return _connection.QuerySingle<int>(@"
-                INSERT INTO users (name, surname, email, phone)
-                VALUES (@Name, @Surname, @Email, @Phone);
+            return konekcija.QuerySingle<int>(@"
+                INSERT INTO korisnici (ime, prezime, email, telefon)
+                VALUES (@Ime, @Surime, @Email, @Telefon);
                 SELECT last_insert_rowid();",
-                user);
+                korisnik);
         }
 
-        public static int InsertGuest(Guest guest)
+        public static int DodajGosta(Gost gost)
         {
-            return _connection.QuerySingle<int>(@"
-                INSERT INTO guests (name, surname)
-                VALUES (@Name, @Surname);
+            return konekcija.QuerySingle<int>(@"
+                INSERT INTO gosti (ime, prezime)
+                VALUES (@Ime, @Surime);
                 SELECT last_insert_rowid();",
-                guest);
+                gost);
         }
 
-        public static void InsertGuestReservation(int reservationId, int guestId)
+        public static void DodajGostRezervaciju(int reservationId, int guestId)
         {
-            _connection.Execute(
-                "INSERT INTO guest_reservations (reservation_id, guest_id) VALUES (@ReservationId, @GuestId)",
+            konekcija.Execute(
+                "INSERT INTO gost_rezervacije (rezervacija_id, gost_id) VALUES (@ReservationId, @GuestId)",
                 new { ReservationId = reservationId, GuestId = guestId }
             );
         }
 
-        public static ReservationCard[] GetFilteredReservations(string searchText)
+        public static KarticaRezervacije[] UcitajPretrazeneRezervacije(string tekstPretrage)
         {
-            var query = @"
-                SELECT r.*, u.*, ro.*
-                FROM reservations r
-                JOIN users u ON r.user_id = u.id
-                JOIN rooms ro ON r.room_id = ro.id";
+            var upit = @"
+                SELECT r.*, k.*, s.*
+                FROM rezervacije r
+                JOIN korisnici k ON r.korisnik_id = k.id
+                JOIN sobe s ON r.soba_id = s.id";
 
-            if (!string.IsNullOrEmpty(searchText))
+            if (!string.IsNullOrEmpty(tekstPretrage))
             {
-                var searchTerms = searchText.Split(' ').Select(s => s.Trim());
-                var searchConditions = searchTerms.Select(term =>
-                    $"(u.name LIKE '%{term}%' OR u.surname LIKE '%{term}%' OR ro.name LIKE '%{term}%' OR u.email LIKE '%{term}%' OR u.phone LIKE '%{term}%')"
+                var terminiPretrage = tekstPretrage.Split(' ').Select(s => s.Trim());
+                var usloviPretrage = terminiPretrage.Select(term =>
+                    $"(k.ime LIKE '%{term}%' OR k.prezime LIKE '%{term}%' OR s.ime LIKE '%{term}%' OR k.email LIKE '%{term}%' OR k.telefon LIKE '%{term}%')"
                 );
-                query += " WHERE " + string.Join(" OR ", searchConditions);
+                upit += " WHERE " + string.Join(" OR ", usloviPretrage);
             }
-            query += " ORDER BY r.check_in ASC";
+            upit += " ORDER BY r.check_in ASC";
 
-            MessageBox.Show(query);
-
-            return _connection.Query<Reservation, User, Room, ReservationCard>(
-                query,
-                (reservation, user, room) => new ReservationCard
+            return konekcija.Query<Rezervacija, Korisnik, Soba, KarticaRezervacije>(
+                upit,
+                (rezervacija, korisnik, soba) => new KarticaRezervacije
                 {
-                    Reservation = reservation,
-                    User = user,
-                    Room = room
+                    Rezervacija = rezervacija,
+                    Korisnik = korisnik,
+                    Soba = soba
                 },
                 splitOn: "id"
             ).ToArray();
         }
 
-        public static Guest[] GetGuestsByReservationId(int reservationId)
+        public static Gost[] UcitajGostePoIdRezervacije(int reservationId)
         {
-            return _connection.Query<Guest>(@"
+            return konekcija.Query<Gost>(@"
                 SELECT g.* 
-                FROM guests g
-                JOIN guest_reservations gr ON g.id = gr.guest_id
-                WHERE gr.reservation_id = @ReservationId",
+                FROM gosti g
+                JOIN gost_rezervacije gr ON g.id = gr.gost_id
+                WHERE gr.rezervacija_id = @ReservationId",
                 new { ReservationId = reservationId }
             ).ToArray();
         }
 
-        public static Reservation[] GetReservationsForRoom(int roomId)
+        public static Rezervacija[] UcitajRezervacijeZaSobu(int sobaId)
         {
-            return _connection.Query<Reservation>(
-                "SELECT * FROM reservations WHERE room_id = @RoomId",
-                new { RoomId = roomId }
+            return konekcija.Query<Rezervacija>(
+                "SELECT * FROM rezervacije WHERE soba_id = @sobaId",
+                new { sobaId = sobaId }
             ).ToArray();
         }
 
-        public static void InsertImage(int roomId, byte[] imageBytes)
+        public static void DodajSliku(int sobaId, byte[] imageBytes)
         {
-            _connection.Execute(
-                "INSERT INTO images (room_id, image_data) VALUES (@RoomId, @ImageData)",
-                new { RoomId = roomId, ImageData = imageBytes }
+            konekcija.Execute(
+                "INSERT INTO slike (soba_id, slika_podaci) VALUES (@sobaId, @slikaPodaci)",
+                new { sobaId = sobaId, slikaPodaci = imageBytes }
             );
         }
 
-        public static void UpdateRoomImage(int roomId, byte[] imageBytes)
+        public static void PromeniSlikuSobe(int sobaId, byte[] imageBytes)
         {
-            _connection.Execute(
-                "UPDATE images SET image_data = @ImageData WHERE room_id = @RoomId",
-                new { RoomId = roomId, ImageData = imageBytes }
+            konekcija.Execute(
+                "UPDATE slike SET slika_podaci = @slikaPodaci WHERE soba_id = @sobaId",
+                new { sobaId = sobaId, slikaPodaci = imageBytes }
             );
         }
 
-        public static void DeleteImageWithRoomId(int roomId)
+        public static void ObrisiSveSobeSaIdSobe(int sobaId)
         {
-            _connection.Execute(
-                "DELETE FROM images WHERE room_id = @RoomId",
-                new { RoomId = roomId }
+            konekcija.Execute(
+                "DELETE FROM slike WHERE soba_id = @sobaId",
+                new { sobaId = sobaId }
             );
         }
     }

@@ -3,7 +3,7 @@
         <ScrollViewer>
             <StackPanel Margin="0,10,0,10">
                 <StackPanel Name="AdminPanelZaSobe" />
-                <Button Width="100" Height="50" Click="AddRoomButton_Click" Content="Add Room" />
+                <Button Width="100" Height="50" Click="DodajSobuDugme_Click" Content="Add Room" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

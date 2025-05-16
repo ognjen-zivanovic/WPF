@@ -19,147 +19,144 @@ namespace HotelRezervacije
 {
     public partial class ProzorPorudzbineKorisnik : Window
     {
-        public Room Room { get; set; }
-        public decimal TotalPriceNumber { get; set; }
-        public int NumberOfPeople { get; set; }
+        public Soba Soba { get; set; }
+        public decimal UkupnaCenaBroj { get; set; }
+        public int BrojLjudi { get; set; }
 
         public ProzorPorudzbineKorisnik()
         {
             InitializeComponent();
         }
 
-        public ProzorPorudzbineKorisnik(int roomId, DateTime checkInDate, DateTime checkOutDate, decimal totalPrice, int numberOfGuests, int numberOfBabies, string amenitiesText)
+        public ProzorPorudzbineKorisnik(int sobaId, DateTime datumDolaska, DateTime datumOdlaska, decimal ukupnaCena, int brojGostiju, int brojBeba, string pogodnostiText)
         {
             InitializeComponent();
 
-            Room = DatabaseManager.GetRoomWithId(roomId);
+            Soba = DatabaseManager.UcitajSobuSaId(sobaId);
 
-            RoomName.Text = Room.Name;
-            RoomDescription.Text = Room.Description;
-            RoomCapacity.Text = "Capacity: " + Room.Capacity.ToString();
+            ImeSobe.Text = Soba.Ime;
+            OpisSobe.Text = Soba.Opis;
+            KapacitetSobe.Text = "Kapacitet: " + Soba.Kapacitet.ToString();
 
-            AmenitiesText.Text = amenitiesText;
+            PogodnostiTekst.Text = pogodnostiText;
 
-            TotalPrice.Text = totalPrice.ToString() + " €";
-            CheckInDate.Text = checkInDate.ToShortDateString();
-            CheckOutDate.Text = checkOutDate.ToShortDateString();
+            UkupnaCena.Text = ukupnaCena.ToString() + " €";
+            DatumDolaska.Text = datumDolaska.ToShortDateString();
+            DatumOdlaska.Text = datumOdlaska.ToShortDateString();
 
-            NumberOfPeople = numberOfGuests;
-            TotalPriceNumber = totalPrice;
+            BrojLjudi = brojGostiju;
+            UkupnaCenaBroj = ukupnaCena;
 
-
-            if (numberOfBabies > 0)
+            if (brojBeba > 0)
             {
-                NumberOfGuests.Text = $"{numberOfGuests} + {numberOfBabies} babies";
+                BrojGostiju.Text = $"{brojGostiju} + {brojBeba} beba";
             }
             else
             {
-                NumberOfGuests.Text = $"{numberOfGuests}";
+                BrojGostiju.Text = $"{brojGostiju}";
             }
 
-            for (int i = 0; i < numberOfGuests; i++)
+            for (int i = 0; i < brojGostiju; i++)
             {
                 KarticaImenaKorisnik KarticaImenaKorisnik = new KarticaImenaKorisnik();
-                GuestNamesStackPanel.Children.Add(KarticaImenaKorisnik);
+                PanelImenaGostiju.Children.Add(KarticaImenaKorisnik);
             }
 
             this.DataContext = this;
 
         }
 
-        public bool IsEmailValid(string emailaddress)
+        public bool EmailValidnost(string emailAdresa)
         {
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(emailaddress);
+            Match match = regex.Match(emailAdresa);
             return match.Success;
         }
 
-        public bool IsPhoneNumberValid(string phoneNumber)
+        public bool BrojTelefonaValidnost(string brojTelefona)
         {
             Regex regex = new Regex(@"^\+?[0-9]{10,15}$");
-            Match match = regex.Match(phoneNumber);
+            Match match = regex.Match(brojTelefona);
             return match.Success;
         }
 
-        public void SetErrorTekst(string text)
+        public void PrikaziErrorTekst(string tekst)
         {
-            ErrorTekst.Text = text;
-            ErrorTekst.Visibility = text != "" ? Visibility.Visible : Visibility.Collapsed;
+            ErrorTekst.Text = tekst;
+            ErrorTekst.Visibility = tekst != "" ? Visibility.Visible : Visibility.Collapsed;
         }
 
 
-        public void CheckoutButton_Click(object sender, RoutedEventArgs e)
+        public void PorudzbinaDugme_Click(object sender, RoutedEventArgs e)
         {
 
-            if (string.IsNullOrWhiteSpace(UserName.Text) || string.IsNullOrWhiteSpace(UserSurname.Text) ||
-                string.IsNullOrWhiteSpace(UserEmail.Text) || string.IsNullOrWhiteSpace(UserPhoneNumber.Text))
+            if (string.IsNullOrWhiteSpace(ImeKorisnika.Text) || string.IsNullOrWhiteSpace(PrezimeKorisnika.Text) ||
+                string.IsNullOrWhiteSpace(EmailKorisnika.Text) || string.IsNullOrWhiteSpace(BrojTelefonaKorisnika.Text))
             {
-
-                SetErrorTekst("Please fill in all the fields.");
+                PrikaziErrorTekst("Molimo popunite sva polja.");
                 return;
             }
-            else if (!IsEmailValid(UserEmail.Text))
+            else if (!EmailValidnost(EmailKorisnika.Text))
             {
-
-                SetErrorTekst("Please enter a valid email address.");
+                PrikaziErrorTekst("Molimo unesete ispravnu email adresu.");
                 return;
             }
-            else if (!IsPhoneNumberValid(UserPhoneNumber.Text))
+            else if (!BrojTelefonaValidnost(BrojTelefonaKorisnika.Text))
             {
-                SetErrorTekst("Please enter a valid phone number. Phone number format is + (country code) (number). For example +381641234567");
+                PrikaziErrorTekst("Molimo unesete ispravni broj telefona. Format telefona je +(dr.)(broj). Na primer +381641234567");
                 return;
             }
             else
             {
-                SetErrorTekst("");
+                PrikaziErrorTekst("");
             }
 
-            foreach (KarticaImenaKorisnik KarticaImenaKorisnik in GuestNamesStackPanel.Children)
+            foreach (KarticaImenaKorisnik karticaImenaKorisnik in PanelImenaGostiju.Children)
             {
-                if (string.IsNullOrWhiteSpace(KarticaImenaKorisnik.GuestName) || string.IsNullOrWhiteSpace(KarticaImenaKorisnik.GuestSurname))
+                if (string.IsNullOrWhiteSpace(karticaImenaKorisnik.ImeGosta) || string.IsNullOrWhiteSpace(karticaImenaKorisnik.PrezimeGosta))
                 {
-                    SetErrorTekst("Please fill in all the fields.");
+                    PrikaziErrorTekst("Molimo popunite sva polja.");
                     return;
                 }
                 else
                 {
-                    SetErrorTekst("");
+                    PrikaziErrorTekst("");
                 }
             }
 
-            User newUser = new User
+            Korisnik noviKorisnik = new Korisnik
             {
-                Name = UserName.Text,
-                Surname = UserSurname.Text,
-                Email = UserEmail.Text,
-                Phone = UserPhoneNumber.Text
+                Ime = ImeKorisnika.Text,
+                Prezime = PrezimeKorisnika.Text,
+                Email = EmailKorisnika.Text,
+                Telefon = BrojTelefonaKorisnika.Text
             };
 
-            int userId = DatabaseManager.InsertUser(newUser);
+            int korisnikId = DatabaseManager.DodajKorisnika(noviKorisnik);
 
-            Reservation newReservation = new Reservation
+            Rezervacija novaRezervacija = new Rezervacija
             {
-                RoomId = Room.Id,
-                UserId = userId,
-                CheckIn = DateTime.Parse(CheckInDate.Text),
-                CheckOut = DateTime.Parse(CheckOutDate.Text),
-                TotalPrice = TotalPriceNumber,
-                NumberOfGuests = NumberOfPeople,
+                SobaId = Soba.Id,
+                KorisnikId = korisnikId,
+                CheckIn = DateTime.Parse(DatumDolaska.Text),
+                CheckOut = DateTime.Parse(DatumOdlaska.Text),
+                UkupnaCena = UkupnaCenaBroj,
+                BrojGostiju = BrojLjudi,
             };
 
-            int reservationId = DatabaseManager.InsertReservation(newReservation);
+            int rezervacijaId = DatabaseManager.DodajRezervaciju(novaRezervacija);
 
-            foreach (KarticaImenaKorisnik KarticaImenaKorisnik in GuestNamesStackPanel.Children)
+            foreach (KarticaImenaKorisnik karticaImenaKorisnik in PanelImenaGostiju.Children)
             {
-                Guest newGuest = new Guest
+                Gost noviGost = new Gost
                 {
-                    Name = KarticaImenaKorisnik.GuestName,
-                    Surname = KarticaImenaKorisnik.GuestSurname
+                    Ime = karticaImenaKorisnik.ImeGosta,
+                    Prezime = karticaImenaKorisnik.PrezimeGosta
                 };
 
-                int guestId = DatabaseManager.InsertGuest(newGuest);
+                int gostId = DatabaseManager.DodajGosta(noviGost);
 
-                DatabaseManager.InsertGuestReservation(reservationId, guestId);
+                DatabaseManager.DodajGostRezervaciju(rezervacijaId, gostId);
             }
         }
     }

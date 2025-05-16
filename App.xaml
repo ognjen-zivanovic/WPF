@@ -24,7 +24,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6" SnapsToDevicePixels="True">
+                        <Border Name="border" Background="{TemplateBinding Background}" CornerRadius="6" SnapsToDevicePixels="True">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -94,9 +94,9 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <StackPanel Orientation="Horizontal">
-                            <Border x:Name="checkBoxBorder" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Top" Background="White" BorderBrush="#4FB8E6" BorderThickness="2" CornerRadius="3">
+                            <Border Name="checkBoxBorder" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Top" Background="White" BorderBrush="#4FB8E6" BorderThickness="2" CornerRadius="3">
                                 <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <Path x:Name="checkMark" Margin="0" Data="M 4 9 L 7 12 L 13 6" Stroke="White" StrokeThickness="2" Visibility="Collapsed" />
+                                    <Path Name="checkMark" Margin="0" Data="M 4 9 L 7 12 L 13 6" Stroke="White" StrokeThickness="2" Visibility="Collapsed" />
                                 </Grid>
                             </Border>
                             <ContentPresenter VerticalAlignment="Center" />

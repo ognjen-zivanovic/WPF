@@ -17,36 +17,36 @@ namespace HotelRezervacije
 {
     public partial class KarticaRezervacijeAdmin : UserControl
     {
-        public Room Room { get; set; }
-        public Reservation Reservation { get; set; }
-        public User User { get; set; }
-        public Guest[] Guests { get; set; }
-        public string AmenitiesText { get; set; }
+        public Soba Soba { get; set; }
+        public Rezervacija Rezervacija { get; set; }
+        public Korisnik Korisnik { get; set; }
+        public Gost[] Gosti { get; set; }
+        public string PogodnostiTekst { get; set; }
         public KarticaRezervacijeAdmin()
         {
             InitializeComponent();
             this.DataContext = this;
         }
 
-        public KarticaRezervacijeAdmin(Room room, Reservation reservation, User user, Guest[] guests)
+        public KarticaRezervacijeAdmin(Soba soba, Rezervacija rezervacija, Korisnik korisnik, Gost[] gosti)
         {
             InitializeComponent();
 
-            Room = room;
-            Reservation = reservation;
-            User = user;
-            Guests = guests;
+            Soba = soba;
+            Rezervacija = rezervacija;
+            Korisnik = korisnik;
+            Gosti = gosti;
 
-            Amenity[] amenities = DatabaseManager.GetAmenitiesForRoom(room.Id);
-            AmenitiesText = string.Join(", ", amenities.Select(a => a.Name));
+            Pogodnost[] pogodnosti = DatabaseManager.UcitajPogodnostiZaSobu(soba.Id);
+            PogodnostiTekst = string.Join(", ", pogodnosti.Select(a => a.Ime));
 
-            RoomNameText.Text = room.Name;
-            IDText.Text = "Room ID: " + room.Id + " | Reservation ID: " + reservation.Id;
-            DateText.Text = "Check-in: " + reservation.CheckIn.ToString("dd/MM/yyyy") + " | Check-out: " + reservation.CheckOut.ToString("dd/MM/yyyy");
-            PriceText.Text = "Total Price: " + reservation.TotalPrice.ToString("C");
-            UserNameText.Text = "User: " + user.Name + " " + user.Surname;
-            UserContactText.Text = "Contact: " + user.Email + " | " + user.Phone;
-            GuestNumberText.Text = "Guests: " + reservation.NumberOfGuests;
+            NazivSobeTekst.Text = soba.Ime;
+            IDTekst.Text = "Room ID: " + soba.Id + " | Reservation ID: " + rezervacija.Id;
+            DatumTekst.Text = "Check-in: " + rezervacija.CheckIn.ToString("dd/MM/yyyy") + " | Check-out: " + rezervacija.CheckOut.ToString("dd/MM/yyyy");
+            CenaTekst.Text = "Total Price: " + rezervacija.UkupnaCena.ToString("C");
+            ImeKorisnikaTekst.Text = "User: " + korisnik.Ime + " " + korisnik.Prezime;
+            KontaktKorisnikaTekst.Text = "Contact: " + korisnik.Email + " | " + korisnik.Telefon;
+            BrojGostijuTekst.Text = "Guests: " + rezervacija.BrojGostiju;
 
             this.DataContext = this;
         }

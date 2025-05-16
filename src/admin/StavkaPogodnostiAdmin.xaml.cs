@@ -8,24 +8,24 @@ namespace HotelRezervacije
 {
     public partial class StavkaPogodnostiAdmin : UserControl
     {
-        public event RoutedEventHandler Deleted;
+        public event RoutedEventHandler Obrisano;
 
-        public int AmenityId { get; set; }
+        public int PogodnostId { get; set; }
 
-        public StavkaPogodnostiAdmin(int id, string name, string icon)
+        public StavkaPogodnostiAdmin(int id, string ime, string ikonica)
         {
             InitializeComponent();
-            RootGrid.MouseEnter += (s, e) => DeleteButton.Visibility = Visibility.Visible;
-            RootGrid.MouseLeave += (s, e) => DeleteButton.Visibility = Visibility.Hidden;
+            GlavniGrid.MouseEnter += (s, e) => ObrisiDugme.Visibility = Visibility.Visible;
+            GlavniGrid.MouseLeave += (s, e) => ObrisiDugme.Visibility = Visibility.Hidden;
 
-            AmenityName.Text = name;
-            AmenityIcon.Text = icon;
-            AmenityId = id;
+            PogodnostIme.Text = ime;
+            PogodnostIkonica.Text = ikonica;
+            PogodnostId = id;
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private void ObrisiDugme_Click(object sender, RoutedEventArgs e)
         {
-            Deleted?.Invoke(this, new RoutedEventArgs());
+            Obrisano?.Invoke(this, new RoutedEventArgs());
         }
     }
 }

@@ -3,60 +3,60 @@ using System.Data;
 
 namespace HotelRezervacije
 {
-    public class Room
+    public class Soba
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int Capacity { get; set; }
-        public decimal PricePerNight { get; set; }
-        public string Description { get; set; }
+        public string Ime { get; set; }
+        public int Kapacitet { get; set; }
+        public decimal CenaPoNoci { get; set; }
+        public string Opis { get; set; }
     }
 
-    public class User
+    public class Korisnik
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string Ime { get; set; }
+        public string Prezime { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
+        public string Telefon { get; set; }
     }
 
-    public class Guest
+    public class Gost
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string Ime { get; set; }
+        public string Prezime { get; set; }
     }
 
-    public class GuestReservations
+    public class GostRezervacije
     {
         public int Id { get; set; }
-        public int ReservationId { get; set; }
-        public int GuestId { get; set; }
+        public int RezervacijaId { get; set; }
+        public int GostId { get; set; }
     }
 
-    public class Reservation
+    public class Rezervacija
     {
         public int Id { get; set; }
-        public int RoomId { get; set; }
-        public int UserId { get; set; }
+        public int SobaId { get; set; }
+        public int KorisnikId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
-        public int NumberOfGuests { get; set; }
-        public decimal TotalPrice { get; set; }
+        public int BrojGostiju { get; set; }
+        public decimal UkupnaCena { get; set; }
     }
 
-    public class DatabaseImage
+    public class Slika
     {
         public int Id { get; set; }
-        public int RoomId { get; set; }
-        public byte[] ImageData { get; set; }
+        public int SobaId { get; set; }
+        public byte[] slikaPodaci { get; set; }
     }
 
-    public class Amenity
+    public class Pogodnost
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Icon { get; set; }
+        public string Ime { get; set; }
+        public string Ikonica { get; set; }
     }
 }

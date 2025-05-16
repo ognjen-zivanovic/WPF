@@ -18,8 +18,8 @@ namespace HotelRezervacije
 
     public partial class KarticaImenaKorisnik : UserControl
     {
-        public string GuestName { get; set; }
-        public string GuestSurname { get; set; }
+        public string ImeGosta { get; set; }
+        public string PrezimeGosta { get; set; }
 
         public KarticaImenaKorisnik()
         {

@@ -8,29 +8,29 @@ namespace HotelRezervacije
 {
     public partial class StavkaMenjivePogodnostiAdmin : UserControl
     {
-        Amenity amenity;
-        public StavkaMenjivePogodnostiAdmin(int id, string name, string icon)
+        Pogodnost Pogodnost;
+        public StavkaMenjivePogodnostiAdmin(int id, string ime, string ikonica)
         {
             InitializeComponent();
-            amenity = new Amenity
+            Pogodnost = new Pogodnost
             {
                 Id = id,
-                Name = name,
-                Icon = icon
+                Ime = ime,
+                Ikonica = ikonica
             };
 
-            IconTextBox.Text = icon;
-            NameTextBox.Text = name;
+            IkonicaTextBox.Text = ikonica;
+            ImeTextBox.Text = ime;
         }
-        private void IconTextBox_TextChanged(object s, TextChangedEventArgs e)
+        private void IkonicaTextBox_TextChanged(object s, TextChangedEventArgs e)
         {
-            amenity.Icon = ((TextBox)s).Text;
-            DatabaseManager.UpdateAmenity(amenity.Id, amenity.Name, amenity.Icon);
+            Pogodnost.Ikonica = ((TextBox)s).Text;
+            DatabaseManager.IzmeniPogodnost(Pogodnost.Id, Pogodnost.Ime, Pogodnost.Ikonica);
         }
-        private void NameTextBox_TextChanged(object s, TextChangedEventArgs e)
+        private void ImeTextBox_TextChanged(object s, TextChangedEventArgs e)
         {
-            amenity.Name = ((TextBox)s).Text;
-            DatabaseManager.UpdateAmenity(amenity.Id, amenity.Name, amenity.Icon);
+            Pogodnost.Ime = ((TextBox)s).Text;
+            DatabaseManager.IzmeniPogodnost(Pogodnost.Id, Pogodnost.Ime, Pogodnost.Ikonica);
         }
     }
 }

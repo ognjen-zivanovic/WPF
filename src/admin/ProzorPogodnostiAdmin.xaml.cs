@@ -19,53 +19,52 @@ namespace HotelRezervacije
         public ProzorPogodnostiAdmin()
         {
             InitializeComponent();
-            ShowAmenities();
+            PrikaziPogodnosti();
         }
 
-        private void ShowAmenities()
+        private void PrikaziPogodnosti()
         {
-            FontFamily unicodeFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
+            FontFamily unikodFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
             PanelZaPogodnosti.Children.Clear();
-            // Assuming you have a method to get amenities from the database
-            Amenity[] amenities = DatabaseManager.GetAllAmenities();
-            foreach (var amenity in amenities)
-            {
-                StavkaMenjivePogodnostiAdmin amenityCard = new StavkaMenjivePogodnostiAdmin(amenity.Id, amenity.Name, amenity.Icon);
 
-                amenityCard.DeleteButton.Click += (s, e) =>
+            Pogodnost[] pogodnosti = DatabaseManager.UcitajSvePogodnosti();
+            foreach (var pogodnost in pogodnosti)
+            {
+                StavkaMenjivePogodnostiAdmin karticaPogodnosti = new StavkaMenjivePogodnostiAdmin(pogodnost.Id, pogodnost.Ime, pogodnost.Ikonica);
+
+                karticaPogodnosti.ObrisiDugme.Click += (s, e) =>
                 {
-                    if (DeleteAmenityItem(amenity.Id))
+                    if (ObrisiStavkuPogodnosti(pogodnost.Id))
                     {
-                        PanelZaPogodnosti.Children.Remove(amenityCard);
+                        PanelZaPogodnosti.Children.Remove(karticaPogodnosti);
                     }
                 };
 
-                PanelZaPogodnosti.Children.Add(amenityCard);
+                PanelZaPogodnosti.Children.Add(karticaPogodnosti);
             }
         }
 
 
-        private void AddAmenityButton_Click(object sender, RoutedEventArgs e)
+        private void DodajPogodnostDugme_Click(object sender, RoutedEventArgs e)
         {
-            // Open the AddAmenityWindow when the button is clicked
-            Amenity defaultAmenity = new Amenity
+            Pogodnost novaPogodnost = new Pogodnost
             {
-                Name = "New Amenity",
-                Icon = "",
+                Ime = "Nova Pogodnost",
+                Ikonica = "",
             };
-            DatabaseManager.InsertAmenity(defaultAmenity);
-            ShowAmenities();
+            DatabaseManager.DodajPogodnost(novaPogodnost);
+            PrikaziPogodnosti();
         }
 
-        private bool DeleteAmenityItem(int amenityId)
+        private bool ObrisiStavkuPogodnosti(int pogodnostId)
         {
-            Room[] rooms = DatabaseManager.GetRoomsByAmenityId(amenityId);
-            if (rooms.Length > 0)
+            Soba[] sobe = DatabaseManager.UcitajSobePoIdPogodnosti(pogodnostId);
+            if (sobe.Length > 0)
             {
-                MessageBox.Show("Cannot delete this amenity as it is associated with existing rooms.");
+                MessageBox.Show("Nije moguce obrisati ovu pogodnost jer je povezana sa nekom sobom.");
                 return false;
             }
-            DatabaseManager.DeleteAmenity(amenityId);
+            DatabaseManager.ObrisiPogodnost(pogodnostId);
             return true;
         }
     }

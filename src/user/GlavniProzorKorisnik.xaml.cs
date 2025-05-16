@@ -27,12 +27,12 @@ namespace HotelRezervacije
 
         private void PopulateAmenities()
         {
-            Amenity[] pogodnosti = DatabaseManager.GetAllAmenities();
-            foreach (var amenity in pogodnosti)
+            Pogodnost[] pogodnosti = DatabaseManager.UcitajSvePogodnosti();
+            foreach (var pogodnost in pogodnosti)
             {
                 CheckBox checkBox = new CheckBox
                 {
-                    Content = amenity.Name,
+                    Content = pogodnost.Ime,
                     FontSize = 16,
                     Margin = new Thickness(0, 2, 0, 2)
                 };
@@ -40,45 +40,45 @@ namespace HotelRezervacije
             }
         }
 
-        private string? InfoValidation()
+        private string? ValidacijaPodataka()
         {
             if (DatumPrijaveKalendar.SelectedDate == null)
             {
-                return "Please select a check-in date.";
+                return "Molimo odaberite datum dolaska.";
             }
             if (DatumOdlaskaKalendar.SelectedDate == null)
             {
-                return "Please select a check-out date.";
+                return "Molimo odaberite datum odlaska.";
             }
 
             if (DatumPrijaveKalendar.SelectedDate >= DatumOdlaskaKalendar.SelectedDate)
             {
-                return "Check-out date must be after check-in date.";
+                return "Datum odlaska mora biti nakon datuma dolaska.";
             }
 
-            if (KombinovaniOdabirOdraslih.SelectedItem == null)
+            if (ComboBoxOdraslih.SelectedItem == null)
             {
-                return "Please select the number of adults.";
+                return "Molimo odaberite broj odraslih.";
             }
-            if (KombinovaniOdabirDece.SelectedItem == null)
+            if (ComboBoxDece.SelectedItem == null)
             {
-                return "Please select the number of children.";
+                return "Molimo odaberite broj dece.";
             }
 
-            foreach (var childAgeComboBox in PanelZaUzrasteDece.Children)
+            foreach (var comboBoxGodinaDeteta in PanelZaGodineDece.Children)
             {
-                if (childAgeComboBox is ComboBox comboBox && comboBox.SelectedItem == null)
+                if (comboBoxGodinaDeteta is ComboBox comboBox && comboBox.SelectedItem == null)
                 {
-                    return "Please select the age of each child.";
+                    return "Molimo odaberite godinu svakog deteta.";
                 }
             }
 
             return null;
         }
 
-        private void ShowRooms_Button_Click(object sender, RoutedEventArgs e)
+        private void PrikaziSobeDugme_Click(object sender, RoutedEventArgs e)
         {
-            string? error = InfoValidation();
+            string? error = ValidacijaPodataka();
             if (error != null)
             {
                 ErrorTekst.Text = error;
@@ -91,127 +91,121 @@ namespace HotelRezervacije
                 ErrorTekst.Visibility = Visibility.Collapsed;
             }
 
-
-            ShowRooms();
+            PrikaziSobe();
         }
 
-        private void ShowRooms()
+        private void PrikaziSobe()
         {
-            string checkInDate = DatumPrijaveKalendar.SelectedDate.Value.AddHours(14).ToString("yyyy-MM-dd HH:mm");
-            string checkOutDate = DatumOdlaskaKalendar.SelectedDate.Value.AddHours(12).ToString("yyyy-MM-dd HH:mm");
+            string datumDolaska = DatumPrijaveKalendar.SelectedDate.Value.AddHours(14).ToString("yyyy-MM-dd HH:mm");
+            string datumOdlaska = DatumOdlaskaKalendar.SelectedDate.Value.AddHours(12).ToString("yyyy-MM-dd HH:mm");
 
-            int brojOdraslih = int.TryParse((KombinovaniOdabirOdraslih.SelectedItem as ComboBoxItem)?.Content as string, out brojOdraslih) ? brojOdraslih : 0;
-            int brojDece = int.TryParse((KombinovaniOdabirDece.SelectedItem as ComboBoxItem)?.Content as string, out brojDece) ? brojDece : 0;
-            int numBabies = CountBabies();
-            int ukupnoGostiju = brojOdraslih + brojDece - numBabies;
-            int ukupnoBeba = numBabies;
+            int brojOdraslih = int.TryParse((ComboBoxOdraslih.SelectedItem as ComboBoxItem)?.Content as string, out brojOdraslih) ? brojOdraslih : 0;
+            int brojDece = int.TryParse((ComboBoxDece.SelectedItem as ComboBoxItem)?.Content as string, out brojDece) ? brojDece : 0;
+            int brojBeba = IzbrojBebe();
+            int ukupnoGostiju = brojOdraslih + brojDece - brojBeba;
+            int ukupnoBeba = brojBeba;
 
             List<string> izabranePogodnosti = new List<string>();
-            foreach (var child in PanelZaPogodnosti.Children)
+            foreach (var dete in PanelZaPogodnosti.Children)
             {
-                if (child is CheckBox checkBox && checkBox.IsChecked == true)
+                if (dete is CheckBox checkBox && checkBox.IsChecked == true)
                 {
                     izabranePogodnosti.Add(checkBox.Content.ToString());
                 }
             }
 
-            Room[] sobe = DatabaseManager.GetMatchingRooms(DatumPrijaveKalendar.SelectedDate.Value, DatumOdlaskaKalendar.SelectedDate.Value, ukupnoGostiju, izabranePogodnosti.ToArray());
+            Soba[] sobe = DatabaseManager.UcitajOdgovarajuceSobe(DatumPrijaveKalendar.SelectedDate.Value, DatumOdlaskaKalendar.SelectedDate.Value, ukupnoGostiju, izabranePogodnosti.ToArray());
 
-            ClearRoomsUI();
+
+            PanelZaSobe.Children.Clear();
             foreach (var soba in sobe)
             {
-                Amenity[] pogodnosti = DatabaseManager.GetAmenitiesForRoom(soba.Id);
-                AddRoomToUI(soba, pogodnosti, checkInDate, checkOutDate, ukupnoGostiju, ukupnoBeba);
+                Pogodnost[] pogodnosti = DatabaseManager.UcitajPogodnostiZaSobu(soba.Id);
+                DodajKarticuSobe(soba, pogodnosti, datumDolaska, datumOdlaska, ukupnoGostiju, ukupnoBeba);
             }
         }
-        private void ClearRoomsUI()
-        {
-            PanelZaSobe.Children.Clear();
-        }
 
-        private void AddRoomToUI(Room soba, Amenity[] pogodnosti, string checkInDate, string checkOutDate, int ukupnoGostiju, int ukupnoBeba)
+        private void DodajKarticuSobe(Soba soba, Pogodnost[] pogodnosti, string datumDolaska, string datumOdlaska, int ukupnoGostiju, int ukupnoBeba)
         {
-            var image = DatabaseManager.LoadImageFromDatabase(soba.Id);
-            var price = CalculatePrice(soba.PricePerNight);
+            var image = DatabaseManager.UcitajSlikuIzBazePodataka(soba.Id);
+            var price = IzracunajCenu(soba.CenaPoNoci);
 
             var karticaSobe = new KarticaSobeKorisnik();
-            karticaSobe.SetRoomData(soba, pogodnosti, image, price, checkInDate, checkOutDate, ukupnoGostiju, ukupnoBeba);
+            karticaSobe.PostaviPodatke(soba, pogodnosti, image, price, datumDolaska, datumOdlaska, ukupnoGostiju, ukupnoBeba);
 
             PanelZaSobe.Children.Add(karticaSobe);
         }
 
-        private void KombinovaniOdabirDece_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBoxDece_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PanelZaUzrasteDece.Children.Clear();
-            if (sender is ComboBox comboBox)
+            PanelZaGodineDece.Children.Clear();
+
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem selectedItem && int.TryParse((string)selectedItem.Content, out int brojDece))
             {
-                if (comboBox.SelectedItem is ComboBoxItem selectedItem && int.TryParse((string)selectedItem.Content, out int selectedValue))
+                if (brojDece == 0)
                 {
-                    if (selectedValue == 0)
-                    {
-                        ChildrenAgesText.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        ChildrenAgesText.Visibility = Visibility.Visible;
-                    }
-                    for (int i = 0; i < selectedValue; i++)
-                    {
-                        ComboBox childAgeComboBox = new ComboBox();
-                        childAgeComboBox.Name = $"Child{i + 1}_ComboBox";
-                        childAgeComboBox.Items.Add("<2");
-                        childAgeComboBox.Items.Add("3-11");
-                        childAgeComboBox.Items.Add(">12");
-                        PanelZaUzrasteDece.Children.Add(childAgeComboBox);
-                    }
+                    GodineDeceTekst.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    GodineDeceTekst.Visibility = Visibility.Visible;
+                }
+
+                for (int i = 0; i < brojDece; i++)
+                {
+                    ComboBox childAgeComboBox = new ComboBox();
+                    childAgeComboBox.Items.Add("<2");
+                    childAgeComboBox.Items.Add("3-11");
+                    childAgeComboBox.Items.Add(">12");
+                    PanelZaGodineDece.Children.Add(childAgeComboBox);
                 }
             }
         }
 
-        private int CountBabies()
+        private int IzbrojBebe()
         {
-            int count = 0;
-            foreach (var childAgeComboBox in PanelZaUzrasteDece.Children)
+            int broj = 0;
+            foreach (var comboBoxGodinaDeteta in PanelZaGodineDece.Children)
             {
-                if (childAgeComboBox is ComboBox comboBox && comboBox.SelectedItem != null)
+                if (comboBoxGodinaDeteta is ComboBox comboBox && comboBox.SelectedItem != null)
                 {
-                    string ageGroup = comboBox.SelectedItem.ToString();
-                    if (ageGroup == "<2")
+                    string godine = comboBox.SelectedItem.ToString();
+                    if (godine == "<2")
                     {
-                        count++;
+                        broj++;
                     }
                 }
             }
-            return count;
+            return broj;
         }
 
-        private decimal CalculatePrice(decimal pricePerNight)
+        private decimal IzracunajCenu(decimal cenaPoNoci)
         {
-            int numAdults = int.TryParse(
-                (KombinovaniOdabirOdraslih.SelectedItem as ComboBoxItem)?.Content as string,
-                out var adults) ? adults : 0;
+            int brojOdraslih = int.TryParse(
+                (ComboBoxOdraslih.SelectedItem as ComboBoxItem)?.Content as string,
+                out var odrasli) ? odrasli : 0;
 
-            int numChildren = int.TryParse(
-                (KombinovaniOdabirDece.SelectedItem as ComboBoxItem)?.Content as string,
-                out var children) ? children : 0;
+            int brojDece = int.TryParse(
+                (ComboBoxDece.SelectedItem as ComboBoxItem)?.Content as string,
+                out var deca) ? deca : 0;
 
 
-            decimal totalPrice = 0;
+            decimal ukupnaCena = 0;
 
-            if (DatumPrijaveKalendar.SelectedDate is DateTime checkIn &&
-                DatumOdlaskaKalendar.SelectedDate is DateTime checkOut)
+            if (DatumPrijaveKalendar.SelectedDate is DateTime datumDolaska &&
+                DatumOdlaskaKalendar.SelectedDate is DateTime datumOdlaska)
             {
-                int totalDays = (int)(checkOut - checkIn).TotalDays;
+                int ukupnoDana = (int)(datumOdlaska - datumDolaska).TotalDays;
 
-                totalPrice += pricePerNight * totalDays * numAdults;
+                ukupnaCena += cenaPoNoci * ukupnoDana * brojOdraslih;
 
-                for (int i = 0; i < numChildren; i++)
+                for (int i = 0; i < brojDece; i++)
                 {
-                    if (PanelZaUzrasteDece.Children[i] is ComboBox childAgeCombo &&
-                        childAgeCombo.SelectedItem != null)
+                    if (PanelZaGodineDece.Children[i] is ComboBox comboBoxGodinaDeteta &&
+                        comboBoxGodinaDeteta.SelectedItem != null)
                     {
-                        string ageGroup = childAgeCombo.SelectedItem.ToString();
-                        decimal multiplier = ageGroup switch
+                        string godine = comboBoxGodinaDeteta.SelectedItem.ToString();
+                        decimal popust = godine switch
                         {
                             "<2" => 0.0m,
                             "3-11" => 0.5m,
@@ -219,18 +213,11 @@ namespace HotelRezervacije
                             _ => 0.0m
                         };
 
-                        totalPrice += pricePerNight * totalDays * multiplier;
+                        ukupnaCena += cenaPoNoci * ukupnoDana * popust;
                     }
                 }
             }
-            return (decimal)Math.Round(totalPrice, 2);
-        }
-
-        private void ShowAdminWindowButton_Click(object sender, RoutedEventArgs e)
-        {
-            GlavniProzorAdmin GlavniProzorAdmin = new GlavniProzorAdmin();
-            GlavniProzorAdmin.Show();
-            this.Close();
+            return (decimal)Math.Round(ukupnaCena, 2);
         }
     }
 }

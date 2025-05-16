@@ -15,10 +15,10 @@
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                         <StackPanel Margin="18" HorizontalAlignment="Left">
-                            <TextBlock Name="RoomName" FontSize="20" FontWeight="Bold" />
-                            <TextBlock Name="RoomDescription" Margin="0,5,0,0" FontSize="16" TextWrapping="Wrap" />
-                            <TextBlock Name="RoomCapacity" Margin="0,5,0,0" FontSize="16" />
-                            <TextBlock Name="AmenitiesText" Margin="0,5,0,0" FontSize="16" TextWrapping="Wrap" />
+                            <TextBlock Name="ImeSobe" FontSize="20" FontWeight="Bold" />
+                            <TextBlock Name="OpisSobe" Margin="0,5,0,0" FontSize="16" TextWrapping="Wrap" />
+                            <TextBlock Name="KapacitetSobe" Margin="0,5,0,0" FontSize="16" />
+                            <TextBlock Name="PogodnostiTekst" Margin="0,5,0,0" FontSize="16" TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
                     <Border Grid.Row="1" Margin="0,0,4,0" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
@@ -29,32 +29,32 @@
                                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                                     <StackPanel>
                                         <TextBlock FontSize="16" Text="Name:" />
-                                        <TextBox Name="UserName" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
+                                        <TextBox Name="ImeKorisnika" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
                                     </StackPanel>
                                     <StackPanel Margin="20,0,0,0">
                                         <TextBlock FontSize="16" Text="Surname:" />
-                                        <TextBox Name="UserSurname" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
+                                        <TextBox Name="PrezimeKorisnika" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
                                     </StackPanel>
                                 </StackPanel>
 
                                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                                     <StackPanel>
                                         <TextBlock FontSize="16" Text="Email:" />
-                                        <TextBox Name="UserEmail" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
+                                        <TextBox Name="EmailKorisnika" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
                                     </StackPanel>
                                     <StackPanel Margin="20,0,0,0">
                                         <TextBlock FontSize="16" Text="Phone Number" />
-                                        <TextBox Name="UserPhoneNumber" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
+                                        <TextBox Name="BrojTelefonaKorisnika" Width="200" Height="30" Background="#add8e6" BorderBrush="#888" BorderThickness="1" FontSize="16" />
                                     </StackPanel>
                                 </StackPanel>
 
                                 <TextBlock Margin="0,10,0,0" FontSize="20" FontWeight="Bold" Text="Guest Info:" />
-                                <StackPanel Name="GuestNamesStackPanel" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <StackPanel Name="PanelImenaGostiju" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                                     <!--  Guest name cards will be added here dynamically  -->
                                 </StackPanel>
 
                                 <TextBlock Name="ErrorTekst" Margin="0,0,0,10" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
-                                <Button Name="CheckoutButton" Width="200" Height="50" Margin="0,10,0,0" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" Click="CheckoutButton_Click" Content="Checkout" FontSize="16" />
+                                <Button Name="PorudzbinaDugme" Width="200" Height="50" Margin="0,10,0,0" Padding="5" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#add8e6" Click="PorudzbinaDugme_Click" Content="Checkout" FontSize="16" />
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
@@ -63,13 +63,13 @@
             <Border Grid.Column="1" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                 <StackPanel Margin="18" HorizontalAlignment="Right">
                     <TextBlock FontSize="20" FontWeight="Bold" Text="Total Price:" />
-                    <TextBlock Name="TotalPrice" Margin="0,5,0,0" FontSize="32" FontWeight="Bold" Foreground="DarkGreen" />
+                    <TextBlock Name="UkupnaCena" Margin="0,5,0,0" FontSize="32" FontWeight="Bold" Foreground="DarkGreen" />
                     <TextBlock FontSize="20" FontWeight="Bold" Text="Check-in Date:" />
-                    <TextBlock Name="CheckInDate" Margin="0,5,0,0" FontSize="16" />
+                    <TextBlock Name="DatumDolaska" Margin="0,5,0,0" FontSize="16" />
                     <TextBlock FontSize="20" FontWeight="Bold" Text="Check-out Date:" />
-                    <TextBlock Name="CheckOutDate" Margin="0,5,0,0" FontSize="16" />
+                    <TextBlock Name="DatumOdlaska" Margin="0,5,0,0" FontSize="16" />
                     <TextBlock FontSize="20" FontWeight="Bold" Text="Number of Guests:" />
-                    <TextBlock Name="NumberOfGuests" Margin="0,5,0,0" FontSize="16" />
+                    <TextBlock Name="BrojGostiju" Margin="0,5,0,0" FontSize="16" />
                 </StackPanel>
             </Border>
         </Grid>
