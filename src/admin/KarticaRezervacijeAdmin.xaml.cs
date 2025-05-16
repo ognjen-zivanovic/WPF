@@ -15,20 +15,20 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class AdminReservationCard : UserControl
+    public partial class KarticaRezervacijeAdmin : UserControl
     {
         public Room Room { get; set; }
         public Reservation Reservation { get; set; }
         public User User { get; set; }
         public Guest[] Guests { get; set; }
         public string AmenitiesText { get; set; }
-        public AdminReservationCard()
+        public KarticaRezervacijeAdmin()
         {
             InitializeComponent();
             this.DataContext = this;
         }
 
-        public AdminReservationCard(Room room, Reservation reservation, User user, Guest[] guests)
+        public KarticaRezervacijeAdmin(Room room, Reservation reservation, User user, Guest[] guests)
         {
             InitializeComponent();
 

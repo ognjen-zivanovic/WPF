@@ -14,24 +14,24 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class AppMainWindow : Window
+    public partial class GlavniProzorAplikacije : Window
     {
-        public AppMainWindow()
+        public GlavniProzorAplikacije()
         {
             InitializeComponent();
         }
 
         private void ShowAdminWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminMainWindow adminMainWindow = new AdminMainWindow();
-            adminMainWindow.Show();
+            GlavniProzorAdmin glavniProzorAdmin = new GlavniProzorAdmin();
+            glavniProzorAdmin.Show();
             this.Close();
         }
 
         private void ShowUserWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            GlavniProzorKorisnik glavniProzorKorisnik = new GlavniProzorKorisnik();
+            glavniProzorKorisnik.Show();
             this.Close();
         }
     }

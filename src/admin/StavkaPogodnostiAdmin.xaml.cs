@@ -6,13 +6,13 @@ using System.Windows.Media;
 
 namespace HotelRezervacije
 {
-    public partial class AdminAmenityItem : UserControl
+    public partial class StavkaPogodnostiAdmin : UserControl
     {
         public event RoutedEventHandler Deleted;
 
         public int AmenityId { get; set; }
 
-        public AdminAmenityItem(int id, string name, string icon)
+        public StavkaPogodnostiAdmin(int id, string name, string icon)
         {
             InitializeComponent();
             RootGrid.MouseEnter += (s, e) => DeleteButton.Visibility = Visibility.Visible;

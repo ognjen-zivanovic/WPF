@@ -14,9 +14,9 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class AdminAmenitiesWindow : Window
+    public partial class ProzorPogodnostiAdmin : Window
     {
-        public AdminAmenitiesWindow()
+        public ProzorPogodnostiAdmin()
         {
             InitializeComponent();
             ShowAmenities();
@@ -30,7 +30,7 @@ namespace HotelRezervacije
             Amenity[] amenities = DatabaseManager.GetAllAmenities();
             foreach (var amenity in amenities)
             {
-                AdminChangeableAmenityItem amenityCard = new AdminChangeableAmenityItem(amenity.Id, amenity.Name, amenity.Icon);
+                StavkaMenjivePogodnostiAdmin amenityCard = new StavkaMenjivePogodnostiAdmin(amenity.Id, amenity.Name, amenity.Icon);
 
                 amenityCard.DeleteButton.Click += (s, e) =>
                 {

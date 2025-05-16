@@ -4,9 +4,6 @@ using System.Windows;
 
 namespace HotelRezervacije
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public App()
@@ -14,5 +11,4 @@ namespace HotelRezervacije
             DatabaseManager.Init();
         }
     }
-
 }

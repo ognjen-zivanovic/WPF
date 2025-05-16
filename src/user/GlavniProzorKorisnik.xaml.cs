@@ -14,9 +14,9 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class MainWindow : Window
+    public partial class GlavniProzorKorisnik : Window
     {
-        public MainWindow()
+        public GlavniProzorKorisnik()
         {
             InitializeComponent();
 
@@ -134,7 +134,7 @@ namespace HotelRezervacije
             var image = DatabaseManager.LoadImageFromDatabase(room.Id);
             var price = CalculatePrice(room.PricePerNight);
 
-            var roomCard = new RoomCard();
+            var roomCard = new KarticaSobeKorisnik();
             roomCard.SetRoomData(room, amenities, image, price, checkInDate, checkOutDate, totalGuests, totalBabies);
 
             RoomsStackPanel.Children.Add(roomCard);
@@ -232,8 +232,8 @@ namespace HotelRezervacije
 
         private void ShowAdminWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminMainWindow adminMainWindow = new AdminMainWindow();
-            adminMainWindow.Show();
+            GlavniProzorAdmin GlavniProzorAdmin = new GlavniProzorAdmin();
+            GlavniProzorAdmin.Show();
             this.Close();
         }
     }

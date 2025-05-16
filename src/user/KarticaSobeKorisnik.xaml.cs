@@ -16,7 +16,7 @@ using System.IO;
 namespace HotelRezervacije
 {
 
-    public partial class RoomCard : UserControl
+    public partial class KarticaSobeKorisnik : UserControl
     {
         public int RoomId { get; set; }
         public DateTime CheckIn { get; set; }
@@ -26,7 +26,7 @@ namespace HotelRezervacije
         public int NumberOfGuests { get; set; }
         public int NumberOfBabies { get; set; }
 
-        public RoomCard()
+        public KarticaSobeKorisnik()
         {
             InitializeComponent();
         }
@@ -80,7 +80,7 @@ namespace HotelRezervacije
 
         private void BookRoom_Click(object sender, RoutedEventArgs e)
         {
-            var checkoutWindow = new CheckoutWindow(RoomId, CheckIn, CheckOut, TotalPrice, NumberOfGuests, NumberOfBabies, string.Join(", ", Amenities.Select(a => a.Name)));
+            var checkoutWindow = new ProzorPorudzbineKorisnik(RoomId, CheckIn, CheckOut, TotalPrice, NumberOfGuests, NumberOfBabies, string.Join(", ", Amenities.Select(a => a.Name)));
             checkoutWindow.Show();
         }
     }

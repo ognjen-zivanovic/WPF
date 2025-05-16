@@ -1,7 +1,0 @@
-﻿<Window x:Class="HotelRezervacije.AdminMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:HotelRezervacije" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="AdminMainWindow" Width="300" Height="300" mc:Ignorable="d">
-    <StackPanel>
-        <Button Click="EditRooms_Click" Content="Edit Rooms" />
-        <Button Click="ViewReservations_Click" Content="View Reservations" />
-        <Button Click="EditAmenities_Click" Content="Edit Amenities" />
-    </StackPanel>
-</Window>

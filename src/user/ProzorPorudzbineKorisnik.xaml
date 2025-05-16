@@ -1,4 +1,4 @@
-﻿<Window x:Class="HotelRezervacije.CheckoutWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:HotelRezervacije" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="CheckoutWindow" Width="1280" Height="720" mc:Ignorable="d">
+﻿<Window x:Class="HotelRezervacije.ProzorPorudzbineKorisnik" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:HotelRezervacije" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="ProzorPorudzbineKorisnik" Width="1280" Height="720" mc:Ignorable="d">
     <Grid>
         <TextBlock Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Text="Checkout" />
         <Grid Margin="10,50">

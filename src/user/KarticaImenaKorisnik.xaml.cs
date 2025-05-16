@@ -16,12 +16,12 @@ using System.IO;
 namespace HotelRezervacije
 {
 
-    public partial class GuestNameCard : UserControl
+    public partial class KarticaImenaKorisnik : UserControl
     {
         public string GuestName { get; set; }
         public string GuestSurname { get; set; }
 
-        public GuestNameCard()
+        public KarticaImenaKorisnik()
         {
             InitializeComponent();
             this.DataContext = this;

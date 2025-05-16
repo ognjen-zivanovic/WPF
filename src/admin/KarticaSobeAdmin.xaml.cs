@@ -16,13 +16,13 @@ using System.IO;
 namespace HotelRezervacije
 {
 
-    public partial class AdminRoomCard : UserControl
+    public partial class KarticaSobeAdmin : UserControl
     {
         public int RoomId { get; set; }
 
         private bool changed = false;
 
-        public AdminRoomCard()
+        public KarticaSobeAdmin()
         {
             InitializeComponent();
         }
@@ -97,7 +97,7 @@ namespace HotelRezervacije
             AmenityPanel.Children.Clear();
             foreach (var amenity in amenities)
             {
-                var item = new AdminAmenityItem(amenity.Id, amenity.Name, amenity.Icon);
+                var item = new StavkaPogodnostiAdmin(amenity.Id, amenity.Name, amenity.Icon);
                 // item.SetImageSource(DatabaseManager.SourceFromByteArray(amenity.Icon));
                 item.Deleted += (s, e) =>
                 {
@@ -169,7 +169,7 @@ namespace HotelRezervacije
             var allAmenities = DatabaseManager.GetAllAmenities();
             var existingIds = new HashSet<int>();
 
-            foreach (AdminAmenityItem item in AmenityPanel.Children.OfType<AdminAmenityItem>())
+            foreach (StavkaPogodnostiAdmin item in AmenityPanel.Children.OfType<StavkaPogodnostiAdmin>())
             {
                 existingIds.Add(item.AmenityId);
             }
@@ -211,7 +211,7 @@ namespace HotelRezervacije
             {
                 DatabaseManager.AddAmenityToRoom(RoomId, selected.Id);
 
-                var newItem = new AdminAmenityItem(selected.Id, selected.Name, selected.Icon);
+                var newItem = new StavkaPogodnostiAdmin(selected.Id, selected.Name, selected.Icon);
                 newItem.DataContext = newItem;
                 // newItem.SetImageSource(DatabaseManager.SourceFromByteArray(selected.Icon));
                 newItem.Deleted += (s2, e2) =>

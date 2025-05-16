@@ -14,30 +14,30 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class AdminMainWindow : Window
+    public partial class GlavniProzorAdmin : Window
     {
-        public AdminMainWindow()
+        public GlavniProzorAdmin()
         {
             InitializeComponent();
         }
 
         private void EditRooms_Click(object sender, RoutedEventArgs e)
         {
-            AdminRoomsWindow adminRooms = new AdminRoomsWindow();
+            ProzorSobaAdmin adminRooms = new ProzorSobaAdmin();
             adminRooms.Show();
             this.Close();
         }
 
         private void ViewReservations_Click(object sender, RoutedEventArgs e)
         {
-            AdminReservationsWindow adminReservations = new AdminReservationsWindow();
+            ProzorRezervacijaAdmin adminReservations = new ProzorRezervacijaAdmin();
             adminReservations.Show();
             this.Close();
         }
 
         private void EditAmenities_Click(object sender, RoutedEventArgs e)
         {
-            AdminAmenitiesWindow adminAmenities = new AdminAmenitiesWindow();
+            ProzorPogodnostiAdmin adminAmenities = new ProzorPogodnostiAdmin();
             adminAmenities.Show();
             this.Close();
         }

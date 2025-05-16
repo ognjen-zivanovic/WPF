@@ -14,9 +14,9 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class AdminRoomsWindow : Window
+    public partial class ProzorSobaAdmin : Window
     {
-        public AdminRoomsWindow()
+        public ProzorSobaAdmin()
         {
             InitializeComponent();
             ShowRooms();
@@ -32,7 +32,7 @@ namespace HotelRezervacije
                 var image = DatabaseManager.LoadImageFromDatabase(room.Id);
                 var price = room.PricePerNight;
 
-                AdminRoomCard roomCard = new AdminRoomCard();
+                KarticaSobeAdmin roomCard = new KarticaSobeAdmin();
                 Amenity[] amenities = DatabaseManager.GetAmenitiesForRoom(room.Id);
                 roomCard.SetRoomData(room, amenities, image);
                 roomCard.DeleteButton.Click += (s, e) =>

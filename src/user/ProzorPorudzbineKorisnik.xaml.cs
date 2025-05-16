@@ -17,18 +17,18 @@ using System.Text.RegularExpressions;
 
 namespace HotelRezervacije
 {
-    public partial class CheckoutWindow : Window
+    public partial class ProzorPorudzbineKorisnik : Window
     {
         public Room Room { get; set; }
         public decimal TotalPriceNumber { get; set; }
         public int NumberOfPeople { get; set; }
 
-        public CheckoutWindow()
+        public ProzorPorudzbineKorisnik()
         {
             InitializeComponent();
         }
 
-        public CheckoutWindow(int roomId, DateTime checkInDate, DateTime checkOutDate, decimal totalPrice, int numberOfGuests, int numberOfBabies, string amenitiesText)
+        public ProzorPorudzbineKorisnik(int roomId, DateTime checkInDate, DateTime checkOutDate, decimal totalPrice, int numberOfGuests, int numberOfBabies, string amenitiesText)
         {
             InitializeComponent();
 
@@ -59,8 +59,8 @@ namespace HotelRezervacije
 
             for (int i = 0; i < numberOfGuests; i++)
             {
-                GuestNameCard guestNameCard = new GuestNameCard();
-                GuestNamesStackPanel.Children.Add(guestNameCard);
+                KarticaImenaKorisnik KarticaImenaKorisnik = new KarticaImenaKorisnik();
+                GuestNamesStackPanel.Children.Add(KarticaImenaKorisnik);
             }
 
             this.DataContext = this;
@@ -114,9 +114,9 @@ namespace HotelRezervacije
                 SetErrorText("");
             }
 
-            foreach (GuestNameCard guestNameCard in GuestNamesStackPanel.Children)
+            foreach (KarticaImenaKorisnik KarticaImenaKorisnik in GuestNamesStackPanel.Children)
             {
-                if (string.IsNullOrWhiteSpace(guestNameCard.GuestName) || string.IsNullOrWhiteSpace(guestNameCard.GuestSurname))
+                if (string.IsNullOrWhiteSpace(KarticaImenaKorisnik.GuestName) || string.IsNullOrWhiteSpace(KarticaImenaKorisnik.GuestSurname))
                 {
                     SetErrorText("Please fill in all the fields.");
                     return;
@@ -149,12 +149,12 @@ namespace HotelRezervacije
 
             int reservationId = DatabaseManager.InsertReservation(newReservation);
 
-            foreach (GuestNameCard guestNameCard in GuestNamesStackPanel.Children)
+            foreach (KarticaImenaKorisnik KarticaImenaKorisnik in GuestNamesStackPanel.Children)
             {
                 Guest newGuest = new Guest
                 {
-                    Name = guestNameCard.GuestName,
-                    Surname = guestNameCard.GuestSurname
+                    Name = KarticaImenaKorisnik.GuestName,
+                    Surname = KarticaImenaKorisnik.GuestSurname
                 };
 
                 int guestId = DatabaseManager.InsertGuest(newGuest);

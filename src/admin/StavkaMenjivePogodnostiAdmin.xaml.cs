@@ -6,10 +6,10 @@ using System.Windows.Media;
 
 namespace HotelRezervacije
 {
-    public partial class AdminChangeableAmenityItem : UserControl
+    public partial class StavkaMenjivePogodnostiAdmin : UserControl
     {
         Amenity amenity;
-        public AdminChangeableAmenityItem(int id, string name, string icon)
+        public StavkaMenjivePogodnostiAdmin(int id, string name, string icon)
         {
             InitializeComponent();
             amenity = new Amenity

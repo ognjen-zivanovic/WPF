@@ -14,9 +14,9 @@ using System.IO;
 
 namespace HotelRezervacije
 {
-    public partial class AdminReservationsWindow : Window
+    public partial class ProzorRezervacijaAdmin : Window
     {
-        public AdminReservationsWindow()
+        public ProzorRezervacijaAdmin()
         {
             InitializeComponent();
         }
@@ -35,8 +35,8 @@ namespace HotelRezervacije
             foreach (var reservationCard in reservationCards)
             {
                 Guest[] guests = DatabaseManager.GetGuestsByReservationId(reservationCard.Reservation.Id);
-                // Create a new instance of AdminReservationCard for each reservation
-                AdminReservationCard card = new AdminReservationCard(reservationCard.Room, reservationCard.Reservation, reservationCard.User, guests);
+                // Create a new instance of KarticaRezervacijeAdmin for each reservation
+                KarticaRezervacijeAdmin card = new KarticaRezervacijeAdmin(reservationCard.Room, reservationCard.Reservation, reservationCard.User, guests);
                 // Add the card to the UI (assuming you have a container like a StackPanel or Grid)
                 ReservationsStackPanel.Children.Add(card);
             }
