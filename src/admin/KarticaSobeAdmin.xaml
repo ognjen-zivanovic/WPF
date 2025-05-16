@@ -54,7 +54,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button x:Name="DeleteButton" Grid.Column="0" Width="200" Height="45" Margin="0,0,10,0" Padding="5" Background="#EC142A" Content="Delete Room" FontSize="14" FontWeight="Bold" Foreground="White" Style="{x:Null}" />
-                <TextBlock Name="ErrorTextBlock" Grid.Column="1" VerticalAlignment="Center" FontSize="14" Foreground="Red" Text="" />
+                <TextBlock Name="ErrorTekstBlock" Grid.Column="1" VerticalAlignment="Center" FontSize="14" Foreground="Red" Text="" />
                 <Button x:Name="ApplyButton" Grid.Column="2" VerticalAlignment="Center" Click="ApplyButton_Click" Content="Apply Changes" />
             </Grid>
         </StackPanel>

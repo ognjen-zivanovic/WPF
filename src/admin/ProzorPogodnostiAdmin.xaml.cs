@@ -25,7 +25,7 @@ namespace HotelRezervacije
         private void ShowAmenities()
         {
             FontFamily unicodeFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
-            AmenitiesStackPanel.Children.Clear();
+            PanelZaPogodnosti.Children.Clear();
             // Assuming you have a method to get amenities from the database
             Amenity[] amenities = DatabaseManager.GetAllAmenities();
             foreach (var amenity in amenities)
@@ -36,11 +36,11 @@ namespace HotelRezervacije
                 {
                     if (DeleteAmenityItem(amenity.Id))
                     {
-                        AmenitiesStackPanel.Children.Remove(amenityCard);
+                        PanelZaPogodnosti.Children.Remove(amenityCard);
                     }
                 };
 
-                AmenitiesStackPanel.Children.Add(amenityCard);
+                PanelZaPogodnosti.Children.Add(amenityCard);
             }
         }
 

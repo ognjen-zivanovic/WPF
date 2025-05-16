@@ -24,7 +24,7 @@ namespace HotelRezervacije
 
         private void ShowRooms()
         {
-            AdminRoomsStackPanel.Children.Clear();
+            AdminPanelZaSobe.Children.Clear();
             // Assuming you have a method to get rooms from the database
             Room[] rooms = DatabaseManager.GetAllRooms();
             foreach (var room in rooms)
@@ -39,10 +39,10 @@ namespace HotelRezervacije
                 {
                     if (DeleteRoom(room.Id))
                     {
-                        AdminRoomsStackPanel.Children.Remove(roomCard);
+                        AdminPanelZaSobe.Children.Remove(roomCard);
                     }
                 };
-                AdminRoomsStackPanel.Children.Add(roomCard);
+                AdminPanelZaSobe.Children.Add(roomCard);
             }
         }
 

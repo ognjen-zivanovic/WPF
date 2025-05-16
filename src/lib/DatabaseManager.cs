@@ -294,7 +294,7 @@ CREATE TABLE guest_reservations (
             return _connection.Query<Room>("SELECT * FROM rooms").ToArray();
         }
 
-        public static Room[] GetMatchingRooms(DateTime checkInDate, DateTime checkOutDate, int selectedAdults, int selectedChildren, string[] amenities)
+        public static Room[] GetMatchingRooms(DateTime checkInDate, DateTime checkOutDate, int ukupnoGostiju, string[] amenities)
         {
             var query = @"
                 SELECT * 
@@ -304,7 +304,7 @@ CREATE TABLE guest_reservations (
                     (check_in >= @CheckInDate AND check_in <= @CheckOutDate) AND
                     (check_out >= @CheckInDate AND check_out <= @CheckOutDate)
                 ) 
-                AND capacity >= @TotalGuests";
+                AND capacity >= @ukupnoGostiju";
 
             if (amenities.Length > 0)
             {
@@ -321,7 +321,7 @@ CREATE TABLE guest_reservations (
             return _connection.Query<Room>(query, new { 
                 CheckInDate = checkInDate,
                 CheckOutDate = checkOutDate,
-                TotalGuests = selectedAdults + selectedChildren,
+                ukupnoGostiju = ukupnoGostiju,
                 Amenities = amenities,
                 AmenitiesCount = amenities.Length
             }).ToArray();

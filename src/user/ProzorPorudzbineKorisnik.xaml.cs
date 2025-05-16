@@ -81,10 +81,10 @@ namespace HotelRezervacije
             return match.Success;
         }
 
-        public void SetErrorText(string text)
+        public void SetErrorTekst(string text)
         {
-            ErrorText.Text = text;
-            ErrorText.Visibility = text != "" ? Visibility.Visible : Visibility.Collapsed;
+            ErrorTekst.Text = text;
+            ErrorTekst.Visibility = text != "" ? Visibility.Visible : Visibility.Collapsed;
         }
 
 
@@ -95,35 +95,35 @@ namespace HotelRezervacije
                 string.IsNullOrWhiteSpace(UserEmail.Text) || string.IsNullOrWhiteSpace(UserPhoneNumber.Text))
             {
 
-                SetErrorText("Please fill in all the fields.");
+                SetErrorTekst("Please fill in all the fields.");
                 return;
             }
             else if (!IsEmailValid(UserEmail.Text))
             {
 
-                SetErrorText("Please enter a valid email address.");
+                SetErrorTekst("Please enter a valid email address.");
                 return;
             }
             else if (!IsPhoneNumberValid(UserPhoneNumber.Text))
             {
-                SetErrorText("Please enter a valid phone number. Phone number format is + (country code) (number). For example +381641234567");
+                SetErrorTekst("Please enter a valid phone number. Phone number format is + (country code) (number). For example +381641234567");
                 return;
             }
             else
             {
-                SetErrorText("");
+                SetErrorTekst("");
             }
 
             foreach (KarticaImenaKorisnik KarticaImenaKorisnik in GuestNamesStackPanel.Children)
             {
                 if (string.IsNullOrWhiteSpace(KarticaImenaKorisnik.GuestName) || string.IsNullOrWhiteSpace(KarticaImenaKorisnik.GuestSurname))
                 {
-                    SetErrorText("Please fill in all the fields.");
+                    SetErrorTekst("Please fill in all the fields.");
                     return;
                 }
                 else
                 {
-                    SetErrorText("");
+                    SetErrorTekst("");
                 }
             }
 

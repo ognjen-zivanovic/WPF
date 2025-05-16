@@ -6,11 +6,11 @@
                     <StackPanel Margin="10">
                         <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Check In Date" />
                         <Border Padding="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#4FB8E6" CornerRadius="6" SnapsToDevicePixels="True">
-                            <DatePicker Name="CheckInDatePicker" />
+                            <DatePicker Name="DatumPrijaveKalendar" />
                         </Border>
                         <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Check Out Date" />
                         <Border Padding="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#4FB8E6" CornerRadius="6" SnapsToDevicePixels="True">
-                            <DatePicker Name="CheckOutDatePicker" />
+                            <DatePicker Name="DatumOdlaskaKalendar" />
                         </Border>
                     </StackPanel>
                 </Border>
@@ -18,7 +18,7 @@
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
                         <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Number of Adults:" />
-                        <ComboBox Name="Adults_ComboBox">
+                        <ComboBox Name="KombinovaniOdabirOdraslih">
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />
@@ -26,14 +26,14 @@
                             <ComboBoxItem Content="5" />
                         </ComboBox>
                         <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Number of Children:" />
-                        <ComboBox Name="Children_ComboBox" SelectionChanged="Children_ComboBox_SelectionChanged">
+                        <ComboBox Name="KombinovaniOdabirDece" SelectionChanged="KombinovaniOdabirDece_SelectionChanged">
                             <ComboBoxItem Content="0" />
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />
                         </ComboBox>
                         <TextBlock Name="ChildrenAgesText" Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Select ages of children: " Visibility="Collapsed" />
-                        <StackPanel Name="ChildrenAgesStackPanel" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <StackPanel Name="PanelZaUzrasteDece" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <!--  Child age ComboBoxes will be added here dynamically  -->
                         </StackPanel>
 
@@ -42,14 +42,14 @@
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
                         <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Select Amenities:" />
-                        <StackPanel Name="AmenitiesStackPanel" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
+                        <StackPanel Name="PanelZaPogodnosti" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
                             <!--  CheckBoxes will be added here dynamically  -->
                         </StackPanel>
                     </StackPanel>
                 </Border>
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Name="ErrorText" Margin="0,0,0,10" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
+                        <TextBlock Name="ErrorTekst" Margin="0,0,0,10" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
                         <Button Name="ShowRooms_Button" Click="ShowRooms_Button_Click" Content="Show Available Rooms" />
                     </StackPanel>
                 </Border>
@@ -58,7 +58,7 @@
 
         <!--  Item with image and text and stuff for a room  -->
         <ScrollViewer Name="RoomsScrollViewer" Width="800" Height="680" Margin="0,10,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <StackPanel Name="RoomsStackPanel">
+            <StackPanel Name="PanelZaSobe">
                 <!--  Room items will be added here dynamically  -->
             </StackPanel>
         </ScrollViewer>

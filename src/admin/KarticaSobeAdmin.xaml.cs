@@ -115,20 +115,20 @@ namespace HotelRezervacije
                 if (string.IsNullOrWhiteSpace(CapacityText.Text) || string.IsNullOrWhiteSpace(PriceText.Text) ||
                     string.IsNullOrWhiteSpace(RoomNameText.Text) || string.IsNullOrWhiteSpace(DescriptionText.Text))
                 {
-                    ErrorTextBlock.Text = "All fields must be filled.";
+                    ErrorTekstBlock.Text = "All fields must be filled.";
                     return;
                 }
                 if (!int.TryParse(CapacityText.Text, out int capacity) || capacity <= 0)
                 {
-                    ErrorTextBlock.Text = "Capacity must be a positive integer.";
+                    ErrorTekstBlock.Text = "Capacity must be a positive integer.";
                     return;
                 }
                 if (!decimal.TryParse(PriceText.Text, out decimal price) || price <= 0)
                 {
-                    ErrorTextBlock.Text = "Price must be a positive number.";
+                    ErrorTekstBlock.Text = "Price must be a positive number.";
                     return;
                 }
-                ErrorTextBlock.Text = string.Empty;
+                ErrorTekstBlock.Text = string.Empty;
 
                 int roomId = int.Parse(CapacityText.DataContext.ToString());
                 int newCapacity = int.Parse(CapacityText.Text);
@@ -160,7 +160,7 @@ namespace HotelRezervacije
             }
             else
             {
-                ErrorTextBlock.Text = "Failed to load image.";
+                ErrorTekstBlock.Text = "Failed to load image.";
             }
         }
 
