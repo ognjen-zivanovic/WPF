@@ -27,7 +27,7 @@ namespace HotelRezervacije
             FontFamily unikodFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
             PanelZaPogodnosti.Children.Clear();
 
-            Pogodnost[] pogodnosti = DatabaseManager.UcitajSvePogodnosti();
+            Pogodnost[] pogodnosti = MenadzerBazePodataka.UcitajSvePogodnosti();
             foreach (var pogodnost in pogodnosti)
             {
                 StavkaMenjivePogodnostiAdmin karticaPogodnosti = new StavkaMenjivePogodnostiAdmin(pogodnost.Id, pogodnost.Ime, pogodnost.Ikonica);
@@ -52,19 +52,19 @@ namespace HotelRezervacije
                 Ime = "Nova Pogodnost",
                 Ikonica = "",
             };
-            DatabaseManager.DodajPogodnost(novaPogodnost);
+            MenadzerBazePodataka.DodajPogodnost(novaPogodnost);
             PrikaziPogodnosti();
         }
 
         private bool ObrisiStavkuPogodnosti(int pogodnostId)
         {
-            Soba[] sobe = DatabaseManager.UcitajSobePoIdPogodnosti(pogodnostId);
+            Soba[] sobe = MenadzerBazePodataka.UcitajSobePoIdPogodnosti(pogodnostId);
             if (sobe.Length > 0)
             {
                 MessageBox.Show("Nije moguce obrisati ovu pogodnost jer je povezana sa nekom sobom.");
                 return false;
             }
-            DatabaseManager.ObrisiPogodnost(pogodnostId);
+            MenadzerBazePodataka.ObrisiPogodnost(pogodnostId);
             return true;
         }
     }

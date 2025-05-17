@@ -26,14 +26,14 @@ namespace HotelRezervacije
         {
             AdminPanelZaSobe.Children.Clear();
 
-            Soba[] sobe = DatabaseManager.UcitajSveSobe();
+            Soba[] sobe = MenadzerBazePodataka.UcitajSveSobe();
             foreach (var soba in sobe)
             {
-                var slika = DatabaseManager.UcitajSlikuIzBazePodataka(soba.Id);
+                var slika = MenadzerBazePodataka.UcitajSlikuIzBazePodataka(soba.Id);
                 var cena = soba.CenaPoNoci;
 
                 KarticaSobeAdmin karticaSobe = new KarticaSobeAdmin();
-                Pogodnost[] pogodnosti = DatabaseManager.UcitajPogodnostiZaSobu(soba.Id);
+                Pogodnost[] pogodnosti = MenadzerBazePodataka.UcitajPogodnostiZaSobu(soba.Id);
                 karticaSobe.PostaviPodatkeSobe(soba, pogodnosti, slika);
                 karticaSobe.ObrisiDugme.Click += (s, e) =>
                 {
@@ -55,24 +55,24 @@ namespace HotelRezervacije
                 CenaPoNoci = 100.00m,
                 Opis = "Opis nove sobe."
             };
-            int dodataSobaId = DatabaseManager.DodajSobu(novaSoba);
-            DatabaseManager.DodajSliku(dodataSobaId, (byte[])null);
+            int dodataSobaId = MenadzerBazePodataka.DodajSobu(novaSoba);
+            MenadzerBazePodataka.DodajSliku(dodataSobaId, (byte[])null);
             PrikaziSobe();
         }
 
 
         private bool ObrisiSobu(int sobaId)
         {
-            Rezervacija[] rezervacije = DatabaseManager.UcitajRezervacijeZaSobu(sobaId);
+            Rezervacija[] rezervacije = MenadzerBazePodataka.UcitajRezervacijeZaSobu(sobaId);
             if (rezervacije.Length > 0)
             {
                 MessageBox.Show("Nije moguce obrisati sobu jer je povezana sa nekom rezervacijom.");
                 return false;
             }
 
-            DatabaseManager.ObrisiSobu(sobaId);
-            DatabaseManager.ObrisiSveSobeSaIdSobe(sobaId);
-            DatabaseManager.ObrisiSvePogodnostiIzSobe(sobaId);
+            MenadzerBazePodataka.ObrisiSobu(sobaId);
+            MenadzerBazePodataka.ObrisiSveSobeSaIdSobe(sobaId);
+            MenadzerBazePodataka.ObrisiSvePogodnostiIzSobe(sobaId);
             return true;
         }
     }

@@ -20,13 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="fonts\Inter.ttf">
+    <Content Include="fontovi\Inter.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="fonts\play.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="fonts\fa-solid-900.ttf">
+    <Content Include="fontovi\FontAwesome.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

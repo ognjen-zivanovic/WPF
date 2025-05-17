@@ -18,30 +18,30 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5">
-                        <TextBlock FontWeight="Bold" Text="Room Name:" />
+                        <TextBlock FontWeight="Bold" Text="Ime sobe:" />
                         <TextBox Name="NazivSobeTekst" FontSize="18" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5">
-                        <TextBlock FontWeight="Bold" Text="Price per Night:" />
+                        <TextBlock FontWeight="Bold" Text="Cena po noći:" />
                         <TextBox Name="CenaTekst" FontSize="18" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5">
-                        <TextBlock FontWeight="Bold" Text="Capacity:" />
+                        <TextBlock FontWeight="Bold" Text="Kapacitet:" />
                         <TextBox Name="KapacitetTekst" FontSize="18" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5">
-                        <TextBlock FontWeight="Bold" Text="Description:" />
+                        <TextBlock FontWeight="Bold" Text="Opis:" />
                         <TextBox Name="OpisTekst" FontSize="18" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5">
-                        <TextBlock FontWeight="Bold" Text="Amenities:" />
+                        <TextBlock FontWeight="Bold" Text="Pogodnosti:" />
                         <Grid Height="Auto" Margin="10,10,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <WrapPanel Name="PanelPogodnosti" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#00000000" Orientation="Horizontal" />
-                            <Button Name="DodajPogodnostDugme" Grid.Column="1" HorizontalAlignment="Right" Click="DodajPogodnostDugme_Click" Content="Add Amenity" FontSize="14" />
+                            <Button Name="DodajPogodnostDugme" Grid.Column="1" HorizontalAlignment="Right" Click="DodajPogodnostDugme_Click" Content="Dodaj pogodnost" FontSize="14" />
                         </Grid>
                     </StackPanel>
                 </StackPanel>
@@ -53,9 +53,9 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button Name="ObrisiDugme" Grid.Column="0" Width="200" Height="45" Margin="0,0,10,0" Padding="5" Background="#EC142A" Content="Delete Room" FontSize="14" FontWeight="Bold" Foreground="White" Style="{x:Null}" />
+                <Button Name="ObrisiDugme" Grid.Column="0" Width="200" Height="45" Margin="0,0,10,0" Padding="5" Background="#EC142A" Content="Obriši sobu" FontSize="14" FontWeight="Bold" Foreground="White" Style="{x:Null}" />
                 <TextBlock Name="ErrorTekstBlok" Grid.Column="1" VerticalAlignment="Center" FontSize="14" Foreground="Red" Text="" />
-                <Button Name="PrimeniDugme" Grid.Column="2" VerticalAlignment="Center" Click="PrimeniDugme_Click" Content="Apply Changes" />
+                <Button Name="PrimeniDugme" Grid.Column="2" VerticalAlignment="Center" Click="PrimeniDugme_Click" Content="Primeni promene" />
             </Grid>
         </StackPanel>
     </Border>

@@ -21,14 +21,14 @@ namespace HotelRezervacije
             InitializeComponent();
         }
 
-        private void ShowAdminWindowButton_Click(object sender, RoutedEventArgs e)
+        private void PrikaziAdminProzor_Click(object sender, RoutedEventArgs e)
         {
             GlavniProzorAdmin glavniProzorAdmin = new GlavniProzorAdmin();
             glavniProzorAdmin.Show();
             this.Close();
         }
 
-        private void ShowUserWindowButton_Click(object sender, RoutedEventArgs e)
+        private void PrikaziKorisnickiProzor_Click(object sender, RoutedEventArgs e)
         {
             GlavniProzorKorisnik glavniProzorKorisnik = new GlavniProzorKorisnik();
             glavniProzorKorisnik.Show();

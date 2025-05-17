@@ -1,0 +1,9 @@
+﻿<Window x:Class="HotelRezervacije.ProzorUspesneRezervacije" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:HotelRezervacije" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="ProzorUspesneRezervacije" Width="1280" Height="720" mc:Ignorable="d">
+    <Grid VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
+            <TextBlock Margin="10" HorizontalAlignment="Center" FontSize="80" FontWeight="Bold" Foreground="DarkGreen" Text="Uspešna rezervacija!" />
+            <TextBlock Margin="10" HorizontalAlignment="Center" FontSize="30" Text="Vaš broj rezervacije je:" TextWrapping="Wrap" />
+            <TextBlock Margin="10" HorizontalAlignment="Center" FontSize="36" FontWeight="Bold" Text="{Binding RezervacijaId}" />
+        </StackPanel>
+    </Grid>
+</Window>

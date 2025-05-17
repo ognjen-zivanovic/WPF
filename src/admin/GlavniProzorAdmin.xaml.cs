@@ -25,21 +25,18 @@ namespace HotelRezervacije
         {
             ProzorRezervacijaAdmin adminReservations = new ProzorRezervacijaAdmin();
             adminReservations.Show();
-            this.Close();
         }
 
         private void IzmenaSoba_Click(object sender, RoutedEventArgs e)
         {
             ProzorSobaAdmin adminRooms = new ProzorSobaAdmin();
             adminRooms.Show();
-            this.Close();
         }
 
         private void IzmenaPogodnosti_Click(object sender, RoutedEventArgs e)
         {
             ProzorPogodnostiAdmin adminAmenities = new ProzorPogodnostiAdmin();
             adminAmenities.Show();
-            this.Close();
         }
     }
 }

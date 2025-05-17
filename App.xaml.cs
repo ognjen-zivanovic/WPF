@@ -8,7 +8,7 @@ namespace HotelRezervacije
     {
         public App()
         {
-            DatabaseManager.Pokreni();
+            MenadzerBazePodataka.Pokreni();
         }
     }
 }

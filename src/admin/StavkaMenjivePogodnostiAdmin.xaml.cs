@@ -25,12 +25,12 @@ namespace HotelRezervacije
         private void IkonicaTextBox_TextChanged(object s, TextChangedEventArgs e)
         {
             Pogodnost.Ikonica = ((TextBox)s).Text;
-            DatabaseManager.IzmeniPogodnost(Pogodnost.Id, Pogodnost.Ime, Pogodnost.Ikonica);
+            MenadzerBazePodataka.IzmeniPogodnost(Pogodnost.Id, Pogodnost.Ime, Pogodnost.Ikonica);
         }
         private void ImeTextBox_TextChanged(object s, TextChangedEventArgs e)
         {
             Pogodnost.Ime = ((TextBox)s).Text;
-            DatabaseManager.IzmeniPogodnost(Pogodnost.Id, Pogodnost.Ime, Pogodnost.Ikonica);
+            MenadzerBazePodataka.IzmeniPogodnost(Pogodnost.Id, Pogodnost.Ime, Pogodnost.Ikonica);
         }
     }
 }

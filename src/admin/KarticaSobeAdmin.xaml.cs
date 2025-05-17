@@ -36,7 +36,7 @@ namespace HotelRezervacije
             }
             else
             {
-                SlikaSobe.Source = DatabaseManager.IzvorOdImenaFajla("ikonicas/no-image.png");
+                SlikaSobe.Source = MenadzerResursa.IzvorOdImenaFajla("slike/nema_slike.png");
             }
 
             SlikaSobe.MouseEnter += (s, e) =>
@@ -54,7 +54,7 @@ namespace HotelRezervacije
             };
 
 
-            ZameniSliku.Source = DatabaseManager.IzvorOdImenaFajla("ikonicas/change-ikonica.png");
+            ZameniSliku.Source = MenadzerResursa.IzvorOdImenaFajla("slike/ikonica_promeni_sliku.png");
 
             KapacitetTekst.Text = $"{soba.Kapacitet}";
             CenaTekst.Text = $"{soba.CenaPoNoci}";
@@ -78,7 +78,7 @@ namespace HotelRezervacije
                 var stavka = new StavkaPogodnostiAdmin(amenity.Id, amenity.Ime, amenity.Ikonica);
                 stavka.Obrisano += (s, e) =>
                 {
-                    DatabaseManager.ObrisiPogodnostIzSobe(soba.Id, amenity.Id);
+                    MenadzerBazePodataka.ObrisiPogodnostIzSobe(soba.Id, amenity.Id);
                     PanelPogodnosti.Children.Remove(stavka);
                 };
                 PanelPogodnosti.Children.Add(stavka);
@@ -110,7 +110,7 @@ namespace HotelRezervacije
             int noviKapacitet = int.Parse(KapacitetTekst.Text);
             decimal novaCena = decimal.Parse(CenaTekst.Text);
 
-            DatabaseManager.IzmeniSobu(SobaId, novoIme, noviKapacitet, novaCena, noviOpis);
+            MenadzerBazePodataka.IzmeniSobu(SobaId, novoIme, noviKapacitet, novaCena, noviOpis);
 
             KapacitetTekst.BorderBrush = Brushes.Gray;
             CenaTekst.BorderBrush = Brushes.Gray;
@@ -127,8 +127,8 @@ namespace HotelRezervacije
             if (dijalogFajla.ShowDialog() == true)
             {
                 byte[] bajtoviSlike = File.ReadAllBytes(dijalogFajla.FileName);
-                SlikaSobe.Source = DatabaseManager.IzvorOdNizaBajtova(bajtoviSlike);
-                DatabaseManager.PromeniSlikuSobe(SobaId, bajtoviSlike);
+                SlikaSobe.Source = MenadzerResursa.IzvorOdNizaBajtova(bajtoviSlike);
+                MenadzerBazePodataka.PromeniSlikuSobe(SobaId, bajtoviSlike);
             }
             else
             {
@@ -138,7 +138,7 @@ namespace HotelRezervacije
 
         private void DodajPogodnostDugme_Click(object sender, RoutedEventArgs e)
         {
-            var svePogodnosti = DatabaseManager.UcitajSvePogodnosti();
+            var svePogodnosti = MenadzerBazePodataka.UcitajSvePogodnosti();
             var postojeciId = new HashSet<int>();
 
             foreach (StavkaPogodnostiAdmin item in PanelPogodnosti.Children)
@@ -179,14 +179,14 @@ namespace HotelRezervacije
         }
         private void DodajPogodnost(Pogodnost izabranaPogodnost)
         {
-            DatabaseManager.DodajPogodnostSobi(SobaId, izabranaPogodnost.Id);
+            MenadzerBazePodataka.DodajPogodnostSobi(SobaId, izabranaPogodnost.Id);
 
             var novaStavka = new StavkaPogodnostiAdmin(izabranaPogodnost.Id, izabranaPogodnost.Ime, izabranaPogodnost.Ikonica);
 
             novaStavka.DataContext = novaStavka;
             novaStavka.Obrisano += (s, e) =>
             {
-                DatabaseManager.ObrisiPogodnostIzSobe(SobaId, izabranaPogodnost.Id);
+                MenadzerBazePodataka.ObrisiPogodnostIzSobe(SobaId, izabranaPogodnost.Id);
                 PanelPogodnosti.Children.Remove(novaStavka);
             };
 

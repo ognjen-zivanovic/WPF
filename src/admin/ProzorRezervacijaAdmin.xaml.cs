@@ -25,13 +25,13 @@ namespace HotelRezervacije
         {
             string pretragaTekst = PretragaTextbox.Text;
 
-            KarticaRezervacije[] karticeRezervacije = DatabaseManager.UcitajPretrazeneRezervacije(pretragaTekst);
+            KarticaRezervacije[] karticeRezervacije = MenadzerBazePodataka.UcitajPretrazeneRezervacije(pretragaTekst);
 
             PanelRezervacija.Children.Clear();
 
             foreach (var karticaRezervacije in karticeRezervacije)
             {
-                Gost[] gosti = DatabaseManager.UcitajGostePoIdRezervacije(karticaRezervacije.Rezervacija.Id);
+                Gost[] gosti = MenadzerBazePodataka.UcitajGostePoIdRezervacije(karticaRezervacije.Rezervacija.Id);
 
                 KarticaRezervacijeAdmin kartica = new KarticaRezervacijeAdmin(karticaRezervacije.Soba, karticaRezervacije.Rezervacija, karticaRezervacije.Korisnik, gosti);
 
