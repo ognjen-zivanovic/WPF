@@ -17,36 +17,42 @@
 
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Number of Adults:" />
+                        <TextBlock Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Broj odraslih:" />
                         <ComboBox Name="ComboBoxOdraslih">
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />
                             <ComboBoxItem Content="4" />
                             <ComboBoxItem Content="5" />
+                            <ComboBoxItem Content="6" />
+                            <ComboBoxItem Content="7" />
                         </ComboBox>
-                        <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Number of Children:" />
+                        <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Broj dece:" />
                         <ComboBox Name="ComboBoxDece" SelectionChanged="ComboBoxDece_SelectionChanged">
                             <ComboBoxItem Content="0" />
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />
+                            <ComboBoxItem Content="4" />
+                            <ComboBoxItem Content="5" />
+                            <ComboBoxItem Content="6" />
+                            <ComboBoxItem Content="7" />
                         </ComboBox>
-                        <TextBlock Name="GodineDeceTekst" Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Select ages of children: " Visibility="Collapsed" />
+                        <TextBlock Name="GodineDeceTekst" Margin="0,6,0,2" FontSize="16" FontWeight="Bold" Foreground="#333333" Text="Izaberite godine dece: " Visibility="Collapsed" />
                         <StackPanel Name="PanelZaGodineDece" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
                     </StackPanel>
                 </Border>
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
-                        <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Select Amenities:" />
+                        <TextBlock Margin="0,6,0,2" FontWeight="Bold" Foreground="#333333" Text="Izaberite pogodnosti:" />
                         <StackPanel Name="PanelZaPogodnosti" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" />
                     </StackPanel>
                 </Border>
                 <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                     <StackPanel Margin="10">
                         <TextBlock Name="ErrorTekst" Margin="0,0,0,10" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
-                        <Button Name="PrikaziSobeDugme" Click="PrikaziSobeDugme_Click" Content="Show Available Rooms" />
+                        <Button Name="PrikaziSobeDugme" Click="PrikaziSobeDugme_Click" Content="Prikazi dostupne sobe" />
                     </StackPanel>
                 </Border>
             </StackPanel>

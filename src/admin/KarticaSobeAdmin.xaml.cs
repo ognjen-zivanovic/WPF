@@ -30,14 +30,6 @@ namespace HotelRezervacije
         {
             SobaId = soba.Id;
 
-            if (izvorSlike != null)
-            {
-                SlikaSobe.Source = izvorSlike;
-            }
-            else
-            {
-                SlikaSobe.Source = MenadzerResursa.IzvorOdImenaFajla("slike/nema_slike.png");
-            }
 
             SlikaSobe.MouseEnter += (s, e) =>
             {
@@ -47,14 +39,13 @@ namespace HotelRezervacije
             {
                 ZameniSliku.Visibility = Visibility.Hidden;
             };
-
             ZameniSliku.MouseEnter += (s, e) =>
             {
                 ZameniSliku.Visibility = Visibility.Visible;
             };
 
-
-            ZameniSliku.Source = MenadzerResursa.IzvorOdImenaFajla("slike/ikonica_promeni_sliku.png");
+            SlikaSobe.Source = izvorSlike ? izvorSlike : MenadzerResursa.IzvorOdImenaFajla(MenadzerResursa.NemaSlike);
+            ZameniSliku.Source = MenadzerResursa.IzvorOdImenaFajla(MenadzerResursa.IkonicaPromeniSliku);
 
             KapacitetTekst.Text = $"{soba.Kapacitet}";
             CenaTekst.Text = $"{soba.CenaPoNoci}";

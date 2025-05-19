@@ -23,7 +23,17 @@ namespace HotelRezervacije
     {
         public static string IkonicaPromeniSliku = "slike/ikonica_promeni_sliku.jpg";
         public static string NemaSlike = "slike/nema_slike.jpg";
-        public static FontFamily UnikodFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
+        public static FontFamily UnikodFont = (FontFamily)Application.Current.Resources["UnikodFont"];
+
+        public static ImageSource IzvorOdImenaFajla(string imeFajla)
+        {
+            if (File.Exists(imeFajla))
+            {
+                byte[] bajtovi = File.ReadAllBytes(imeFajla);
+                return IzvorOdNizaBajtova(bajtovi);
+            }
+            return null;
+        }
 
         public static ImageSource IzvorOdNizaBajtova(byte[] nizBajtova)
         {
@@ -34,22 +44,6 @@ namespace HotelRezervacije
                     BitmapImage bitmapSlika = new BitmapImage();
                     bitmapSlika.BeginInit();
                     bitmapSlika.StreamSource = ms;
-                    bitmapSlika.EndInit();
-                    return bitmapSlika;
-                }
-            }
-            return null;
-        }
-
-        public static ImageSource IzvorOdImenaFajla(string imeFajla)
-        {
-            if (File.Exists(imeFajla))
-            {
-                using (var fs = new FileStream(imeFajla, FileMode.Open, FileAccess.Read))
-                {
-                    BitmapImage bitmapSlika = new BitmapImage();
-                    bitmapSlika.BeginInit();
-                    bitmapSlika.StreamSource = fs;
                     bitmapSlika.EndInit();
                     return bitmapSlika;
                 }

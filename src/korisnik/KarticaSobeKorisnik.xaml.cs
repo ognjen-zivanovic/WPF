@@ -42,12 +42,10 @@ namespace HotelRezervacije
             BrojBeba = brojBeba;
 
             SlikaSobe.Source = izvorSlike;
-            KapacitetTekst.Text = $"Capacity: {soba.Kapacitet}";
+            KapacitetTekst.Text = $"Kapacitet: {soba.Kapacitet}";
             CenaTekst.Text = $"{UkupnaCena}€";
             NazivSobeTekst.Text = soba.Ime;
             OpisTekst.Text = soba.Opis;
-
-            FontFamily unicodeFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
 
             PanelPogodnosti.Children.Clear();
             foreach (var pogodnost in pogodnosti)
@@ -61,7 +59,7 @@ namespace HotelRezervacije
                     {
                         new TextBlock
                         {
-                            FontFamily = unicodeFont,
+                            FontFamily = MenadzerResursa.UnikodFont,
                             FontSize = 18,
                             Text = pogodnost.Ikonica,
                             VerticalAlignment = VerticalAlignment.Center,

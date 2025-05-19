@@ -14,7 +14,7 @@
                     <TextBlock Name="OpisTekst" TextWrapping="Wrap" />
                     <WrapPanel Name="PanelPogodnosti" Margin="0,5" Orientation="Horizontal" />
                 </StackPanel>
-                <Button Grid.Column="1" Margin="20,10,0,0" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="RezervisiSobu_Click" Content="Rezervisi Sobu" FontSize="30" FontWeight="Bold" />
+                <Button Grid.Column="1" Margin="20,10,0,0" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="RezervisiSobu_Click" Content="Rezerviši Sobu" FontSize="30" FontWeight="Bold" />
             </Grid>
         </StackPanel>
     </Border>

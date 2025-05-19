@@ -44,7 +44,6 @@ namespace HotelRezervacije
 
         static void KreirajBazuPodataka()
         {
-
             KreirajTabele();
             DodajPrimerPodatke();
             DodajPrimerSlike();

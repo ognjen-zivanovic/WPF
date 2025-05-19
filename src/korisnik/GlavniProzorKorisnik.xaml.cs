@@ -22,10 +22,10 @@ namespace HotelRezervacije
 
             DatumPrijaveKalendar.SelectedDate = DateTime.Now;
             DatumOdlaskaKalendar.SelectedDate = DateTime.Now.AddDays(1);
-            PopulateAmenities();
+            PopuniPogodnosti();
         }
 
-        private void PopulateAmenities()
+        private void PopuniPogodnosti()
         {
             Pogodnost[] pogodnosti = MenadzerBazePodataka.UcitajSvePogodnosti();
             foreach (var pogodnost in pogodnosti)

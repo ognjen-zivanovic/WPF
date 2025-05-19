@@ -24,7 +24,6 @@ namespace HotelRezervacije
 
         private void PrikaziPogodnosti()
         {
-            FontFamily unikodFont = (FontFamily)Application.Current.Resources["UnicodeFont"];
             PanelZaPogodnosti.Children.Clear();
 
             Pogodnost[] pogodnosti = MenadzerBazePodataka.UcitajSvePogodnosti();

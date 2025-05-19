@@ -58,8 +58,8 @@ namespace HotelRezervacije
 
             for (int i = 0; i < brojGostiju; i++)
             {
-                KarticaImenaKorisnik KarticaImenaKorisnik = new KarticaImenaKorisnik();
-                PanelImenaGostiju.Children.Add(KarticaImenaKorisnik);
+                KarticaImenaKorisnik karticaImenaKorisnik = new KarticaImenaKorisnik();
+                PanelImenaGostiju.Children.Add(karticaImenaKorisnik);
             }
 
             this.DataContext = this;

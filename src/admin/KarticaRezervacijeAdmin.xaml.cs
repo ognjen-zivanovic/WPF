@@ -44,7 +44,7 @@ namespace HotelRezervacije
             IDTekst.Text = "ID Sobe: " + soba.Id + " | ID Rezervacije: " + rezervacija.Id;
             DatumTekst.Text = "Datum dolaska: " + rezervacija.DatumDolaska.ToString("dd/MM/yyyy") + " | Datum odlaska: " + rezervacija.DatumOdlaska.ToString("dd/MM/yyyy");
             CenaTekst.Text = "Ukupna cena:" + rezervacija.UkupnaCena.ToString("C");
-            ImeKorisnikaTekst.Text = "Korisnik: " + korisnik.Ime + " " + korisnik.Prezime;
+            ImeKorisnikaTekst.Text = "Kupac: " + korisnik.Ime + " " + korisnik.Prezime;
             KontaktKorisnikaTekst.Text = "Kontakt: " + korisnik.Email + " | " + korisnik.Telefon;
             BrojGostijuTekst.Text = "Broj gostiju: " + rezervacija.BrojGostiju;
 

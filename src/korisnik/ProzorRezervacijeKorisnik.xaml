@@ -24,7 +24,7 @@
                     <Border Grid.Row="1" Margin="0,0,4,0" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                         <ScrollViewer>
                             <StackPanel Margin="18" HorizontalAlignment="Left">
-                                <TextBlock FontSize="20" FontWeight="Bold" Text="User Info:" />
+                                <TextBlock FontSize="20" FontWeight="Bold" Text="Informacije o kupcu:" />
 
                                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                                     <StackPanel>
@@ -48,11 +48,11 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <TextBlock Margin="0,10,0,0" FontSize="20" FontWeight="Bold" Text="Guest Info:" />
+                                <TextBlock Margin="0,10,0,0" FontSize="20" FontWeight="Bold" Text="Informacije o gostima:" />
                                 <StackPanel Name="PanelImenaGostiju" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
                                 <TextBlock Name="ErrorTekst" Margin="0,2,0,10" FontWeight="Bold" Foreground="Red" Text="" Visibility="Collapsed" />
-                                <Button Name="RezervacijaDugme" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RezervacijaDugme_Click" Content="Checkout" />
+                                <Button Name="RezervacijaDugme" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RezervacijaDugme_Click" Content="Rezerviši" />
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
@@ -60,13 +60,13 @@
             </Border>
             <Border Grid.Column="1" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                 <StackPanel Margin="18" HorizontalAlignment="Right">
-                    <TextBlock FontSize="20" FontWeight="Bold" Text="Total Price:" />
+                    <TextBlock FontSize="20" FontWeight="Bold" Text="Ukupna cena:" />
                     <TextBlock Name="UkupnaCena" Margin="0,5,0,0" FontSize="32" FontWeight="Bold" Foreground="DarkGreen" />
                     <TextBlock FontSize="20" FontWeight="Bold" Text="Datum dolaska:" />
                     <TextBlock Name="DatumDolaska" Margin="0,5,0,0" FontSize="16" />
                     <TextBlock FontSize="20" FontWeight="Bold" Text="Datum odlaska:" />
                     <TextBlock Name="DatumOdlaska" Margin="0,5,0,0" FontSize="16" />
-                    <TextBlock FontSize="20" FontWeight="Bold" Text="Number of Guests:" />
+                    <TextBlock FontSize="20" FontWeight="Bold" Text="Broj gostiju:" />
                     <TextBlock Name="BrojGostiju" Margin="0,5,0,0" FontSize="16" />
                 </StackPanel>
             </Border>

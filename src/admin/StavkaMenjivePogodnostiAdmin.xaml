@@ -2,9 +2,9 @@
     <Grid>
         <Border Margin="0,0,4,4" Background="#F0F8FF" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
             <StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBox Name="IkonicaTextBox" Margin="10" VerticalAlignment="Center" FontFamily="{StaticResource UnicodeFont}" FontSize="20" TextChanged="IkonicaTextBox_TextChanged" />
+                <TextBox Name="IkonicaTextBox" Margin="10" VerticalAlignment="Center" FontFamily="{StaticResource UnikodFont}" FontSize="20" TextChanged="IkonicaTextBox_TextChanged" />
                 <TextBox Name="ImeTextBox" Margin="10" VerticalAlignment="Center" FontSize="20" TextChanged="ImeTextBox_TextChanged" />
-                <Button Name="ObrisiDugme" Width="75" Height="30" Margin="10" Background="#FF0000" Content="Delete" FontWeight="Bold" Foreground="#FFFFFF" Style="{x:Null}" />
+                <Button Name="ObrisiDugme" Width="75" Height="30" Margin="10" Background="#FF0000" Content="Obriši" FontWeight="Bold" Foreground="#FFFFFF" Style="{x:Null}" />
             </StackPanel>
         </Border>
     </Grid>
