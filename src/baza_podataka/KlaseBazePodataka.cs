@@ -1,6 +1,3 @@
-using System;
-using System.Data;
-
 namespace HotelRezervacije
 {
     public class Soba

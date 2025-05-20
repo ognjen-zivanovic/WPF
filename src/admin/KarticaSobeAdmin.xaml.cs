@@ -44,7 +44,7 @@ namespace HotelRezervacije
                 ZameniSliku.Visibility = Visibility.Visible;
             };
 
-            SlikaSobe.Source = izvorSlike ? izvorSlike : MenadzerResursa.IzvorOdImenaFajla(MenadzerResursa.NemaSlike);
+            SlikaSobe.Source = izvorSlike != null ? izvorSlike : MenadzerResursa.IzvorOdImenaFajla(MenadzerResursa.NemaSlike);
             ZameniSliku.Source = MenadzerResursa.IzvorOdImenaFajla(MenadzerResursa.IkonicaPromeniSliku);
 
             KapacitetTekst.Text = $"{soba.Kapacitet}";

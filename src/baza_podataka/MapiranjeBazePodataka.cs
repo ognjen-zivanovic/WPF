@@ -1,7 +1,5 @@
 
 using Dapper;
-using System;
-using System.Reflection;
 
 namespace HotelRezervacije
 {
