@@ -24,4 +24,16 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="slike\ikonica_promeni_sliku.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="slike\nema_slike.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="slike\slika_sobe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

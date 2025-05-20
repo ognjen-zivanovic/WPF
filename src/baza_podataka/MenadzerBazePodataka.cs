@@ -1,4 +1,4 @@
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Data.SQLite;
 using System.IO;
 using Dapper;
@@ -382,116 +382,119 @@ CREATE TABLE gost_rezervacije (
         static void DodajPrimerPodatke()
         {
             string dodajSobe = @"
-            INSERT INTO sobe (ime, kapacitet, cena_po_noci, opis) VALUES
-            ('Cozy Single Retreat', 1, 99.99, '1 queen-sized bed, TV, private bathroom, 20 square meters'),
-            ('Deluxe Double Comfort', 2, 149.99, '2 single beds, TV, mini fridge, 25 square meters'),
-            ('Family Suite', 4, 299.99, '2 queen-sized beds, TV, kitchenette, 40 square meters'),
-            ('Luxury Family Apartment', 5, 499.99, '2 queen-sized beds + 1 sofa bed, living area, TV, 55 square meters'),
-            ('Executive Family Room', 4, 249.99, '1 king-sized bed + 2 single beds, work desk, TV, 35 square meters'),
-            ('Romantic King Suite', 2, 349.99, '1 king-sized bed, TV, spa bath, 30 square meters'),
-            ('Modern Twin Room', 2, 119.99, '2 single beds, TV, compact workspace, 22 square meters'),
-            ('Budget Single Room', 1, 79.99, '1 single bed, small TV, 18 square meters'),
-            ('Triple Comfort Room', 3, 399.99, '1 queen-sized bed + 1 single bed, TV, lounge chair, 32 square meters'),
-            ('Presidential Suite', 6, 699.99, '3 queen-sized beds, large living area, 2 TVs, kitchen, 70 square meters');";
+ INSERT INTO sobe (ime, kapacitet, cena_po_noci, opis) VALUES
+ ('Jednokrevetna Oaza', 1, 99.99, '1 francuski ležaj, TV, privatno kupatilo, 20m²'),
+ ('Komforna Dvokrevetna', 2, 149.99, '2 odvojena kreveta, TV, mini frižider, 25m²'),
+ ('Porodična Soba', 4, 299.99, '2 bračna kreveta, TV, čajna kuhinja, 40m²'),
+ ('Luksuzni Porodični Apartman', 5, 499.99, '2 bračna kreveta + trosed na razvlačenje, dnevni boravak, TV, 55m²'),
+ ('Prostrana Porodična Soba', 4, 249.99, '1 king size krevet + 2 kreveta za jednu osobu, radni sto, TV, 35m²'),
+ ('Romantični Apartman', 2, 349.99, '1 king size krevet, TV, đakuzi, 30m²'),
+ ('Moderna Dvokrevetna', 2, 119.99, '2 kreveta za jednu osobu, TV, radni kutak, 22m²'),
+ ('Ekonomična Jednokrevetna', 1, 79.99, '1 krevet za jednu osobu, manji TV, 18m²'),
+ ('Trokrevetna Komfor Soba', 3, 399.99, '1 bračni krevet + 1 jednokrevetni, TV, fotelja, 32m²'),
+ ('Predsednički Apartman', 6, 699.99, '3 bračna kreveta, veliki dnevni boravak, 2 TV-a, kuhinja, 70m²');
+";
 
             string dodajKorisnike = @"
-            INSERT INTO korisnici(ime, prezime, email, telefon) VALUES
-            ('John', 'Doe', 'john.doe@example.com', '123-456-7890'),
-            ('Jane', 'Smith', 'jane.smith@example.com', '987-654-3210'),
-            ('Bob', 'Johnson', 'bob.johnson@example.com', '555-555-5555'),
-            ('Alice', 'Brown', 'alice.brown@example.com', '234-567-8901'),
-            ('Charlie', 'Davis', 'charlie.davis@example.com', '345-678-9012'),
-            ('Emily', 'Evans', 'emily.evans@example.com', '456-789-0123'),
-            ('Daniel', 'Wilson', 'daniel.wilson@example.com', '567-890-1234'),
-            ('Fiona', 'Taylor', 'fiona.taylor@example.com', '678-901-2345'),
-            ('George', 'Anderson', 'george.anderson@example.com', '789-012-3456'),
-            ('Hannah', 'Thomas', 'hannah.thomas@example.com', '890-123-4567'),
-            ('Ian', 'Martinez', 'ian.martinez@example.com', '901-234-5678'),
-            ('Julia', 'Garcia', 'julia.garcia@example.com', '012-345-6789'),
-            ('Kevin', 'Robinson', 'kevin.robinson@example.com', '111-222-3333'),
-            ('Laura', 'Clark', 'laura.clark@example.com', '222-333-4444'),
-            ('Mark', 'Rodriguez', 'mark.rodriguez@example.com', '333-444-5555'),
-            ('Nina', 'Lewis', 'nina.lewis@example.com', '444-555-6666'),
-            ('Oscar', 'Lee', 'oscar.lee@example.com', '555-666-7777'),
-            ('Paula', 'Walker', 'paula.walker@example.com', '666-777-8888'),
-            ('Quentin', 'Hall', 'quentin.hall@example.com', '777-888-9999'),
-            ('Rachel', 'Allen', 'rachel.allen@example.com', '888-999-0000'),
-            ('Steve', 'Young', 'steve.young@example.com', '999-000-1111'),
-            ('Tina', 'Hernandez', 'tina.hernandez@example.com', '000-111-2222'),
-            ('Umar', 'King', 'umar.king@example.com', '101-202-3030'),
-            ('Vera', 'Wright', 'vera.wright@example.com', '202-303-4040'),
-            ('Will', 'Lopez', 'will.lopez@example.com', '303-404-5050'),
-            ('Xena', 'Hill', 'xena.hill@example.com', '404-505-6060'),
-            ('Yuri', 'Scott', 'yuri.scott@example.com', '505-606-7070'),
-            ('Zara', 'Green', 'zara.green@example.com', '606-707-8080'),
-            ('Adam', 'Baker', 'adam.baker@example.com', '707-808-9090'),
-            ('Bella', 'Nelson', 'bella.nelson@example.com', '808-909-0101'),
-            ('Carl', 'Carter', 'carl.carter@example.com', '909-010-1112'),
-            ('Diana', 'Mitchell', 'diana.mitchell@example.com', '010-111-2122'),
-            ('Ethan', 'Perez', 'ethan.perez@example.com', '111-212-3132'),
-            ('Grace', 'Roberts', 'grace.roberts@example.com', '212-313-4142');";
+ INSERT INTO korisnici(ime, prezime, email, telefon) VALUES
+ ('Marko', 'Petrović', 'marko.petrovic@example.com', '0641234567'),
+ ('Jelena', 'Jovanović', 'jelena.jovanovic@example.com', '0652345678'),
+ ('Nikola', 'Nikolić', 'nikola.nikolic@example.com', '0663456789'),
+ ('Ana', 'Stanković', 'ana.stankovic@example.com', '0674567890'),
+ ('Miloš', 'Đorđević', 'milos.djordjevic@example.com', '0685678901'),
+ ('Ivana', 'Milenković', 'ivana.milenkovic@example.com', '0696789012'),
+ ('Stefan', 'Lazarević', 'stefan.lazarevic@example.com', '0607890123'),
+ ('Marija', 'Ilić', 'marija.ilic@example.com', '0618901234'),
+ ('Vuk', 'Simić', 'vuk.simic@example.com', '0629012345'),
+ ('Teodora', 'Marković', 'teodora.markovic@example.com', '0630123456'),
+ ('Lazar', 'Ristić', 'lazar.ristic@example.com', '0641112222'),
+ ('Milica', 'Todorović', 'milica.todorovic@example.com', '0652223333'),
+ ('Aleksandar', 'Kovačević', 'aleksandar.kovacevic@example.com', '0663334444'),
+ ('Katarina', 'Matić', 'katarina.matic@example.com', '0674445555'),
+ ('Nemanja', 'Pavlović', 'nemanja.pavlovic@example.com', '0685556666'),
+ ('Sara', 'Janković', 'sara.jankovic@example.com', '0696667777'),
+ ('Boško', 'Milutinović', 'bosko.milutinovic@example.com', '0607778888'),
+ ('Jovana', 'Obradović', 'jovana.obradovic@example.com', '0618889999'),
+ ('Uroš', 'Stevanović', 'uros.stevanovic@example.com', '0629990000'),
+ ('Nevena', 'Gajić', 'nevena.gajic@example.com', '0630001111'),
+ ('Filip', 'Vučić', 'filip.vucic@example.com', '0641012020'),
+ ('Tamara', 'Živković', 'tamara.zivkovic@example.com', '0652023030'),
+ ('Dragan', 'Rakić', 'dragan.rakic@example.com', '0663034040'),
+ ('Milena', 'Radović', 'milena.radovic@example.com', '0674045050'),
+ ('Petar', 'Lukić', 'petar.lukic@example.com', '0685056060'),
+ ('Isidora', 'Vasić', 'isidora.vasic@example.com', '0696067070'),
+ ('Žarko', 'Bogdanović', 'zarko.bogdanovic@example.com', '0607078080'),
+ ('Nataša', 'Tasić', 'natasa.tasic@example.com', '0618089090'),
+ ('Ilija', 'Mirković', 'ilija.mirkovic@example.com', '0629090101'),
+ ('Vesna', 'Šarić', 'vesna.saric@example.com', '0630101112'),
+ ('Ognjen', 'Stanojević', 'ognjen.stanojevic@example.com', '0641112122'),
+ ('Tatjana', 'Grujić', 'tatjana.grujic@example.com', '0652123132'),
+ ('Andrija', 'Milojević', 'andrija.milojevic@example.com', '0663134142');
+";
 
             string dodajRezervacije = @"
-            INSERT INTO rezervacije (soba_id, korisnik_id, datum_dolaska, datum_odlaska, broj_gostiju, ukupna_cena) VALUES
-            (1, 1, '2025-05-10', '2025-05-12', 1, 599.99),
-            (2, 2, '2025-05-15', '2025-05-18', 2, 576.28),
-            (3, 5, '2025-06-01', '2025-06-05', 2, 820.00),
-            (4, 3, '2025-05-20', '2025-05-22', 1, 460.50),
-            (5, 6, '2025-06-10', '2025-06-12', 3, 1015.75),
-            (2, 7, '2025-07-01', '2025-07-04', 2, 712.00),
-            (1, 8, '2025-08-15', '2025-08-18', 1, 580.20),
-            (3, 9, '2025-09-05', '2025-09-08', 2, 775.90),
-            (4, 10, '2025-05-22', '2025-05-25', 1, 689.99),
-            (5, 11, '2025-06-15', '2025-06-17', 2, 640.00),
-            (1, 12, '2025-07-10', '2025-07-13', 2, 845.60),
-            (2, 13, '2025-07-20', '2025-07-22', 1, 399.99),
-            (3, 14, '2025-08-01', '2025-08-03', 2, 920.10),
-            (4, 15, '2025-08-10', '2025-08-12', 3, 999.99),
-            (5, 16, '2025-09-01', '2025-09-03', 2, 570.75),
-            (2, 17, '2025-05-25', '2025-05-27', 1, 455.35),
-            (1, 18, '2025-06-20', '2025-06-22', 2, 600.00),
-            (3, 19, '2025-06-25', '2025-06-27', 2, 890.90),
-            (4, 20, '2025-07-15', '2025-07-18', 1, 705.00),
-            (5, 21, '2025-07-25', '2025-07-28', 2, 820.50),
-            (1, 22, '2025-08-05', '2025-08-07', 1, 500.00),
-            (2, 23, '2025-09-10', '2025-09-13', 2, 845.30),
-            (3, 24, '2025-05-05', '2025-05-07', 1, 430.40),
-            (4, 25, '2025-06-01', '2025-06-03', 3, 980.25),
-            (5, 26, '2025-06-05', '2025-06-08', 2, 1020.60),
-            (1, 27, '2025-07-03', '2025-07-05', 2, 765.00),
-            (2, 28, '2025-08-08', '2025-08-10', 1, 495.20),
-            (3, 29, '2025-08-20', '2025-08-23', 2, 740.99),
-            (4, 30, '2025-09-15', '2025-09-18', 2, 860.80),
-            (5, 31, '2025-05-18', '2025-05-20', 1, 555.50),
-            (1, 32, '2025-06-18', '2025-06-21', 3, 1120.00),
-            (2, 33, '2025-07-28', '2025-07-30', 2, 675.75),
-            (3, 34, '2025-08-25', '2025-08-28', 1, 599.95);";
+ INSERT INTO rezervacije (soba_id, korisnik_id, datum_dolaska, datum_odlaska, broj_gostiju, ukupna_cena) VALUES
+ (1, 1, '2025-05-10', '2025-05-12', 1, 599.99),
+ (2, 2, '2025-05-15', '2025-05-18', 2, 576.28),
+ (3, 5, '2025-06-01', '2025-06-05', 2, 820.00),
+ (4, 3, '2025-05-20', '2025-05-22', 1, 460.50),
+ (5, 6, '2025-06-10', '2025-06-12', 3, 1015.75),
+ (2, 7, '2025-07-01', '2025-07-04', 2, 712.00),
+ (1, 8, '2025-08-15', '2025-08-18', 1, 580.20),
+ (3, 9, '2025-09-05', '2025-09-08', 2, 775.90),
+ (4, 10, '2025-05-22', '2025-05-25', 1, 689.99),
+ (5, 11, '2025-06-15', '2025-06-17', 2, 640.00),
+ (1, 12, '2025-07-10', '2025-07-13', 2, 845.60),
+ (2, 13, '2025-07-20', '2025-07-22', 1, 399.99),
+ (3, 14, '2025-08-01', '2025-08-03', 2, 920.10),
+ (4, 15, '2025-08-10', '2025-08-12', 3, 999.99),
+ (5, 16, '2025-09-01', '2025-09-03', 2, 570.75),
+ (2, 17, '2025-05-25', '2025-05-27', 1, 455.35),
+ (1, 18, '2025-06-20', '2025-06-22', 2, 600.00),
+ (3, 19, '2025-06-25', '2025-06-27', 2, 890.90),
+ (4, 20, '2025-07-15', '2025-07-18', 1, 705.00),
+ (5, 21, '2025-07-25', '2025-07-28', 2, 820.50),
+ (1, 22, '2025-08-05', '2025-08-07', 1, 500.00),
+ (2, 23, '2025-09-10', '2025-09-13', 2, 845.30),
+ (3, 24, '2025-05-05', '2025-05-07', 1, 430.40),
+ (4, 25, '2025-06-01', '2025-06-03', 3, 980.25),
+ (5, 26, '2025-06-05', '2025-06-08', 2, 1020.60),
+ (1, 27, '2025-07-03', '2025-07-05', 2, 765.00),
+ (2, 28, '2025-08-08', '2025-08-10', 1, 495.20),
+ (3, 29, '2025-08-20', '2025-08-23', 2, 740.99),
+ (4, 30, '2025-09-15', '2025-09-18', 2, 860.80),
+ (5, 31, '2025-05-18', '2025-05-20', 1, 555.50),
+ (1, 32, '2025-06-18', '2025-06-21', 3, 1120.00),
+ (2, 33, '2025-07-28', '2025-07-30', 2, 675.75),
+ (3, 34, '2025-08-25', '2025-08-28', 1, 599.95);";
 
             string dodajPogodnosti = @"
-            INSERT INTO pogodnosti (ime, ikonica) VALUES
-            ('WiFi',              CHAR(0xf1eb)),  -- fa-wifi
-            ('Private Bathroom',  CHAR(0xf2cd)),  -- fa-bath
-            ('Air Conditioning',  CHAR(0xf2c9)),  -- fa-snowflake
-            ('Heating',           CHAR(0xf06d)),  -- fa-fire
-            ('TV',                CHAR(0xf26c)),  -- fa-tv
-            ('Toiletries',        CHAR(0xf62e)),  -- fa-pump-medical
-            ('Hair Dryer',        CHAR(0xf72e)),  -- fa-wind (alternative for hair dryer)
-            ('Refrigerator',      CHAR(0xf2c9)),  -- fa-snowflake (symbolic substitute)
-            ('Coffee Maker',      CHAR(0xf0f4));  -- fa-coffee";
+ INSERT INTO pogodnosti (ime, ikonica) VALUES
+ ('WiFi internet',       CHAR(0xf1eb)),  -- fa-wifi
+ ('Privatno kupatilo',   CHAR(0xf2cd)),  -- fa-bath
+ ('Klima uređaj',        CHAR(0xf2c9)),  -- fa-snowflake
+ ('Grejanje',            CHAR(0xf06d)),  -- fa-fire
+ ('Televizor',           CHAR(0xf26c)),  -- fa-tv
+ ('Toaletni pribor',     CHAR(0xf62e)),  -- fa-pump-medical
+ ('Fen za kosu',         CHAR(0xf72e)),  -- fa-wind (zamena)
+ ('Frižider',            CHAR(0xf2c9)),  -- fa-snowflake (simbolično)
+ ('Aparat za kafu',      CHAR(0xf0f4));  -- fa-coffee
+";
 
             string dodajPogodnostiSobe = @"
-            INSERT INTO soba_pogodnosti (soba_id, pogodnost_id) VALUES
-            (1, 1), (1, 2), (1, 3),
-            (2, 1), (2, 3), (2, 5), (2, 6),
-            (3, 1), (3, 2), (3, 4), (3, 7),
-            (4, 1), (4, 3), (4, 5), (4, 9),
-            (5, 1), (5, 2), (5, 6), (5, 7),
-            (6, 1), (6, 4), (6, 5),
-            (7, 1), (7, 3),
-            (8, 1), (8, 2), (8, 6),
-            (9, 1), (9, 4), (9, 5),
-            (10, 1), (10, 3), (10, 8);
-            ";
+ INSERT INTO soba_pogodnosti (soba_id, pogodnost_id) VALUES
+ (1, 1), (1, 2), (1, 3),
+ (2, 1), (2, 3), (2, 5), (2, 6),
+ (3, 1), (3, 2), (3, 4), (3, 7),
+ (4, 1), (4, 3), (4, 5), (4, 9),
+ (5, 1), (5, 2), (5, 6), (5, 7),
+ (6, 1), (6, 4), (6, 5),
+ (7, 1), (7, 3),
+ (8, 1), (8, 2), (8, 6),
+ (9, 1), (9, 4), (9, 5),
+ (10, 1), (10, 3), (10, 8);
+ ";
+
 
 
             konekcija.Execute(dodajSobe);
