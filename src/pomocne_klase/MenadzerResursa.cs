@@ -8,8 +8,8 @@ namespace HotelRezervacije
 {
     public static class MenadzerResursa
     {
-        public static string IkonicaPromeniSliku = "slike/ikonica_promeni_sliku.jpg";
-        public static string NemaSlike = "slike/nema_slike.jpg";
+        public static string IkonicaPromeniSliku = "slike/ikonica_promeni_sliku.png";
+        public static string NemaSlike = "slike/nema_slike.png";
         public static FontFamily UnikodFont = (FontFamily)Application.Current.Resources["UnikodFont"];
 
         public static ImageSource IzvorOdImenaFajla(string imeFajla)
